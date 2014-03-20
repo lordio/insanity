@@ -1,0 +1,587 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Implementations">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Interfaces">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Implementations\Default">
+      <UniqueIdentifier>{1305fca9-0be7-48f7-8d0d-93dea5ea4ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic">
+      <UniqueIdentifier>{01c70f32-35d8-442c-a2c3-3ee351baedd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows">
+      <UniqueIdentifier>{10b05833-da26-46ab-a77b-d5409430a423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux">
+      <UniqueIdentifier>{b1960498-0709-4d73-9677-144c7c385b73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX">
+      <UniqueIdentifier>{08b76798-cb64-4c96-9e4b-2822603e3ee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Default\Object">
+      <UniqueIdentifier>{a2efe1a0-34a3-4f68-9010-1d4f8ccbad71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Default\SubThread">
+      <UniqueIdentifier>{3eb99488-7b2c-4d5e-9d55-f7f1428db523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Default\Mod">
+      <UniqueIdentifier>{d1bab6cc-5da6-496a-9c49-adac5eaab945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Default\Renderer">
+      <UniqueIdentifier>{423fe32b-ca65-4ed5-8636-53c9e4670c97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Default\Task">
+      <UniqueIdentifier>{e10f219e-b972-4fb3-897a-c6a151b90477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Default\Window">
+      <UniqueIdentifier>{f7606cd1-5646-4a59-b8a5-c9e41a6acdcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\ByteArray">
+      <UniqueIdentifier>{51c964bd-9b1b-46b7-8c40-9661e8709e11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\String">
+      <UniqueIdentifier>{9789949f-98cb-47b0-a974-a0aa52acdf6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\String\Char">
+      <UniqueIdentifier>{13d76a3f-899b-4585-9aeb-aeeea0b5af4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\String\WCharT">
+      <UniqueIdentifier>{4f3e5b61-02cb-4916-9d48-2978b0c3b8f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\ConfigObject">
+      <UniqueIdentifier>{7d4625e8-ee53-4c6e-819f-a7a0a2bb82d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\ConfigFile">
+      <UniqueIdentifier>{cfb95699-b797-48c9-a0bd-6be3f605bd40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\GarbageCollector">
+      <UniqueIdentifier>{6378b6a0-0402-4633-87c3-8a9ca2d7b465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\ShaderProgram">
+      <UniqueIdentifier>{4a8b16a0-aaf4-447f-9895-8a59de6eed36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\ShaderProgram\GL4.1">
+      <UniqueIdentifier>{7a990f5c-c2f6-4fda-926e-04ce9909a918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Generic\ShaderProgram\GL3.1">
+      <UniqueIdentifier>{0b5f50a0-70a8-4745-976c-7a37f1573613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\Application">
+      <UniqueIdentifier>{6e620ea9-7f1f-4ce3-992d-0beae797477f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\BSD">
+      <UniqueIdentifier>{df957d45-ff1b-4e32-b884-60c36cb26f84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\BSD\ServerSocket">
+      <UniqueIdentifier>{4ca01de5-4679-4718-890a-530dc61d9f05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\BSD\StreamSocket">
+      <UniqueIdentifier>{ea31d44c-79be-45fa-a2b3-f78f2bc4524d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\Mod">
+      <UniqueIdentifier>{fd6122c8-7de5-42bf-9cfb-e029ab440fe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\PThread">
+      <UniqueIdentifier>{f83f3de7-7dbd-4f5f-b4aa-52cf22afe304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\PThread\Mutex">
+      <UniqueIdentifier>{39d09c8b-0e2c-4a0f-bc48-1cec37b7304d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\Renderer">
+      <UniqueIdentifier>{7ad34181-7b06-40ad-ba3d-0011bc48bc61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\Renderer\GLX">
+      <UniqueIdentifier>{fbf69ccd-0e73-460e-9bdb-cd8fedb3ba95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\Renderer\Mesa">
+      <UniqueIdentifier>{74ac1ef8-a47e-454f-904b-e83056fd0c2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\Renderer\Mesa\9">
+      <UniqueIdentifier>{096027d4-95af-422f-be37-5ff72af97f0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\PThread\SubThread">
+      <UniqueIdentifier>{0578f64b-5eb9-4e85-a090-490a0b727c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\X11">
+      <UniqueIdentifier>{5ebfeb89-cae6-424b-9d6f-b9cfaef76fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\X11\EventPumpTask">
+      <UniqueIdentifier>{5ea9c6da-9beb-4fda-9ac2-c6907b162ec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\X11\Window">
+      <UniqueIdentifier>{a9434220-f007-44a9-9c49-f5328b1e37dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Linux\X11\KeyMap">
+      <UniqueIdentifier>{c152553a-e265-40f5-b39a-d5e531e181d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa">
+      <UniqueIdentifier>{1ae1412d-2422-4b2f-97d7-19401b311882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Application">
+      <UniqueIdentifier>{b46b888d-92ff-40ac-9d5f-a65148c2e14f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\EventPumpTask">
+      <UniqueIdentifier>{3134f311-e114-4149-9f88-de5e919773c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Mutex">
+      <UniqueIdentifier>{a4e80296-80f4-40e6-9eac-556049ebfae7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\SubThread">
+      <UniqueIdentifier>{a28a6f4e-9198-4084-ab25-c88ae6c01820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Window">
+      <UniqueIdentifier>{97538584-fe7e-411e-ba0d-b8afac2efcf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Renderer">
+      <UniqueIdentifier>{944936f2-2944-46c4-ab5a-f02dceacac87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Mod">
+      <UniqueIdentifier>{b5d972ef-f23b-42e1-acc4-07949a926fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\KeyMap">
+      <UniqueIdentifier>{d66d22e1-3c8c-4ab5-8e91-4112dab951d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\BSD">
+      <UniqueIdentifier>{929bef99-ed23-40c1-9db8-32e555966dd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\OpenGL">
+      <UniqueIdentifier>{41787682-807c-4ad5-9366-fd4688d3052e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\OpenGL\ShaderProgram">
+      <UniqueIdentifier>{fe7ac426-7437-40f3-8855-885d593d39a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\BSD\ServerSocket">
+      <UniqueIdentifier>{7b8371b7-a412-4d21-bddb-466fd0d852dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\BSD\StreamSocket">
+      <UniqueIdentifier>{a3ba59e4-fd12-45e8-833c-8ee076415099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Application">
+      <UniqueIdentifier>{34dec747-8047-4e8e-98f4-0b21bf384459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Renderer">
+      <UniqueIdentifier>{4efd67d4-6e16-4fd6-971e-15e32fde9ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Renderer\Direct3D">
+      <UniqueIdentifier>{85d40c8d-a77d-42c8-9d68-e225b2d593fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Renderer\Direct3D\9">
+      <UniqueIdentifier>{d1e40f2b-c9f7-4208-aaee-9737d8b693d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Renderer\Direct3D\11">
+      <UniqueIdentifier>{a7dbe512-e0de-47b4-a0fb-889a1c670f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Renderer\WGL">
+      <UniqueIdentifier>{250e7864-f409-47ae-b0ee-98be63483141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Win32">
+      <UniqueIdentifier>{bfa30dab-eef7-45d9-93b0-68c24dc895e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Win32\EventPumpTask">
+      <UniqueIdentifier>{529efbe2-a489-450c-835a-f5848f4da62c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Win32\Mod">
+      <UniqueIdentifier>{af1a81f3-ba86-47f9-af41-5706f9dbce6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Win32\SubThread">
+      <UniqueIdentifier>{a6c701c6-9d06-461b-808e-b30c1ed4f4d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Win32\Window">
+      <UniqueIdentifier>{873f5539-84fe-445a-b00e-e2005fb72c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Win32\CriticalSection">
+      <UniqueIdentifier>{cbe25929-9af9-46c7-ad29-76524bfd0d1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Win32\Mutex">
+      <UniqueIdentifier>{b1be0fb5-5bd7-4423-a37d-3620cc2b2c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Winsock">
+      <UniqueIdentifier>{c1b9041f-97ea-41f3-b119-ccc2e7332d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Winsock\ServerSocket">
+      <UniqueIdentifier>{2d6eb939-fc12-47b5-9357-f0aea97640c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Winsock\StreamSocket">
+      <UniqueIdentifier>{6aa09f13-8c5f-49d1-bb02-198215b2615f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\Windows\Win32\KeyMap">
+      <UniqueIdentifier>{adcb60f9-43dc-45dd-8790-cb7626d8fff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Non-Interface Headers">
+      <UniqueIdentifier>{1c3e816c-4c26-45bf-a77f-c55ea8fc1065}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\IApplication.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IByteArray.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IClonable.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IConfigFile.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IConfigObject.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IGarbageCollector.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IMod.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IMutex.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IObject.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IRenderer.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IServerSocket.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IShaderProgram.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IStreamSocket.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IString.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\ISubThread.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\ITask.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IThread.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\IWindow.hpp">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Default\Object.hpp">
+      <Filter>Implementations\Default\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Default\Thread.hpp">
+      <Filter>Implementations\Default\SubThread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Default\Mod.hpp">
+      <Filter>Implementations\Default\Mod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Default\Renderer.hpp">
+      <Filter>Implementations\Default\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Default\Task.hpp">
+      <Filter>Implementations\Default\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericByteArray.hpp">
+      <Filter>Implementations\Generic\ByteArray</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericCharString.hpp">
+      <Filter>Implementations\Generic\String\Char</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericWCharTString.hpp">
+      <Filter>Implementations\Generic\String\WCharT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericConfigObject.hpp">
+      <Filter>Implementations\Generic\ConfigObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericConfigFile.hpp">
+      <Filter>Implementations\Generic\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericGarbageCollector.hpp">
+      <Filter>Implementations\Generic\GarbageCollector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.hpp">
+      <Filter>Implementations\Generic\ShaderProgram\GL4.1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericGLShaderProgram.hpp">
+      <Filter>Implementations\Generic\ShaderProgram\GL3.1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxApplication.hpp">
+      <Filter>Implementations\Linux\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxBSDServerSocket.hpp">
+      <Filter>Implementations\Linux\BSD\ServerSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.hpp">
+      <Filter>Implementations\Linux\BSD\StreamSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxMesa9Renderer.hpp">
+      <Filter>Implementations\Linux\Renderer\Mesa\9</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxMutex.hpp">
+      <Filter>Implementations\Linux\PThread\Mutex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxSubThread.hpp">
+      <Filter>Implementations\Linux\PThread\SubThread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxX11EventPumpTask.hpp">
+      <Filter>Implementations\Linux\X11\EventPumpTask</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxX11Window.hpp">
+      <Filter>Implementations\Linux\X11\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXApplication.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaEventPumpTask.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\EventPumpTask</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaMutex.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Mutex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaSubThread.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\SubThread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.hpp">
+      <Filter>Implementations\MacOSX\OpenGL\ShaderProgram</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXBSDServerSocket.hpp">
+      <Filter>Implementations\MacOSX\BSD\ServerSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXBSDStreamSocket.hpp">
+      <Filter>Implementations\MacOSX\BSD\StreamSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsApplication.hpp">
+      <Filter>Implementations\Windows\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsDirect3D9Renderer.hpp">
+      <Filter>Implementations\Windows\Renderer\Direct3D\9</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsDirect3D11Renderer.hpp">
+      <Filter>Implementations\Windows\Renderer\Direct3D\11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWGLRenderer.hpp">
+      <Filter>Implementations\Windows\Renderer\WGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32EventPumpTask.hpp">
+      <Filter>Implementations\Windows\Win32\EventPumpTask</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32SubThread.hpp">
+      <Filter>Implementations\Windows\Win32\SubThread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32Window.hpp">
+      <Filter>Implementations\Windows\Win32\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32CriticalSection.hpp">
+      <Filter>Implementations\Windows\Win32\CriticalSection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32Mutex.hpp">
+      <Filter>Implementations\Windows\Win32\Mutex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockServerSocket.hpp">
+      <Filter>Implementations\Windows\Winsock\ServerSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockStreamSocket.hpp">
+      <Filter>Implementations\Windows\Winsock\StreamSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Constants.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Default.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\EKeyMap.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Insanity.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Ptr.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\TMatrix.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\TRectangle.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\TVector.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Default\Window.hpp">
+      <Filter>Implementations\Default\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Linux\CLinuxGLXRenderer.hpp">
+      <Filter>Implementations\Linux\Renderer\GLX</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\Default\Object.cpp">
+      <Filter>Implementations\Default\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Default\Thread.cpp">
+      <Filter>Implementations\Default\SubThread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Default\Mod.cpp">
+      <Filter>Implementations\Default\Mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Default\Renderer.cpp">
+      <Filter>Implementations\Default\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Default\Task.cpp">
+      <Filter>Implementations\Default\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Default\Window.cpp">
+      <Filter>Implementations\Default\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericByteArray.cpp">
+      <Filter>Implementations\Generic\ByteArray</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericCharString.cpp">
+      <Filter>Implementations\Generic\String\Char</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericWCharTString.cpp">
+      <Filter>Implementations\Generic\String\WCharT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericConfigObject.cpp">
+      <Filter>Implementations\Generic\ConfigObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericConfigFile.cpp">
+      <Filter>Implementations\Generic\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericGarbageCollector.cpp">
+      <Filter>Implementations\Generic\GarbageCollector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.cpp">
+      <Filter>Implementations\Generic\ShaderProgram\GL4.1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericGLShaderProgram.cpp">
+      <Filter>Implementations\Generic\ShaderProgram\GL3.1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxApplication.cpp">
+      <Filter>Implementations\Linux\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxBSDServerSocket.cpp">
+      <Filter>Implementations\Linux\BSD\ServerSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.cpp">
+      <Filter>Implementations\Linux\BSD\StreamSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxMesa9Renderer.cpp">
+      <Filter>Implementations\Linux\Renderer\Mesa\9</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxMod.cpp">
+      <Filter>Implementations\Linux\Mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxMutex.cpp">
+      <Filter>Implementations\Linux\PThread\Mutex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxRenderer.cpp">
+      <Filter>Implementations\Linux\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxSubThread.cpp">
+      <Filter>Implementations\Linux\PThread\SubThread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxX11EventPumpTask.cpp">
+      <Filter>Implementations\Linux\X11\EventPumpTask</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxX11Window.cpp">
+      <Filter>Implementations\Linux\X11\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\ELinuxX11KeyMap.cpp">
+      <Filter>Implementations\Linux\X11\KeyMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\MacOSX\CMacOSXMod.cpp">
+      <Filter>Implementations\MacOSX\Mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\MacOSX\EMacOSXCocoaKeyMap.cpp">
+      <Filter>Implementations\MacOSX\Cocoa\KeyMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\MacOSX\CMacOSXBSDServerSocket.cpp">
+      <Filter>Implementations\MacOSX\BSD\ServerSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\MacOSX\CMacOSXBSDStreamSocket.cpp">
+      <Filter>Implementations\MacOSX\BSD\StreamSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsApplication.cpp">
+      <Filter>Implementations\Windows\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsDirect3D9Renderer.cpp">
+      <Filter>Implementations\Windows\Renderer\Direct3D\9</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsDirect3D11Renderer.cpp">
+      <Filter>Implementations\Windows\Renderer\Direct3D\11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsRenderer.cpp">
+      <Filter>Implementations\Windows\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWGLRenderer.cpp">
+      <Filter>Implementations\Windows\Renderer\WGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32EventPumpTask.cpp">
+      <Filter>Implementations\Windows\Win32\EventPumpTask</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32Mod.cpp">
+      <Filter>Implementations\Windows\Win32\Mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32SubThread.cpp">
+      <Filter>Implementations\Windows\Win32\SubThread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32Window.cpp">
+      <Filter>Implementations\Windows\Win32\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32CriticalSection.cpp">
+      <Filter>Implementations\Windows\Win32\CriticalSection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32Mutex.cpp">
+      <Filter>Implementations\Windows\Win32\Mutex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockServerSocket.cpp">
+      <Filter>Implementations\Windows\Winsock\ServerSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockStreamSocket.cpp">
+      <Filter>Implementations\Windows\Winsock\StreamSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\EWindowsWin32KeyMap.cpp">
+      <Filter>Implementations\Windows\Win32\KeyMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Linux\CLinuxGLXRenderer.cpp">
+      <Filter>Implementations\Linux\Renderer\GLX</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\MacOSX\CMacOSXApplication.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Application</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\CMacOSXCocoaEventPumpTask.mm">
+      <Filter>Implementations\MacOSX\Cocoa\EventPumpTask</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\CMacOSXCocoaMutex.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Mutex</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\CMacOSXCocoaSubThread.mm">
+      <Filter>Implementations\MacOSX\Cocoa\SubThread</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Window</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Renderer</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.mm">
+      <Filter>Implementations\MacOSX\OpenGL\ShaderProgram</Filter>
+    </None>
+    <None Include="..\..\..\Makefile" />
+  </ItemGroup>
+</Project>

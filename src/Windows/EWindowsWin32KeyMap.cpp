@@ -1,0 +1,131 @@
+#define INSANITY_BUILDING_LIBRARY
+
+#include <EKeyMap.hpp>
+
+#if defined(PLATFORM_MSWINDOWS)
+#include <Windows.h>
+
+namespace Insanity
+{
+	const EKey EKeyMap::A = 'A';
+	const EKey EKeyMap::Add = VK_ADD;
+	const EKey EKeyMap::Alt = VK_MENU;
+	const EKey EKeyMap::Applications = VK_APPS;
+	const EKey EKeyMap::B = 'B';
+	const EKey EKeyMap::Backquote = VK_OEM_3;
+	const EKey EKeyMap::Backslash = VK_OEM_5;
+	const EKey EKeyMap::Backspace = VK_BACK;
+	const EKey EKeyMap::C = 'C';
+	const EKey EKeyMap::CapsLock = VK_CAPITAL;
+	const EKey EKeyMap::Clear = VK_CLEAR;
+	const EKey EKeyMap::Comma = VK_OEM_COMMA;
+	const EKey EKeyMap::Control = VK_CONTROL;
+	const EKey EKeyMap::D = 'D';
+	const EKey EKeyMap::Decimal = VK_DECIMAL;
+	const EKey EKeyMap::Delete = VK_DELETE;
+	const EKey EKeyMap::Divide = VK_DIVIDE;
+	const EKey EKeyMap::DownArrow = VK_DOWN;
+	const EKey EKeyMap::E = 'E';
+	const EKey EKeyMap::Eight = '8';
+	const EKey EKeyMap::End = VK_END;
+	const EKey EKeyMap::Enter = VK_RETURN;
+	const EKey EKeyMap::Equals = VK_OEM_PLUS;
+	const EKey EKeyMap::Escape = VK_ESCAPE;
+	const EKey EKeyMap::F = 'F';
+	const EKey EKeyMap::F1 = VK_F1;
+	const EKey EKeyMap::F2 = VK_F2;
+	const EKey EKeyMap::F3 = VK_F3;
+	const EKey EKeyMap::F4 = VK_F4;
+	const EKey EKeyMap::F5 = VK_F5;
+	const EKey EKeyMap::F6 = VK_F6;
+	const EKey EKeyMap::F7 = VK_F7;
+	const EKey EKeyMap::F8 = VK_F8;
+	const EKey EKeyMap::F9 = VK_F9;
+	const EKey EKeyMap::F10 = VK_F10;
+	const EKey EKeyMap::F11 = VK_F11;
+	const EKey EKeyMap::F12 = VK_F12;
+	const EKey EKeyMap::F13 = VK_F13;
+	const EKey EKeyMap::F14 = VK_F14;
+	const EKey EKeyMap::F15 = VK_F15;
+	const EKey EKeyMap::F16 = VK_F16;
+	const EKey EKeyMap::F17 = VK_F17;
+	const EKey EKeyMap::F18 = VK_F18;
+	const EKey EKeyMap::F19 = VK_F19;
+	const EKey EKeyMap::F20 = VK_F20;
+	const EKey EKeyMap::F21 = VK_F21;
+	const EKey EKeyMap::F22 = VK_F22;
+	const EKey EKeyMap::F23 = VK_F23;
+	const EKey EKeyMap::F24 = VK_F24;
+	const EKey EKeyMap::Five = '5';
+	const EKey EKeyMap::Four = '4';
+	const EKey EKeyMap::G = 'G';
+	const EKey EKeyMap::H = 'H';
+	const EKey EKeyMap::Home = VK_HOME;
+	const EKey EKeyMap::I = 'I';
+	const EKey EKeyMap::Insert = VK_INSERT;
+	const EKey EKeyMap::J = 'J';
+	const EKey EKeyMap::K = 'K';
+	const EKey EKeyMap::L = 'L';
+	const EKey EKeyMap::LeftAlt = VK_LMENU;
+	const EKey EKeyMap::LeftArrow = VK_LEFT;
+	const EKey EKeyMap::LeftControl = VK_LCONTROL;
+	const EKey EKeyMap::LeftShift = VK_LSHIFT;
+	const EKey EKeyMap::LeftSquareBracket = VK_OEM_4;
+	const EKey EKeyMap::LeftSuper = VK_LWIN;
+	const EKey EKeyMap::M = 'M';
+	const EKey EKeyMap::Minus = VK_OEM_MINUS;
+	const EKey EKeyMap::Multiply = VK_MULTIPLY;
+	const EKey EKeyMap::N = 'N';
+	const EKey EKeyMap::Nine = '9';
+	const EKey EKeyMap::NumLock = VK_NUMLOCK;
+	const EKey EKeyMap::Numpad0 = VK_NUMPAD0;
+	const EKey EKeyMap::Numpad1 = VK_NUMPAD1;
+	const EKey EKeyMap::Numpad2 = VK_NUMPAD2;
+	const EKey EKeyMap::Numpad3 = VK_NUMPAD3;
+	const EKey EKeyMap::Numpad4 = VK_NUMPAD4;
+	const EKey EKeyMap::Numpad5 = VK_NUMPAD5;
+	const EKey EKeyMap::Numpad6 = VK_NUMPAD6;
+	const EKey EKeyMap::Numpad7 = VK_NUMPAD7;
+	const EKey EKeyMap::Numpad8 = VK_NUMPAD8;
+	const EKey EKeyMap::Numpad9 = VK_NUMPAD9;
+	const EKey EKeyMap::O = 'O';
+	const EKey EKeyMap::One = '1';
+	const EKey EKeyMap::P = 'P';
+	const EKey EKeyMap::PageDown = VK_NEXT;
+	const EKey EKeyMap::PageUp = VK_PRIOR;
+	const EKey EKeyMap::Pause = VK_PAUSE;
+	const EKey EKeyMap::Period = VK_OEM_PERIOD;
+	const EKey EKeyMap::PrintScreen = VK_SNAPSHOT;
+	const EKey EKeyMap::Q = 'Q';
+	const EKey EKeyMap::Quote = VK_OEM_7;
+	const EKey EKeyMap::R = 'R';
+	const EKey EKeyMap::RightAlt = VK_RMENU;
+	const EKey EKeyMap::RightArrow = VK_RIGHT;
+	const EKey EKeyMap::RightControl = VK_RCONTROL;
+	const EKey EKeyMap::RightShift = VK_RSHIFT;
+	const EKey EKeyMap::RightSquareBracket = VK_OEM_6;
+	const EKey EKeyMap::RightSuper = VK_RWIN;
+	const EKey EKeyMap::S = 'S';
+	const EKey EKeyMap::ScrollLock = VK_SCROLL;
+	const EKey EKeyMap::Semicolon = VK_OEM_1;
+	const EKey EKeyMap::Seven = '7';
+	const EKey EKeyMap::Shift = VK_SHIFT;
+	const EKey EKeyMap::Six = '6';
+	const EKey EKeyMap::Slash = VK_OEM_2;
+	const EKey EKeyMap::Spacebar = VK_SPACE;
+	const EKey EKeyMap::Subtract = VK_SUBTRACT;
+	const EKey EKeyMap::T = 'T';
+	const EKey EKeyMap::Tab = VK_TAB;
+	const EKey EKeyMap::Three = '3';
+	const EKey EKeyMap::Two = '2';
+	const EKey EKeyMap::U = 'U';
+	const EKey EKeyMap::UpArrow = VK_UP;
+	const EKey EKeyMap::V = 'V';
+	const EKey EKeyMap::W = 'W';
+	const EKey EKeyMap::X = 'X';
+	const EKey EKeyMap::Y = 'Y';
+	const EKey EKeyMap::Z = 'Z';
+	const EKey EKeyMap::Zero = '0';
+}
+
+#endif

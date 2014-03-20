@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\Constants.hpp" />
+    <ClInclude Include="..\..\..\include\Default.hpp" />
+    <ClInclude Include="..\..\..\include\Default\Mod.hpp" />
+    <ClInclude Include="..\..\..\include\Default\Object.hpp" />
+    <ClInclude Include="..\..\..\include\Default\Renderer.hpp" />
+    <ClInclude Include="..\..\..\include\Default\Task.hpp" />
+    <ClInclude Include="..\..\..\include\Default\Thread.hpp" />
+    <ClInclude Include="..\..\..\include\Default\Window.hpp" />
+    <ClInclude Include="..\..\..\include\EKeyMap.hpp" />
+    <ClInclude Include="..\..\..\include\IApplication.hpp" />
+    <ClInclude Include="..\..\..\include\IByteArray.hpp" />
+    <ClInclude Include="..\..\..\include\IClonable.hpp" />
+    <ClInclude Include="..\..\..\include\IConfigFile.hpp" />
+    <ClInclude Include="..\..\..\include\IConfigObject.hpp" />
+    <ClInclude Include="..\..\..\include\IGarbageCollector.hpp" />
+    <ClInclude Include="..\..\..\include\IMod.hpp" />
+    <ClInclude Include="..\..\..\include\IMutex.hpp" />
+    <ClInclude Include="..\..\..\include\Insanity.hpp" />
+    <ClInclude Include="..\..\..\include\IObject.hpp" />
+    <ClInclude Include="..\..\..\include\IRenderer.hpp" />
+    <ClInclude Include="..\..\..\include\IServerSocket.hpp" />
+    <ClInclude Include="..\..\..\include\IShaderProgram.hpp" />
+    <ClInclude Include="..\..\..\include\IStreamSocket.hpp" />
+    <ClInclude Include="..\..\..\include\IString.hpp" />
+    <ClInclude Include="..\..\..\include\ISubThread.hpp" />
+    <ClInclude Include="..\..\..\include\ITask.hpp" />
+    <ClInclude Include="..\..\..\include\IThread.hpp" />
+    <ClInclude Include="..\..\..\include\IWindow.hpp" />
+    <ClInclude Include="..\..\..\include\Ptr.hpp" />
+    <ClInclude Include="..\..\..\include\TMatrix.hpp" />
+    <ClInclude Include="..\..\..\include\TRectangle.hpp" />
+    <ClInclude Include="..\..\..\include\TVector.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericByteArray.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericCharString.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericConfigFile.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericConfigObject.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericGarbageCollector.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericGLShaderProgram.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericWCharTString.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxApplication.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxBSDServerSocket.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxGLXRenderer.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxMesa9Renderer.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxMutex.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxSubThread.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxX11EventPumpTask.hpp" />
+    <ClInclude Include="..\..\..\src\Linux\CLinuxX11Window.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXApplication.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXBSDServerSocket.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXBSDStreamSocket.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaEventPumpTask.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaMutex.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaSubThread.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsApplication.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsDirect3D11Renderer.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsDirect3D9Renderer.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWGLRenderer.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32CriticalSection.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32EventPumpTask.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32Mutex.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32SubThread.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWin32Window.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockServerSocket.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockStreamSocket.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\Default\Mod.cpp" />
+    <ClCompile Include="..\..\..\src\Default\Object.cpp" />
+    <ClCompile Include="..\..\..\src\Default\Renderer.cpp" />
+    <ClCompile Include="..\..\..\src\Default\Task.cpp" />
+    <ClCompile Include="..\..\..\src\Default\Thread.cpp" />
+    <ClCompile Include="..\..\..\src\Default\Window.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericByteArray.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericCharString.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericConfigFile.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericConfigObject.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericGarbageCollector.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericGLShaderProgram.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericWCharTString.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxApplication.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxBSDServerSocket.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxGLXRenderer.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxMesa9Renderer.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxMod.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxMutex.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxRenderer.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxSubThread.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxX11EventPumpTask.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\CLinuxX11Window.cpp" />
+    <ClCompile Include="..\..\..\src\Linux\ELinuxX11KeyMap.cpp" />
+    <ClCompile Include="..\..\..\src\MacOSX\CMacOSXBSDServerSocket.cpp" />
+    <ClCompile Include="..\..\..\src\MacOSX\CMacOSXBSDStreamSocket.cpp" />
+    <ClCompile Include="..\..\..\src\MacOSX\CMacOSXMod.cpp" />
+    <ClCompile Include="..\..\..\src\MacOSX\EMacOSXCocoaKeyMap.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsApplication.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsDirect3D11Renderer.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsDirect3D9Renderer.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsRenderer.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWGLRenderer.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32CriticalSection.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32EventPumpTask.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32Mod.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32Mutex.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32SubThread.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWin32Window.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockServerSocket.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockStreamSocket.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\EWindowsWin32KeyMap.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Makefile" />
+    <None Include="..\..\..\src\MacOSX\CMacOSXApplication.mm" />
+    <None Include="..\..\..\src\MacOSX\CMacOSXCocoaEventPumpTask.mm" />
+    <None Include="..\..\..\src\MacOSX\CMacOSXCocoaMutex.mm" />
+    <None Include="..\..\..\src\MacOSX\CMacOSXCocoaSubThread.mm" />
+    <None Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.mm" />
+    <None Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.mm" />
+    <None Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.mm" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F50EDED5-2E6C-48EB-BEDA-0563565D3E9C}</ProjectGuid>
+    <RootNamespace>Insanity</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\..\bin\Win32</OutDir>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt>.dll</TargetExt>
+    <OutDir>$(SolutionDir)..\..\bin\Win32\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\;$(SolutionDir)..\..\gel\deps</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\bin\Win32\</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
