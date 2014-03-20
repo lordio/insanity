@@ -1,5 +1,7 @@
 # Directories
+bin/
 notes/
+proj/MSVC2013/*/x64
 
 # Compiled Object files
 *.slo
@@ -22,6 +24,7 @@ notes/
 *.sdf
 *.opensdf
 *.suo
+*.vcxproj.user
 
 # Linux Backup Files
 *.*~
