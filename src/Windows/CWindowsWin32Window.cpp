@@ -18,36 +18,6 @@
 
 namespace Insanity
 {
-	namespace
-	{
-		//outRect must not be nullptr
-		void _GetClientArea(HWND window, TRectangle<s16,u16> * outRect)
-		{
-			if(outRect == nullptr) return;
-
-			RECT rect;
-
-			GetWindowRect(window,&rect);
-
-			POINT xy;
-			xy.x = rect.left;
-			xy.y = rect.top;
-
-			ScreenToClient(window, &xy);
-
-			outRect->SetX((s16)xy.x);
-			outRect->SetY((s16)xy.y);
-
-			//y'see, I'd have liked GetClientRect to have told me the client rectangle's x, y, width, and height.
-			//Apparently that's not important for Microsoft.
-			GetClientRect(window, &rect);
-
-			//left and top are always zero after GetClientRect, so right and bottom are the width and height, respectively.
-			outRect->SetWidth((u16)rect.right);
-			outRect->SetHeight((u16)rect.bottom);
-		}
-	}
-
 	IWindow * IWindow::Create(IWindow * ext, IConfigObject const * cfg)
 	{
 		return new CWindowsWin32Window(ext, cfg);
