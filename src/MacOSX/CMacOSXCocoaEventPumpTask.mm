@@ -6,7 +6,9 @@
 
 #include <stdexcept>
 
+#import <AppKit/NSApplication.h>
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSRunLoop.h>
 
 namespace Insanity
 {

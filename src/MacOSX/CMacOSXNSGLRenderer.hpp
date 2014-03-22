@@ -9,6 +9,7 @@
 #include <default/Object.hpp>
 
 @class _Insanity_MacOSXNSGLRenderer;
+@class NSWindow;
 
 namespace Insanity
 {

@@ -13,7 +13,6 @@
 
 #include <cmath>
 #import <AppKit/NSWindow.h>
-#import <AppKit/NSWindowDelegate.h>
 
 /*
 A note regarding the keyboard API:
@@ -24,6 +23,7 @@ A note regarding the keyboard API:
 	If NSEvents report all key events (including modifiers), this should be a problem is NSEvent's -(unsigned short)keyCode is used.
 */
 
+#if 0
 @interface MacObjCWindowWrapper : NSObject<NSWindowDelegate>
 {
 }
@@ -33,6 +33,7 @@ A note regarding the keyboard API:
 
 @implementation MacObjCWindowWrapper
 @end
+#endif //0
 
 namespace
 {

@@ -8,8 +8,11 @@
 #include <IApplication.hpp>
 #include <ITask.hpp>
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSThread.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
+#import <Foundation/NSString.h>
 
 #include <algorithm>
 #include <sched.h>

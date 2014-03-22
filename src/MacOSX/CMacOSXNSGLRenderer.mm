@@ -12,7 +12,8 @@
 #include <default/Window.hpp>
 
 #import <AppKit/NSOpenGL.h>
-#include <OpengL/gl3.h>
+#import <AppKit/NSOpenGLView.h>
+#include <OpenGL/gl3.h>
 
 @interface _Insanity_MacOSXNSGLRenderer : NSOpenGLView
 {

@@ -10,7 +10,6 @@
 #include <ITask.hpp>
 
 #import <AppKit/NSApplication.h>
-#import <AppKit/NSApplicationDelegate.h>
 #import <Foundation/NSAutoreleasePool.h>
 #include <sched.h>
 
@@ -19,6 +18,7 @@
 //figure out a policy for Objective-C classes defined to help OSX implementations.
 //	id est, keep them in the file they are used with, or a separate file?
 //	Also, a uniform naming scheme.
+#if 0
 @interface InsanityApplicationDelegate : NSObject <NSApplicationDelegate>
 {
 }
@@ -78,6 +78,7 @@
 	[super terminate:sender];
 }
 @end
+#endif //0
 
 namespace Insanity
 {
@@ -100,7 +101,7 @@ namespace Insanity
 		[[NSAutoreleasePool alloc] init];
 
 		//do I need to provide a delegate for anything?
-		[InsanityApplication sharedApplication];
+		[[NSApplication sharedApplication] setActivationPolicy:NSApplicationActivationPolicyRegular];
 		[NSApp finishLaunching];
 	}
 	CMacOSXApplication::~CMacOSXApplication()

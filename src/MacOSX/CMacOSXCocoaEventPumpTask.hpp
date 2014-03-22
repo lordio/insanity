@@ -9,8 +9,10 @@
 #include <functional>
 #include <map>
 
+#import <AppKit/NSWindow.h>
+
 @class NSEvent;
-@class NSWindow;
+//@class NSWindow;
 
 namespace Insanity
 {
@@ -18,6 +20,8 @@ namespace Insanity
 	{
 		typedef std::function<void(NSEvent*)> ProcType;
 		std::map<NSWindow*,ProcType> _procmap;
+        //Apparently map attempts to delete an NSWindow using a C++ dtor.
+        //Why?
 	public:
 		CMacOSXCocoaEventPumpTask();
 		~CMacOSXCocoaEventPumpTask();
