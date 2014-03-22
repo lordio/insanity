@@ -6,6 +6,7 @@
 
 #include <WS2tcpip.h>
 #include "CWindowsWinsockStreamSocket.hpp"
+#include "CWindowsWinsockTracker.hpp"
 
 #include <IThread.hpp>
 #include <IGarbageCollector.hpp>
@@ -20,26 +21,16 @@ namespace Insanity
 	}
 
 	CWindowsWinsockServerSocket::CWindowsWinsockServerSocket(u16 port) :
-		_sock(0)//, _ref(0)
+		_sock(0)
 	{
-		{
-			WSAData unused;
-
-			//check this for return values:
-			//	WSASYSNOTREADY (The only one that may be the case, but what do I do about it?)
-			//	WSAVERNOTSUPPORTED (version requested not supported, no.)
-			//	WSAEPROCLIM (proclimit for winsock reached, would be bullshit if this is the case)
-			//	WSAEFAULT (lpwsadata not valid pointer, shouldn't be the case)
-			//	0 means it worked.
-			WSAStartup(MAKEWORD(2,2),&unused);
-		}
+		CWindowsWinsockTracker::Retain();
 		if(!Listen(port)) std::cout << "Listen Error." << std::endl;
 	}
 	CWindowsWinsockServerSocket::~CWindowsWinsockServerSocket()
 	{
 		if(_sock) Close();
 
-		WSACleanup();
+		CWindowsWinsockTracker::Release();
 	}
 
 	//=====================================================
@@ -128,27 +119,6 @@ namespace Insanity
 	{
 		return (_sock != 0);
 	}
-
-	//=====================================================
-	//Interface: IObject
-	//=====================================================
-	//void CWindowsWinsockServerSocket::Retain()
-	//{
-	//	++_ref;
-	//}
-	//void CWindowsWinsockServerSocket::Release()
-	//{
-	//	if(_ref == 0) return;
-	//	--_ref;
-	//}
-	//u64 CWindowsWinsockServerSocket::GetReferenceCount() const
-	//{
-	//	return _ref;
-	//}
-	//void CWindowsWinsockServerSocket::Delete()
-	//{
-	//	delete this;
-	//}
 }
 
 #endif
