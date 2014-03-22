@@ -40,7 +40,7 @@ namespace Insanity
 		_InitWindowClass(hInst);
 		_InitEventPump();
 
-		_InitWindow(hInst, cfg->GetProperty("title", ""));
+		_InitWindow(hInst, cfg);
 
 		s_winCount++;
 	}
