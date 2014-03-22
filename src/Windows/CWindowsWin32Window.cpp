@@ -18,36 +18,6 @@
 
 namespace Insanity
 {
-	namespace
-	{
-		//outRect must not be nullptr
-		void _GetClientArea(HWND window, TRectangle<s16,u16> * outRect)
-		{
-			if(outRect == nullptr) return;
-
-			RECT rect;
-
-			GetWindowRect(window,&rect);
-
-			POINT xy;
-			xy.x = rect.left;
-			xy.y = rect.top;
-
-			ScreenToClient(window, &xy);
-
-			outRect->SetX((s16)xy.x);
-			outRect->SetY((s16)xy.y);
-
-			//y'see, I'd have liked GetClientRect to have told me the client rectangle's x, y, width, and height.
-			//Apparently that's not important for Microsoft.
-			GetClientRect(window, &rect);
-
-			//left and top are always zero after GetClientRect, so right and bottom are the width and height, respectively.
-			outRect->SetWidth((u16)rect.right);
-			outRect->SetHeight((u16)rect.bottom);
-		}
-	}
-
 	IWindow * IWindow::Create(IWindow * ext, IConfigObject const * cfg)
 	{
 		return new CWindowsWin32Window(ext, cfg);
@@ -65,18 +35,12 @@ namespace Insanity
 	CWindowsWin32Window::CWindowsWin32Window(IWindow * ext, IConfigObject const * cfg) :
 		_ext(ext), _rect(nullptr)
 	{
-		_rect = new TRectangle<s16, u16>(static_cast<s16>(cfg->GetProperty("dims.x", (s64)0)),
-			static_cast<s16>(cfg->GetProperty("dims.y", (s64)0)),
-			static_cast<u16>(cfg->GetProperty("dims.width", (s64)640)),
-			static_cast<u16>(cfg->GetProperty("dims.height", (s64)480)));
-		_rect->Retain();
-
 		HMODULE hInst = GetModuleHandle(nullptr);
 
 		_InitWindowClass(hInst);
 		_InitEventPump();
 
-		_InitWindow(hInst, cfg->GetProperty("title", ""));
+		_InitWindow(hInst, cfg);
 
 		s_winCount++;
 	}
@@ -118,19 +82,25 @@ namespace Insanity
 			s_windowClassRegistered = true;
 		}
 	}
-	void CWindowsWin32Window::_InitWindow(HINSTANCE hInst, IString<char> const * title)
+	void CWindowsWin32Window::_InitWindow(HINSTANCE hInst, IConfigObject const * cfg)
 	{
+		//_rect stores the dimensions of the client area of the window.
+		_rect = new TRectangle<s16, u16>(static_cast<s16>(cfg->GetProperty("dims.x", (s64)0)),
+			static_cast<s16>(cfg->GetProperty("dims.y", (s64)0)),
+			static_cast<u16>(cfg->GetProperty("dims.width", (s64)640)),
+			static_cast<u16>(cfg->GetProperty("dims.height", (s64)480)));
+		_rect->Retain();
+		
+		//Need to adjust for non-client area of window for CreateWindow.
 		RECT adj;
 		adj.left = _rect->GetLeft();
 		adj.top = _rect->GetTop();
 		adj.right = _rect->GetRight();
 		adj.bottom = _rect->GetBottom();
-		//_rect will always hold the dimensions of the client rectangle.
-
 		AdjustWindowRectEx(&adj, WS_OVERLAPPEDWINDOW, FALSE, WS_EX_OVERLAPPEDWINDOW);
 		
 		//convert the title to a wchar_t string. Let the garbage collector take care of it.
-		IString<wchar_t> * wtitle = IString<wchar_t>::Create(title);
+		IString<wchar_t> * wtitle = IString<wchar_t>::Create(cfg->GetProperty("title", ""));
 
 		_win = CreateWindowExW(WS_EX_OVERLAPPEDWINDOW,	//will either want this or options for fullscreen
 			L"InsanityWindowClass",						//Constant
@@ -167,8 +137,6 @@ namespace Insanity
 	LRESULT CALLBACK CWindowsWin32Window::WindowProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam, UINT_PTR uSubclassId, DWORD_PTR dwRefData)
 	{
 		//this is the main method for processing window messages.
-		//Not anymore.
-		//Once again.
 		CWindowsWin32Window * self = reinterpret_cast<CWindowsWin32Window*>(dwRefData);
 		self->Retain();
 
@@ -221,10 +189,6 @@ namespace Insanity
 		case WM_KEYDOWN:
 			call->KeyHandler((EKey) wParam, EKeyState::Down);
 			break;
-		case WM_PAINT:
-			//would only redraw after events are received, which is probably not what you want for games.
-			//do actual redraw in mainloop.
-			break;
 		case WM_CLOSE:
 			std::cout << "Close message received." << std::endl;
 			call->CloseHandler();
@@ -245,6 +209,15 @@ namespace Insanity
 			break;
 		case WM_MOUSEMOVE:
 			call->MouseHandler(EMouseButton::Null, EMouseButtonState::Null, pt.x, pt.y);
+			break;
+		case WM_MOUSEWHEEL:
+			{
+				//need the sign from highWParam
+				SHORT delta = (SHORT)highWParam;
+				
+				//the second parameter to ScrollHandler is a simple magnitude (unsigned), so take the absolute value.
+				call->ScrollHandler((delta > 0 ? EMouseScrollDirection::Up : EMouseScrollDirection::Down), abs(delta / WHEEL_DELTA));
+			}
 			break;
 		}
 
@@ -317,7 +290,7 @@ namespace Insanity
 			break;
 		}
 
-		if (button == EMouseButton::Null) //ignore the state; should be Null, but don't count on it.
+		if (button != EMouseButton::Null) //ignore the state; should be Null, but don't count on it.
 		{
 			switch (state)
 			{
@@ -339,11 +312,17 @@ namespace Insanity
 	}
 	void CWindowsWin32Window::Key(EKey key, EKeyState state)
 	{
-		//PostMessage
+		//LPARAM is a bunch of state flags we have no way of tracking, so ignore it.
+		PostMessage(_win, (state == EKeyState::Down ? WM_KEYDOWN : WM_KEYUP), (WPARAM)key, 0);
 	}
 	void CWindowsWin32Window::Scroll(EMouseScrollDirection dir, u16 delta)
 	{
-		//PostMessage
+		//mask off the sign bit (shouldn't cause problems)
+		SHORT postDelta = delta & 0x7fff;
+		postDelta *= (dir == EMouseScrollDirection::Up ? 1 : -1);
+		
+		//Last parameter should be the current mouse position, but that's not provided nor tracked internally.
+		PostMessage(_win, WM_MOUSEWHEEL, (static_cast<DWORD>(postDelta)) << 16, 0);
 	}
 	void CWindowsWin32Window::Show(bool show)
 	{

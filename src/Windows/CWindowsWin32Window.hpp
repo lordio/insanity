@@ -39,7 +39,7 @@ namespace Insanity
 
 		static void _InitWindowClass(HINSTANCE hInst);
 		static void _InitEventPump();
-		void _InitWindow(HINSTANCE hInst, IString<char> const * title);
+		void _InitWindow(HINSTANCE hInst, IConfigObject const * cfg);
 	public:
 		CWindowsWin32Window(IWindow * ext, IConfigObject const * cfg);
 		~CWindowsWin32Window();
