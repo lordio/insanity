@@ -4,6 +4,8 @@
 
 #if defined(PLATFORM_MACOSX)
 
+#include "OMacOSXCocoaThread.hpp"
+
 #include <IGarbageCollector.hpp>
 #include <IApplication.hpp>
 #include <ITask.hpp>
@@ -18,41 +20,6 @@
 #include <sched.h>
 
 //MacOSX stores current thread as CMacOSXCocoaSubThread*.
-
-@interface MacObjCThreadWrapper : NSThread
-{
-	Insanity::CMacOSXCocoaSubThread * _thrd;
-}
-
--(void)main;
--(id)initWithThread:(Insanity::CMacOSXCocoaSubThread*)thrd;
-@end
-
-@implementation MacObjCThreadWrapper
--(void)main
-{
-	//Set up the autorelease pool, for Objective-C objects created in this thread.
-	//	The GarbageCollector handles Insanity objects.
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	
-	//do any other thread initialization, and call user's Main method.
-	//set IThread pointer in TLS
-    [[self threadDictionary] setObject:[NSValue valueWithPointer:_thrd] forKey:@"CurrentThread"];
-	
-	_thrd->_ThreadBoilerplate();
-	
-	[pool drain];
-}
-
--(id)initWithThread:(Insanity::CMacOSXCocoaSubThread*)thrd
-{
-	if([super init] == nil) return nil;
-	
-	_thrd = thrd;
-	
-	return self;
-}
-@end
 
 namespace Insanity
 {
@@ -121,7 +88,7 @@ namespace Insanity
 		_condition |= ThreadRunning;
 		_condition &= ~ThreadWaiting;
 		
-		_thrd = [[MacObjCThreadWrapper alloc] initWithThread:this]; //the thread calls this' Main, which calls the extension's Main.
+		_thrd = [[OMacOSXCocoaThread alloc] initWithThread:this]; //the thread calls this' Main, which calls the extension's Main.
 		[_thrd start];
 	}
 	void CMacOSXCocoaSubThread::Main()

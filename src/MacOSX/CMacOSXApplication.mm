@@ -12,73 +12,9 @@
 #import <AppKit/NSApplication.h>
 #import <Foundation/NSAutoreleasePool.h>
 #include <sched.h>
+#include "OMacOSXCocoaApplicationDelegate.hpp"
 
 #include <algorithm>
-
-//figure out a policy for Objective-C classes defined to help OSX implementations.
-//	id est, keep them in the file they are used with, or a separate file?
-//	Also, a uniform naming scheme.
-#if 0
-@interface InsanityApplicationDelegate : NSObject <NSApplicationDelegate>
-{
-}
-@end
-
-@implementation InsanityApplicationDelegate
--(NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication*)sender
-{
-	return NSTerminateNow;
-}
--(BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)sender
-{
-	return YES;
-}
-@end
-
-@interface InsanityApplication : NSApplication
-{
-	bool insAppIsRunning;
-	CMacOSXCocoaEventPumpTask * pumpTask;
-}
-@end
-
-@implementation InsanityApplication
-//Is init called on NSApplication subclasses?
--(id) init
-{
-	if(self = [super init])
-	{
-		insAppIsRunning = true;
-
-		[self setActivationPolicy:NSApplicationActivationPolicyRegular];
-		[self setDelegate: [[InsanityApplicationDelegate alloc] init]];
-	}
-
-	return self;
-}
-//=========================================================
-//Retrieve all available events from OSX event queue, and
-//	process them.
-//Returns false if an event has requested the application
-//	terminate.
-//=========================================================
--(bool) processEvents
-{
-	NSEvent * evt = nil;
-
-	while(evt = [self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantPast] inMode:NSDefaultRunLoopMode dequeue:YES])
-	{
-		[self sendEvent: evt];
-	}
-}
--(void) terminate:(id) sender
-{
-	insAppIsRunning = false;
-
-	[super terminate:sender];
-}
-@end
-#endif //0
 
 namespace Insanity
 {
@@ -100,8 +36,8 @@ namespace Insanity
 		//	I'm thinking I'd need to put autorelease tags in any method that interacts with ObjC objects.
 		[[NSAutoreleasePool alloc] init];
 
-		//do I need to provide a delegate for anything?
 		[[NSApplication sharedApplication] setActivationPolicy:NSApplicationActivationPolicyRegular];
+		[NSApp setDelegate:[[OMacOSXCocoaApplicationDelegate alloc] init]];
 		[NSApp finishLaunching];
 	}
 	CMacOSXApplication::~CMacOSXApplication()
