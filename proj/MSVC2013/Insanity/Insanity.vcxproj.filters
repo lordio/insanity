@@ -216,6 +216,12 @@
     <Filter Include="Non-Interface Headers">
       <UniqueIdentifier>{1c3e816c-4c26-45bf-a77f-c55ea8fc1065}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Application\AppDelegate">
+      <UniqueIdentifier>{36b9a5d9-4e56-4ac3-979e-091b1d488489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Window\WindowDelegate">
+      <UniqueIdentifier>{2adc7951-892f-4cc1-a21c-cb547f5787e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\IApplication.hpp">
@@ -425,6 +431,15 @@
     <ClInclude Include="..\..\..\src\Linux\CLinuxGLXRenderer.hpp">
       <Filter>Implementations\Linux\Renderer\GLX</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockTracker.hpp">
+      <Filter>Implementations\Windows\Winsock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Application\AppDelegate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Window\WindowDelegate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Default\Object.cpp">
@@ -559,6 +574,9 @@
     <ClCompile Include="..\..\..\src\Linux\CLinuxGLXRenderer.cpp">
       <Filter>Implementations\Linux\Renderer\GLX</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockTracker.cpp">
+      <Filter>Implementations\Windows\Winsock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\MacOSX\CMacOSXApplication.mm">
@@ -583,5 +601,11 @@
       <Filter>Implementations\MacOSX\OpenGL\ShaderProgram</Filter>
     </None>
     <None Include="..\..\..\Makefile" />
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Application\AppDelegate</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Window\WindowDelegate</Filter>
+    </None>
   </ItemGroup>
 </Project>

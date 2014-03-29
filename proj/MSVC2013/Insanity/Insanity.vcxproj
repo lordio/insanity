@@ -77,6 +77,8 @@
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsApplication.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsDirect3D11Renderer.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsDirect3D9Renderer.hpp" />
@@ -88,6 +90,7 @@
     <ClInclude Include="..\..\..\src\Windows\CWindowsWin32Window.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockServerSocket.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockStreamSocket.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockTracker.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Default\Mod.cpp" />
@@ -133,6 +136,7 @@
     <ClCompile Include="..\..\..\src\Windows\CWindowsWin32Window.cpp" />
     <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockServerSocket.cpp" />
     <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockStreamSocket.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockTracker.cpp" />
     <ClCompile Include="..\..\..\src\Windows\EWindowsWin32KeyMap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +148,8 @@
     <None Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.mm" />
     <None Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.mm" />
     <None Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.mm" />
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.mm" />
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.mm" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F50EDED5-2E6C-48EB-BEDA-0563565D3E9C}</ProjectGuid>
