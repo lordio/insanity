@@ -10,6 +10,7 @@
 #include <ITask.hpp>
 
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSEvent.h>
 #import <Foundation/NSAutoreleasePool.h>
 #include <sched.h>
 
