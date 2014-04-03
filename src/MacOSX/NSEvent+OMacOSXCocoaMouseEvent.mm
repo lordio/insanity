@@ -4,6 +4,8 @@
 
 #if defined(PLATFORM_MACOSX)
 
+#import <Foundation/NSException.h>
+
 namespace
 {
 	const NSEventMask _MouseEvents =
@@ -48,16 +50,15 @@ namespace
 	//	It also says to pass NULL to NSAllocateObject's third param for the default, so just do that.
 	e = (NSEvent*)NSAllocateObject(self, 0, NULL);
 
-	//Not sure if this is the right way to do this
-	//	or if this is even allowed on the Apple runtime.
+	//Builds on Mac, so seems to be okay.
 	e->_type = type;
 	e->_location = location;
-	e->_modifierFlags = flags;
+	e->_modifierFlags = (unsigned int)flags;
 	e->_timestamp = time;
 	e->_windowNumber = windowNum;
 	e->_context = context;
-	e->_data.mouse.eventNumber = eventNum;
-	e->_data.mouse.clickCount = clickNum;
+	e->_data.mouse.eventNumber = (int)eventNum;
+	e->_data.mouse.clickCount = (int)clickNum;
 	e->_data.mouse.pressure = pressureValue;
 	e->_data.mouse.buttonNumber = buttonNum;
 	e->_data.scrollWheel.deltaX = deltaX; //scrollWheel's and mouse's deltaX and deltaY overlap, so setting one sets the other.
