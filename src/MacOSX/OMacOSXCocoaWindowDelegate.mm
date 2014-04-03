@@ -5,7 +5,7 @@
 #if defined(PLATFORM_MACOSX)
 
 @implementation OMacOSXCocoaWindowDelegate
--(id)initWithWindow:(CMacOSXCocoaWindow*)window
+-(id)initWithWindow:(Insanity::CMacOSXCocoaWindow*)window
 {
 	if(self = [super init])
 	{
@@ -23,6 +23,7 @@
 -(NSSize)windowWillResize:(NSWindow*)window toSize:(NSSize)size
 {
 	_window->ResizeHandler(size.width, size.height);
+    return size;
 }
 -(void)windowWillClose:(NSNotification*)notification
 {

@@ -6,12 +6,13 @@
 
 #include "CMacOSXCocoaWindow.hpp"
 #include "CMacOSXOpenGLShaderProgram.hpp"
-#incldue "OMacOSXCocoaOpenGLView.hpp"
+#include "OMacOSXCocoaOpenGLView.hpp"
 #include <IWindow.hpp>
 #include <IConfigObject.hpp>
 #include <TRectangle.hpp>
 #include <default/Window.hpp>
 
+#import <AppKit/NSWindow.h>
 #import <AppKit/NSOpenGL.h>
 #import <AppKit/NSOpenGLView.h>
 #include <OpenGL/gl3.h>

@@ -8,7 +8,7 @@
 #include <AppKit/NSWindow.h>
 #include "CMacOSXCocoaWindow.hpp"
 
-@interface NSWindowDelegate : NSObject <NSWindowDelegate>
+@interface OMacOSXCocoaWindowDelegate : NSObject <NSWindowDelegate>
 {
 	Insanity::CMacOSXCocoaWindow * _window;
 }

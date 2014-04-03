@@ -14,7 +14,7 @@
 {
 }
 
--(id)initWithConfig:(Insanity::IConfigObject*)cfg window:(Insanity::CMacOSXCocoaWindow*)win;
+-(id)initWithConfig:(Insanity::IConfigObject const *)cfg window:(Insanity::CMacOSXCocoaWindow*)win;
 @end
 
 #endif

@@ -10,7 +10,7 @@
 
 #include <vector>
 
-@class MacObjCThreadWrapper;
+@class OMacOSXCocoaThread;
 
 namespace Insanity
 {
@@ -23,7 +23,7 @@ namespace Insanity
 		std::vector<ITask*> _tasks;
 		IGarbageCollector * _gc;
 		ISubThread * _ext;
-		MacObjCThreadWrapper * _thrd;
+		OMacOSXCocoaThread * _thrd;
 		u8 _condition;
 		u8 _gcTicker;
 		

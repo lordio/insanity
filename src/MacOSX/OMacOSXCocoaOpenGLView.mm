@@ -1,11 +1,16 @@
 #define INSANITY_BUILDING_LIBRARY
 
-#include "OMacOSXOpenGLView.hpp"
+#include "OMacOSXCocoaOpenGLView.hpp"
 
 #if defined(PLATFORM_MACOSX)
 
+#include <TRectangle.hpp>
+
+#include <AppKit/NSOpenGL.h>
+#include <OpenGL/gl3.h>
+
 @implementation OMacOSXCocoaOpenGLView
--(id)initWithConfig:(Insanity::IConfigObject*)cfg window:(Insanity::CMacOSXCocoaWindow*)win
+-(id)initWithConfig:(Insanity::IConfigObject const *)cfg window:(Insanity::CMacOSXCocoaWindow*)win
 {
 	//get properties from cfg, initialize ctx and fmt.
 	//need some way to entirely skip unused boolean values.

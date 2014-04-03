@@ -12,7 +12,7 @@
 {
 }
 
--(NSTerminateReply)applicationShouldTerminate:(id)sender;
+-(NSApplicationTerminateReply)applicationShouldTerminate:(id)sender;
 -(BOOL)applicationShouldTerminateWhenLastWindowClosed:(id)sender;
 @end
 

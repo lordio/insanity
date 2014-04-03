@@ -7,6 +7,11 @@
 
 #import <Foundation/NSThread.h>
 
+namespace Insanity
+{
+    class CMacOSXCocoaSubThread;
+}
+
 @interface OMacOSXCocoaThread : NSThread
 {
 	//weak pointer

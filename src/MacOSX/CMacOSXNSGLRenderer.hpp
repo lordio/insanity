@@ -8,8 +8,8 @@
 #include <IRenderer.hpp>
 #include <default/Object.hpp>
 
-@class _Insanity_MacOSXNSGLRenderer;
 @class NSWindow;
+@class OMacOSXCocoaOpenGLView;
 
 namespace Insanity
 {
@@ -20,7 +20,7 @@ namespace Insanity
     class CMacOSXNSGLRenderer final : public IRenderer, public Default::Object
     {
         IRenderer * _ext;
-        _Insanity_MacOSXNSGLRenderer * _nsrend;
+        OMacOSXCocoaOpenGLView * _nsrend;
         CMacOSXCocoaWindow * _win;
         
         IShaderProgram * _program;

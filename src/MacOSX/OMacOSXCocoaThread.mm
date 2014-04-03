@@ -4,6 +4,13 @@
 
 #if defined(PLATFORM_MACOSX)
 
+#include "CMacOSXCocoaSubThread.hpp"
+
+#import <Foundation/NSString.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
+#import <Foundation/NSAutoreleasePool.h>
+
 @implementation OMacOSXCocoaThread
 -(void)main
 {

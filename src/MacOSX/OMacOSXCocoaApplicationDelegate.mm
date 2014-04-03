@@ -5,7 +5,7 @@
 #if defined(PLATFORM_MACOSX)
 
 @implementation OMacOSXCocoaApplicationDelegate
--(NSTerminateReply)applicationShouldTerminate:(id)sender
+-(NSApplicationTerminateReply)applicationShouldTerminate:(id)sender
 {
 	return NSTerminateNow;
 }
