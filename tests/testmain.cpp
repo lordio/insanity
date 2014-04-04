@@ -197,7 +197,7 @@ protected:
 		//at this point, all ConfigFile methods have been tested.
 		
 		if(!win) return Fail("WECTWindow creation failed.");
-		if(!win->GetExtended()) return Fail("WECTWindow::GetExtended() returned nullptr");
+		if(!win->GetExtended()) return Fail("WECTWindow::GetExtended() returned nullptr.");
 		
 		{
 			//Rectangle testing not done here; need to test setters, but GetRect returns a const*.
@@ -220,9 +220,17 @@ protected:
 		
 		win->Close();
 		
+		//if no equivalent to SendMessage (Win32) / NSApplication -sendEvent: (Cocoa) on X11,
+		//	event synthesizers will always go to event queue
+		//	using PostMessage (Win32) / NSApplication -postEvent:atStart: (Cocoa) / XSendEvent (X11)
+		//	In that case, GetHandlerState should report 0 before the application loop.
+		if(win->GetHandlerState() != 0) return Fail("Handlers called before mainloop. (Event queue short-circuit?)");
+		
 		//should process all events in order, and immediately break.
 		while(app->Update())
 		{
+			//app->Update should return false, and not enter this block.
+			return Fail("app->Update() did not return false.");
 		}
 		
 		if(win->GetHandlerState() != 0x1ffffff) return Fail("Not all handlers called on WECTWindow.");
