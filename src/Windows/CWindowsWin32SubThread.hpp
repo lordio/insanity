@@ -6,10 +6,12 @@
 #if defined(PLATFORM_MSWINDOWS)
 
 #include <ISubThread.hpp>
+#include <Ptr.hpp>
 #include <Windows.h>
-#include <vector>
+#include <list>
 
 #include <default/Object.hpp>
+#include <memory>
 
 //wtf Windows?
 #ifdef Yield
@@ -23,18 +25,21 @@ namespace Insanity
 
 	class CWindowsWin32SubThread final : public ISubThread, public Default::Object
 	{
+		enum class ThreadState : u8
+		{
+			Waiting,
+			Running,
+			Returning,
+			Returned
+		};
 		static DWORD s_tls;
 		static bool s_tlsInitialized; //since initialization can only occur on main thread.
 
-		std::vector<ITask*> _taskList;
-		IGarbageCollector * _gc;
-		ISubThread * _ext;
-		u8 _condition;
+		std::list<Ptr<ITask>> _taskList;
+		std::unique_ptr<IGarbageCollector> _gc;
+		WeakPtr<ISubThread> _ext;
+		ThreadState _condition;
 		u8 _gcTicker;
-
-		static const u8 THREAD_WAITING = 0x01;
-		static const u8 THREAD_RUNNING = 0x02;
-		static const u8 THREAD_RETURNED = 0x04;
 
 		static void _TLSInit();
 		static DWORD CALLBACK _ThreadBoilerplate(void * params);

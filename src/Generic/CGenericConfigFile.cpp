@@ -2,14 +2,14 @@
 
 #include "CGenericConfigFile.hpp"
 #include "CGenericConfigObject.hpp"
-#include <IString.hpp>
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
+#include <cassert>
 
 namespace Insanity
 {
-	std::map<std::string,IConfigFile*> CGenericConfigFile::s_cache;
+	std::map<std::string, Ptr<IConfigFile>> CGenericConfigFile::s_cache{};
 	
 	IConfigFile * IConfigFile::GetInstance(char const * filename)
 	{
@@ -17,25 +17,21 @@ namespace Insanity
 	}
 	
 	CGenericConfigFile::CGenericConfigFile(char const * filename) :
-		_valid(false)
+		_objMap{}, _valid{ false }
 	{
 		//should load and parse specified file
-		std::ifstream file(filename);
-		if(!file)
-		{
-			std::cout << "Error: Config file \"" << filename << "\" does not exist." << std::endl;
-			return;
-		}
-		
-		char current = 0;
-		bool isComment = false;
-		bool inQuotes = false; //doublequote toggles; ignore '#', include whitespace instead of doing special processing.
-		std::string objType = "";
-		std::string propObject = "";
-		std::string property = "";
-		std::string currentToken = "";
-		std::string unkToken = ""; //in case the actual token type is unclear
-		u64 lineCount = 1;
+		std::ifstream file{ filename };
+		assert(file);
+
+		char current{};
+		bool isComment{};
+		bool inQuotes{}; //doublequote toggles; ignore '#', include whitespace instead of doing special processing.
+		std::string objType{};
+		std::string propObject{};
+		std::string property{};
+		std::string currentToken{};
+		std::string unkToken{}; //in case the actual token type is unclear
+		u64 lineCount{1};
 		while(file.get(current))
 		{
 			if(isComment && current == '\n') isComment = false;
@@ -88,12 +84,11 @@ namespace Insanity
 						}
 						catch(std::out_of_range oor)
 						{
-							auto obj = new CGenericConfigObject();
-							obj->SetProperty("_type", IString<char>::Create(objType.c_str()));
+							auto obj = new CGenericConfigObject{};
+							obj->SetProperty("_type", objType.c_str());
 
 							//place the object in the map, which should be a strong reference
 							_objMap[currentToken] = obj;
-							obj->Retain();
 						}
 
 						objType = "";
@@ -108,7 +103,7 @@ namespace Insanity
 							std::cout << "Error: Invalid property in config file \"" << filename << "\", line " << lineCount << "." << std::endl;
 							return;
 						}
-						_objMap[propObject]->SetProperty(property.c_str(),IString<char>::Create(currentToken.c_str()));
+						_objMap[propObject]->SetProperty(property.c_str(),currentToken.c_str());
 
 						propObject = "";
 						property = "";
@@ -183,25 +178,20 @@ namespace Insanity
 	}
 	CGenericConfigFile::~CGenericConfigFile()
 	{
-		for (auto obj : _objMap)
-		{
-			//object map contains strong references, so release them.
-			obj.second->Release();
-		}
+		//_objMap contains strong Ptrs, so referenced objects are Released when the map is destroyed.
 	}
 	
 	IConfigFile * CGenericConfigFile::GetInstance(char const * filename)
 	{
-		IConfigFile * ret = nullptr;
+		WeakPtr<IConfigFile> ret{};
 		try
 		{
 			ret = s_cache.at(filename);
 		}
 		catch(std::out_of_range oor)
 		{
-			ret = new CGenericConfigFile(filename);
+			ret = new CGenericConfigFile{ filename };
 			s_cache[filename] = ret;
-			ret->Retain();
 		}
 		return ret;
 	}
@@ -215,7 +205,7 @@ namespace Insanity
 	}
 	IConfigObject const * CGenericConfigFile::GetObject(char const * objName) const
 	{
-		IConfigObject * ret = nullptr;
+		WeakPtr<IConfigObject> ret{};
 		try
 		{
 			ret = _objMap.at(objName);

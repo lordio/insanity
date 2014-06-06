@@ -48,17 +48,13 @@ namespace Insanity
 		virtual void Write(long double val) = 0;
 
 		//=================================================
-		//Writes a string to the array.
-		//=================================================
-		virtual void Write(IString<char> const * val) = 0;
-
-		//=================================================
 		//Copy another ByteArray into this one.
 		//=================================================
 		virtual void Write(IByteArray const * val) = 0;
 
 		//=================================================
 		//Copy a raw byte array into this array.
+		//For safety's sake, use this for character arrays.
 		//=================================================
 		virtual void Write(u8 const * val, u64 length) = 0;
 
@@ -92,11 +88,6 @@ namespace Insanity
 		virtual void Read(float & val) = 0;
 		virtual void Read(double & val) = 0;
 		virtual void Read(long double & val) = 0;
-
-		//=================================================
-		//Reads a string from the array
-		//=================================================
-		virtual void Read(IString<char> * val) = 0;
 
 		//=================================================
 		//Reads a raw chunk of data from an array.

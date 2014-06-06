@@ -7,15 +7,12 @@
 
 #import <Foundation/NSThread.h>
 
-namespace Insanity
-{
-    class CMacOSXCocoaSubThread;
-}
+#include "CMacOSXCocoaSubThread.hpp"
+#include <Ptr.hpp>
 
 @interface OMacOSXCocoaThread : NSThread
 {
-	//weak pointer
-	Insanity::CMacOSXCocoaSubThread * _thrd;
+	Insanity::WeakPtr<Insanity::CMacOSXCocoaSubThread> _thrd;
 }
 -(void)main;
 -(id)initWithThread:(Insanity::CMacOSXCocoaSubThread*)thrd;

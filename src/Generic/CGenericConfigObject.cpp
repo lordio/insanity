@@ -1,17 +1,13 @@
 #define INSANITY_BUILDING_LIBRARY
 
 #include "CGenericConfigObject.hpp"
-#include <IString.hpp>
 
 #include <sstream>
 #include <stdexcept>
 
-//Make IMutableConfigObject a hidden interface extending IConfigObject, that provides the SetProperty methods,
-//	so that they're not public APIs.
-
 namespace Insanity
 {
-	CGenericConfigObject::CGenericConfigObject()
+	CGenericConfigObject::CGenericConfigObject() : _propList{}
 	{
 	}
 	CGenericConfigObject::~CGenericConfigObject()
@@ -33,29 +29,14 @@ namespace Insanity
 		}
 		return true;
 	}
-	IString<char> const * CGenericConfigObject::GetProperty(char const * propName, char const * def) const
+	char const * CGenericConfigObject::GetProperty(char const * propName, char const * def) const
 	{
-		IString<char> const * ret = nullptr;
+		char const * ret{};
 		try
 		{
-			ret = IString<char>::Create(_propList.at(propName).c_str());
+			ret = _propList.at(propName).c_str();
 		}
 		catch (std::out_of_range oor)
-		{
-			ret = IString<char>::Create(propName);
-		}
-		return ret;
-	}
-
-	//why does this take a nonconst string, and return the same?
-	IString<char> const * CGenericConfigObject::GetProperty(char const * propName, IString<char> const * def) const
-	{
-		IString<char> const * ret = nullptr;
-		try
-		{
-			ret = IString<char>::Create(_propList.at(propName).c_str());
-		}
-		catch(std::out_of_range oor)
 		{
 			ret = def;
 		}
@@ -63,11 +44,10 @@ namespace Insanity
 	}
 	s64 CGenericConfigObject::GetProperty(char const * propName, s64 def) const
 	{
-		s64 ret = 0;
+		s64 ret{};
 		try
 		{
-			std::istringstream strm(_propList.at(propName));
-			strm >> ret;
+			ret = std::stoll(_propList.at(propName));
 		}
 		catch(std::out_of_range oor)
 		{
@@ -77,11 +57,10 @@ namespace Insanity
 	}
 	double CGenericConfigObject::GetProperty(char const * propName, double def) const
 	{
-		double ret = 0;
+		double ret{};
 		try
 		{
-			std::istringstream strm(_propList.at(propName));
-			strm >> ret;
+			ret = std::stod(_propList.at(propName));
 		}
 		catch(std::out_of_range oor)
 		{
@@ -94,22 +73,14 @@ namespace Insanity
 	{
 		_propList[propName] = value;
 	}
-	void CGenericConfigObject::SetProperty(char const * propName, IString<char> const * value)
-	{
-		_propList[propName] = value->Array();
-	}
 	void CGenericConfigObject::SetProperty(char const * propName, s64 value)
 	{
 		//lexical-cast value to a string, and store it
-		std::stringstream strm;
-		strm << value;
-		strm >> _propList[propName];
+		_propList[propName] = std::to_string(value);
 	}
 	void CGenericConfigObject::SetProperty(char const * propName, double value)
 	{
 		//lexical-cast value to a string, and store it
-		std::stringstream strm;
-		strm << value;
-		strm >> _propList[propName];
+		_propList[propName] = std::to_string(value);
 	}
 }

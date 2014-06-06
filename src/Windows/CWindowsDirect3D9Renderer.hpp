@@ -6,7 +6,10 @@
 #if defined(PLATFORM_MSWINDOWS)
 
 #include <IRenderer.hpp>
+#include "CWindowsWin32Window.hpp"
 #include <default/Object.hpp>
+#include <TRectangle.hpp>
+#include <Ptr.hpp>
 
 #include <Windows.h>
 
@@ -16,13 +19,12 @@ struct IDirect3DDevice9;
 namespace Insanity
 {
 	class IWindow;
-	class CWindowsWin32Window;
 
 	class CWindowsDirect3D9Renderer final : public IRenderer, public Default::Object
 	{
-		IRenderer * _ext;
-		CWindowsWin32Window * _win;
-		TRectangle<s16,u16> * _rect;
+		WeakPtr<IRenderer> _ext;
+		WeakPtr<CWindowsWin32Window> _win;
+		Ptr<TRectangle<s16,u16>> _rect;
 
 		IDirect3D9 * _d3d9;
 		IDirect3DDevice9 * _dev;

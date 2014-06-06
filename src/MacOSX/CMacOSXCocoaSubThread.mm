@@ -25,7 +25,7 @@ namespace Insanity
 {
 	ISubThread * ISubThread::Create(ISubThread * ext, bool start)
 	{
-		return new CMacOSXCocoaSubThread(ext,start);
+		return new CMacOSXCocoaSubThread{ext,start};
 	}
 	
 	IThread * IThread::Current()
@@ -40,19 +40,20 @@ namespace Insanity
 		if(![NSThread isMultiThreaded]) return IApplication::GetInstance();
 		
 		//objectForKey: returns nil if no value has been associated with the key
-		id spec = [[[NSThread currentThread] threadDictionary] objectForKey:@"CurrentThread"];
+		//Is ObjC++ okay with uniform initialization of ObjC pointer types (including id)?
+		id spec{[[[NSThread currentThread] threadDictionary] objectForKey:@"CurrentThread"]};
 		
 		//if spec is nil, we must be running on the main thread, since the key for it is never assigned.
 		if(spec == nil) return IApplication::GetInstance();
 		
 		//If we made it past the previous checks, we must be running on a thread.
 		//spec is an NSValue storing the thread pointer, so send it a pointerValue message and cast the result.
-        CMacOSXCocoaSubThread * ret = reinterpret_cast<CMacOSXCocoaSubThread*>([spec pointerValue]);
+        WeakPtr<CMacOSXCocoaSubThread> ret{reinterpret_cast<CMacOSXCocoaSubThread*>([spec pointerValue])};
         return ret;
 	}
 	
 	CMacOSXCocoaSubThread::CMacOSXCocoaSubThread(ISubThread * ext, bool start) :
-		_gc(IGarbageCollector::Create()), _ext(ext), _thrd(nil), _condition(0)
+		_tasks{}, _gc{IGarbageCollector::Create()}, _ext{ext}, _thrd{nil}, _condition{ThreadState::Waiting}
 	{
 		//NOTE: The ctor is being called in the parent thread.
 		
@@ -60,7 +61,6 @@ namespace Insanity
 		Retain();
 		
 		if(start) Start();
-		else _condition |= ThreadWaiting;
 	}
 	CMacOSXCocoaSubThread::~CMacOSXCocoaSubThread()
 	{
@@ -68,11 +68,10 @@ namespace Insanity
 	
 	void CMacOSXCocoaSubThread::_ThreadBoilerplate()
 	{
+		//OMacOSXCocoaThread handles creating the autoreleasepool block for the thread.
 		Main();
 
-		_condition &= ~ThreadRunning;
-		_condition |= ThreadReturned;
-		_gc->Clean();
+		_condition = ThreadState::Returned;
 		Release();
 	}
 	
@@ -82,11 +81,9 @@ namespace Insanity
 	void CMacOSXCocoaSubThread::Start()
 	{
 		//if the thread is already running or completed, don't start it again.
-		if(_condition & ThreadRunning ||
-			_condition & ThreadReturned) return;
+		if(_condition != ThreadState::Waiting) return;
 
-		_condition |= ThreadRunning;
-		_condition &= ~ThreadWaiting;
+		_condition = ThreadState::Running;
 		
 		_thrd = [[OMacOSXCocoaThread alloc] initWithThread:this]; //the thread calls this' Main, which calls the extension's Main.
 		[_thrd start];
@@ -110,7 +107,6 @@ namespace Insanity
 			if(!(*iter)->ShouldRequeue())
 			{
 				(*iter)->Dequeue();
-				(*iter)->Release();
 				iter = _tasks.erase(iter);
 			}
 		}
@@ -125,11 +121,11 @@ namespace Insanity
 	}
 	void CMacOSXCocoaSubThread::End()
 	{
-		_condition &= ~ThreadRunning;
+		_condition = ThreadState::Returning;
 	}
 	IGarbageCollector * CMacOSXCocoaSubThread::GetGarbageCollector() const
 	{
-		return _gc;
+		return _gc.get();
 	}
 	void CMacOSXCocoaSubThread::Yield() const
 	{
@@ -139,7 +135,6 @@ namespace Insanity
 	void CMacOSXCocoaSubThread::RegisterTask(ITask * task)
 	{
 		_tasks.push_back(task);
-		task->Retain();
 	}
 	void CMacOSXCocoaSubThread::Transfer(IObject * obj)
 	{

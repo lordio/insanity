@@ -10,21 +10,24 @@
 
 #include <IThread.hpp>
 #include <IGarbageCollector.hpp>
+#include <Ptr.hpp>
 
 #include <iostream>
+#include <cassert>
+#include <string>
 
 namespace Insanity
 {
 	IServerSocket * IServerSocket::Create(u16 port)
 	{
-		return new CWindowsWinsockServerSocket(port);
+		return new CWindowsWinsockServerSocket{ port };
 	}
 
 	CWindowsWinsockServerSocket::CWindowsWinsockServerSocket(u16 port) :
-		_sock(0)
+		_sock{}
 	{
 		CWindowsWinsockTracker::Retain();
-		if(!Listen(port)) std::cout << "Listen Error." << std::endl;
+		Listen(port);
 	}
 	CWindowsWinsockServerSocket::~CWindowsWinsockServerSocket()
 	{
@@ -38,24 +41,23 @@ namespace Insanity
 	//=====================================================
 	bool CWindowsWinsockServerSocket::Listen(u16 port)
 	{
-		if(_sock) Close();
+		if (_sock) Close();
 
-		char sport[6] = "";
-		_itoa_s(port,sport,10);
+		std::string sport{ std::to_string(port) };
 
-		addrinfo hints;
+		ADDRINFO hints;
 		ZeroMemory(&hints,sizeof(hints));
 		hints.ai_flags = AI_PASSIVE;
 		hints.ai_socktype = SOCK_STREAM;
 		hints.ai_family = AF_UNSPEC;
 
 		//hold onto the list head for the freeaddrinfo call
-		addrinfo * list = nullptr;
+		ADDRINFO * list{};
 
 		//pointer for iterating over the list
-		addrinfo * ptr = nullptr;
+		ADDRINFO * ptr{};
 
-		getaddrinfo(nullptr,sport,&hints,&list);
+		GetAddrInfo(nullptr,sport.c_str(),&hints,&list);
 
 		ptr = list;
 
@@ -79,7 +81,7 @@ namespace Insanity
 				ptr = ptr->ai_next;
 			}
 		}
-		freeaddrinfo(list);
+		FreeAddrInfo(list);
 
 		if(_sock == 0) return false;
 
@@ -95,8 +97,7 @@ namespace Insanity
 	}
 	IStreamSocket * CWindowsWinsockServerSocket::Accept()
 	{
-		timeval tv;
-		ZeroMemory(&tv, sizeof(tv));
+		timeval tv{};
 
 		fd_set fd;
 		FD_ZERO(&fd);
@@ -107,9 +108,9 @@ namespace Insanity
 		if(FD_ISSET(_sock,&fd))
 		{
 			sockaddr_storage unused1;
-			int unused2 = sizeof(unused1);
-			SOCKET accepted = accept(_sock,reinterpret_cast<sockaddr*>(&unused1),&unused2);
-			CWindowsWinsockStreamSocket * acc = new CWindowsWinsockStreamSocket(accepted);
+			int unused2{ sizeof(unused1) };
+			SOCKET accepted{ accept(_sock, reinterpret_cast<sockaddr*>(&unused1), &unused2) };
+			WeakPtr<CWindowsWinsockStreamSocket> acc{ new CWindowsWinsockStreamSocket{ accepted } };
 			return acc;
 		}
 

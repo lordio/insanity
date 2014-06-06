@@ -3,6 +3,12 @@ using namespace Insanity;
 
 #include <iostream>
 
+#include <TString.hpp>
+#include <Default/Thread.hpp>
+
+#define PREFIX "../../../tests/"
+#define MODPREFIX "../../../bin/Win32/"
+
 class ConformanceTest
 {
 	bool _failed;
@@ -134,13 +140,13 @@ private:
 				shift = 0;
 			}
 			
-			_handlers |= (1 << shift);
+			_handlers |= (1LL << shift);
 		}
 		void KeyHandler(EKey key, EKeyState state) override
 		{
 			//only checking state here, so two bits are needed.
 			if(state == EKeyState::Down) _handlers |= (1 << 16);
-			else if(state == EKeyState::Up) _ handlers |= (1 << 17);
+			else if(state == EKeyState::Up) _handlers |= (1 << 17);
 		}
 		void ScrollHandler(EMouseScrollDirection dir, u16 delta) override
 		{
@@ -189,11 +195,11 @@ protected:
 			if(app != app2) return Fail("IApplication::GetInstance() returned different values.");
 		}
 		
-		Ptr<IConfigFile> cfg = IConfigFile::GetInstance("ctest.cfg");
+		Ptr<IConfigFile> cfg = IConfigFile::GetInstance(PREFIX"ctest.cfg");
 		if(!cfg) return Fail("IConfigFile::GetInstance() returned nullptr.");
 		if(!cfg->IsValid()) return Fail("Config file is invalid.");
 		
-		Ptr<WECTWindow> win = new WECTWindow(cfg->GetObject("wectWin"));
+		Ptr<WECTWindow> win = new WECTWindow(cfg->GetObject("wectWin"), this);
 		//at this point, all ConfigFile methods have been tested.
 		
 		if(!win) return Fail("WECTWindow creation failed.");
@@ -211,6 +217,22 @@ protected:
 		win->Show(true);
 		
 		//synthesize the many combinations of Mouse
+		win->Mouse(EMouseButton::Left, EMouseButtonState::Down, 0, 0);
+		win->Mouse(EMouseButton::Left, EMouseButtonState::Up, 0, 0);
+		win->Mouse(EMouseButton::Left, EMouseButtonState::DoubleClick, 0, 0);
+		win->Mouse(EMouseButton::Right, EMouseButtonState::Down, 0, 0);
+		win->Mouse(EMouseButton::Right, EMouseButtonState::Up, 0, 0);
+		win->Mouse(EMouseButton::Right, EMouseButtonState::DoubleClick, 0, 0);
+		win->Mouse(EMouseButton::Middle, EMouseButtonState::Down, 0, 0);
+		win->Mouse(EMouseButton::Middle, EMouseButtonState::Up, 0, 0);
+		win->Mouse(EMouseButton::Middle, EMouseButtonState::DoubleClick, 0, 0);
+		win->Mouse(EMouseButton::X1, EMouseButtonState::Down, 0, 0);
+		win->Mouse(EMouseButton::X1, EMouseButtonState::Up, 0, 0);
+		win->Mouse(EMouseButton::X1, EMouseButtonState::DoubleClick, 0, 0);
+		win->Mouse(EMouseButton::X2, EMouseButtonState::Down, 0, 0);
+		win->Mouse(EMouseButton::X2, EMouseButtonState::Up, 0, 0);
+		win->Mouse(EMouseButton::X2, EMouseButtonState::DoubleClick, 0, 0);
+		win->Mouse(EMouseButton::Null, EMouseButtonState::Null, 30, 30);
 		
 		win->Key(EKeyMap::A, EKeyState::Down);
 		win->Key(EKeyMap::A, EKeyState::Up);
@@ -263,19 +285,54 @@ Todo:
 	Write test.
 	
 Tests the following objects:
-	SubThread
-	ServerSocket
-	StreamSocket
-	ByteArray
-	Mutex
+	SubThread (done)
+	ServerSocket (done)
+	StreamSocket (done)
+	ByteArray (done)
+	Mutex(?)
 	Task(?)
 */
+	class ConnectingThread : public Default::Thread
+	{
+	public:
+		ConnectingThread()
+		{
+			Start();
+		}
+		void Main()
+		{
+			Ptr<IStreamSocket> sck{ IStreamSocket::Create("localhost", 50000) };
+
+			Ptr<IByteArray> ba{ IByteArray::Create() };
+			ba->Write(u64{ 0xdeadbeeffacec0de });
+			sck->Send(ba);
+
+			sck->Close();
+
+			End();
+		}
+	};
 protected:
 	bool DoTests() override
 	{
+		Ptr<IServerSocket> srv{ IServerSocket::Create(50000) };
+		Ptr<ConnectingThread> cn{ new ConnectingThread() };
+
+		Ptr<IStreamSocket> strm{};
+		while (!(strm = srv->Accept()));
+
+		Ptr<IByteArray> ba{ IByteArray::Create() };
+		strm->Receive(ba);
+		if (ba->Size() != sizeof(u64)) return Fail("Received wrong amount of data.");
+
+		u64 rcvd{};
+		ba->Read(rcvd);
+		if (rcvd != 0xdeadbeeffacec0de) return Fail("Received wrong value.");
+
+		return Success();
 	}
 public:
-	CommunicationsConformanceTest()
+	CommunicationsConformanceTest() : ConformanceTest("Communications Conformance Test")
 	{
 		RunTests();
 	}
@@ -283,6 +340,8 @@ public:
 	{
 	}
 } cct;
+
+#include "ConformanceTestMod.hpp"
 
 class ModuleInteractionConformanceTest final : public ConformanceTest
 {
@@ -296,15 +355,24 @@ Todo:
 	
 Tests the following objects:
 	Mod (really should rename it to Module)
-	String
 	ConfigObject
 */
 protected:
 	bool DoTests() override
 	{
+		Ptr<IMod> imod{ IMod::GetInstance(MODPREFIX"ConformanceTestModule") };
+		if (!imod) return Fail("Module not loaded.");
+
+		Ptr<ConformanceTestMod> mod{ imod->As<ConformanceTestMod>() };
+		if (!mod) Fail("Module has wrong type.");
+
+		String str = mod->GetValue();
+		if (str != "Deathmole") return Fail("Received wrong value.");
+
+		return Success();
 	}
 public:
-	ModuleInteractionConformanceTest()
+	ModuleInteractionConformanceTest() : ConformanceTest("Module Interaction Conformance Test")
 	{
 		RunTests();
 	}
@@ -316,6 +384,6 @@ public:
 int main()
 {
 	Ptr<IApplication> app = IApplication::GetInstance();
-	
+
 	return 0;
 }

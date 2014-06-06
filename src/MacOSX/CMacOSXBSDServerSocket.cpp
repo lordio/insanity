@@ -6,7 +6,9 @@
 
 //Linux pulls in IThread and IGarbageCollector; why?
 #include "CMacOSXBSDStreamSocket.hpp"
+#include <Ptr.hpp>
 
+#include <string>
 #include <cstring>
 #include <cstdio>
 
@@ -19,10 +21,10 @@ namespace Insanity
 {
     IServerSocket * IServerSocket::Create(u16 port)
     {
-        return new CMacOSXBSDServerSocket(port);
+		return new CMacOSXBSDServerSocket{port};
     }
     
-    CMacOSXBSDServerSocket::CMacOSXBSDServerSocket(u16 port) : _sock(0)
+	CMacOSXBSDServerSocket::CMacOSXBSDServerSocket(u16 port) : _sock{}
     {
         Listen(port);
     }
@@ -36,21 +38,20 @@ namespace Insanity
     //=====================================================
     bool CMacOSXBSDServerSocket::Listen(u16 port)
     {
-        if(_sock != 0) Close();
-        
-        char cport[6] = "";
-        snprintf(cport, 6, "%d", port);
+		if(_sock != 0) Close();
         
         addrinfo hints;
         memset(&hints, 0, sizeof(hints));
         hints.ai_flags = AI_PASSIVE;
         hints.ai_socktype = SOCK_STREAM;
-        hints.ai_family = AF_UNSPEC;
+		hints.ai_family = AF_UNSPEC;
+
+		addrinfo * list{};
+		addrinfo * ptr{};
+
+		std::string cport{std::to_string(port)};
         
-        addrinfo * list = nullptr;
-        addrinfo * ptr = nullptr;
-        
-        getaddrinfo(nullptr, cport, &hints, &list);
+        getaddrinfo(nullptr, cport.c_str(), &hints, &list);
         
         ptr = list;
         
@@ -89,9 +90,8 @@ namespace Insanity
     }
     
     IStreamSocket * CMacOSXBSDServerSocket::Accept()
-    {
-        timeval tv;
-		memset(&tv, 0, sizeof(tv));
+	{
+		timeval tv{};
 
 		fd_set fd;
 		FD_ZERO(&fd);
@@ -102,10 +102,10 @@ namespace Insanity
 		if(FD_ISSET(_sock, &fd));
 		{
 			sockaddr_storage unused1;
-			socklen_t unused2 = sizeof(unused1);
-			
-			int accepted = accept(_sock, reinterpret_cast<sockaddr*>(&unused1),&unused2);
-			CMacOSXBSDStreamSocket * acc = new CMacOSXBSDStreamSocket(accepted);
+			socklen_t unused2{sizeof(unused1)};
+
+			int accepted{accept(_sock, reinterpret_cast<sockaddr*>(&unused1),&unused2)};
+			WeakPtr<CMacOSXBSDStreamSocket> acc{new CMacOSXBSDStreamSocket{accepted}};
 			return acc;
 		}
         return nullptr;

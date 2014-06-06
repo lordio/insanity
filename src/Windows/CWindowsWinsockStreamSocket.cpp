@@ -11,23 +11,26 @@
 #include <IThread.hpp>
 #include <IGarbageCollector.hpp>
 
+#include <memory>
+#include <string>
+
 #pragma comment(lib, "Ws2_32.lib")
 
 namespace Insanity
 {
 	IStreamSocket * IStreamSocket::Create(char const * host, u16 port)
 	{
-		return new CWindowsWinsockStreamSocket(host,port);
+		return new CWindowsWinsockStreamSocket{ host, port };
 	}
 
 	CWindowsWinsockStreamSocket::CWindowsWinsockStreamSocket(char const * host, u16 port) :
-		_sock(0)
+		_sock{}
 	{
 		CWindowsWinsockTracker::Retain();
 		Connect(host,port);
 	}
 	CWindowsWinsockStreamSocket::CWindowsWinsockStreamSocket(SOCKET accepted) :
-		_sock(accepted)
+		_sock{ accepted }
 	{
 		CWindowsWinsockTracker::Retain();
 	}
@@ -43,21 +46,19 @@ namespace Insanity
 	//=====================================================
 	void CWindowsWinsockStreamSocket::Send(IByteArray const * buf)
 	{
-		u64 size = buf->Size();
+		u64 size{ buf->Size() };
 		send(_sock,reinterpret_cast<char*>(&size),sizeof(u64),0);
 		send(_sock,reinterpret_cast<char const*>(buf->Array()),static_cast<int>(size),0);
 	}
 	void CWindowsWinsockStreamSocket::Receive(IByteArray * buf)
 	{
-		u64 size = 0;
-		recv(_sock,reinterpret_cast<char*>(&size),sizeof(u64),0);
-		
-		u8 * buffer = new u8[size];
-		recv(_sock,reinterpret_cast<char*>(buffer),static_cast<int>(size),0);
+		u64 size{};
+		recv(_sock, reinterpret_cast<char*>(&size), sizeof(u64), 0);
 
-		buf->Write(buffer,size);
+		std::unique_ptr<u8 []> buffer{ new u8[size] };
+		recv(_sock,reinterpret_cast<char*>(buffer.get()),static_cast<int>(size),0);
 
-		delete [] buffer;
+		buf->Write(buffer.get(),size);
 	}
 
 	bool CWindowsWinsockStreamSocket::Connect(char const * host, u16 port)
@@ -69,25 +70,24 @@ namespace Insanity
 		hints.ai_family = AF_UNSPEC;
 		hints.ai_socktype = SOCK_STREAM;
 
-		ADDRINFO * ret = nullptr;
-		ADDRINFO * ptr = nullptr;
+		ADDRINFO * ret{};
+		ADDRINFO * ptr{};
 
-		char cport[6] = "";
-		_itoa_s(port,cport,10);
+		std::string cport{ std::to_string(port) };
 
-		GetAddrInfo(host,cport,&hints,&ret);
+		GetAddrInfo(host,cport.c_str(),&hints,&ret);
 
 		ptr = ret;
 
 		while(_sock == 0 && ptr != nullptr)
 		{
-			if ((_sock = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol)) == -1)
+			if ((_sock = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol)) == INVALID_SOCKET)
 			{
 				_sock = 0;
 				ptr = ptr->ai_next;
 			}
 
-			if(connect(_sock, ptr->ai_addr, static_cast<int>(ptr->ai_addrlen)) == -1)
+			if (connect(_sock, ptr->ai_addr, static_cast<int>(ptr->ai_addrlen)) == SOCKET_ERROR)
 			{
 				_sock = 0;
 				ptr = ptr->ai_next;
@@ -111,8 +111,7 @@ namespace Insanity
 	}
 	bool CWindowsWinsockStreamSocket::HasPendingData() const
 	{
-		timeval tv;
-		ZeroMemory(&tv, sizeof(tv));
+		timeval tv{};
 
 		fd_set set;
 		FD_ZERO(&set);

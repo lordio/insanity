@@ -5,8 +5,11 @@
 
 #if defined(PLATFORM_MACOSX)
 
+#include "CMacOSXCocoaEventPumpTask.hpp"
+#include <TRectangle.hpp>
 #include <IWindow.hpp>
 #include <default/Object.hpp>
+#include <Ptr.hpp>
 
 //#import <AppKit/NSWindow.h>
 @class NSWindow;
@@ -24,11 +27,12 @@ namespace Insanity
 	class CMacOSXCocoaWindow final : public IWindow, public Default::Object
 	{
 	private:
-		NSWindow * _win;
-		IWindow * _ext;
-		TRectangle<s16,u16> * _rect;
+		NSWindow * _win; //ARC pointer.
+		WeakPtr<IWindow> _ext;
+		Ptr<TRectangle<s16,u16>> _rect;
 
-		static CMacOSXCocoaEventPumpTask * s_pump;
+		static Ptr<CMacOSXCocoaEventPumpTask> s_pump;
+		static u64 s_winCount;
 
 		void _SetPumpProc();
 	public:

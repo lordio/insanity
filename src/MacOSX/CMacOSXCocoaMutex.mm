@@ -8,16 +8,15 @@ namespace Insanity
 {
 	IMutex * IMutex::Create()
 	{
-		return new CMacOSXCocoaMutex();
+		return new CMacOSXCocoaMutex{};
 	}
 
-	CMacOSXCocoaMutex::CMacOSXCocoaMutex()
+	CMacOSXCocoaMutex::CMacOSXCocoaMutex() :
+		Default::Object{}, _lock{[[NSRecursiveLock alloc] init]}
 	{
-		_lock = [[NSRecursiveLock alloc] init];
 	}
 	CMacOSXCocoaMutex::~CMacOSXCocoaMutex()
 	{
-		[_lock release];
 	}
 
 	//=====================================================

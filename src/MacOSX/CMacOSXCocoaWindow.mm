@@ -41,21 +41,20 @@ namespace
 
 namespace Insanity
 {
-    CMacOSXCocoaEventPumpTask * CMacOSXCocoaWindow::s_pump = nullptr;
+    Ptr<CMacOSXCocoaEventPumpTask> CMacOSXCocoaWindow::s_pump{};
     
 	IWindow * IWindow::Create(IWindow * ext, IConfigObject const * cfg)
 	{
-		return new CMacOSXCocoaWindow(ext,cfg);
+		return new CMacOSXCocoaWindow{ext,cfg};
 	}
 
 	CMacOSXCocoaWindow::CMacOSXCocoaWindow(IWindow * ext, IConfigObject const * cfg) :
-		_win(nil), _ext(ext), _rect(nullptr)
+		_win{nil}, _ext{ext}, _rect{}
 	{
 		_rect = new TRectangle<s16, u16>(static_cast<s16>(cfg->GetProperty("dims.x", (s64)0)),
 			static_cast<s16>(cfg->GetProperty("dims.y", (s64)0)),
 			static_cast<u16>(cfg->GetProperty("dims.width", (s64)640)),
 			static_cast<u16>(cfg->GetProperty("dims.height", (s64)480)));
-		_rect->Retain();
 
 		NSRect windowRect = NSMakeRect(_rect->GetX(), _rect->GetY(), _rect->GetWidth(), _rect->GetHeight());
 
@@ -64,25 +63,25 @@ namespace Insanity
 			styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask)
 			backing:NSBackingStoreBuffered
 			defer:YES];
-		[_win retain];
 
 		_SetPumpProc();
+
+		++s_winCount;
 	}
 	CMacOSXCocoaWindow::~CMacOSXCocoaWindow()
 	{
-		[_win release];
-		_rect->Release();
+		if(--s_winCount) s_pump = nullptr;
 	}
 
 	void CMacOSXCocoaWindow::_SetPumpProc()
 	{
-		if(!s_pump) IApplication::GetInstance()->RegisterTask(s_pump = new CMacOSXCocoaEventPumpTask());
+		if(!s_pump) IApplication::GetInstance()->RegisterTask(s_pump = new CMacOSXCocoaEventPumpTask{});
 	
 		//not all things Insanity considers events come through this method;
 		//	move, resize, close, and show events are reported by the WindowDelegate.
 		s_pump->RegisterProc(_win, [this](NSEvent * evt) -> void
 		{
-			IWindow * call = (this->_ext ? this->_ext : this);
+			IWindow * call{this->_ext ? this->_ext.Get() : this};
 			NSPoint mouseLoc = [NSEvent mouseLocation];
 			//should this be [NSEvent locationInWindow]?
 			//is there an exception that gets thrown if the event isn't mouse-related?
@@ -118,7 +117,7 @@ namespace Insanity
 			case NSScrollWheel:
 				{
 					//Apple notes deltaY returns device delta, which is flipped relative to the screen.
-					CGFloat delta = -[evt deltaY];
+					CGFloat delta{-[evt deltaY]};
 					call->ScrollHandler((delta > 0 ? EMouseScrollDirection::Up : EMouseScrollDirection::Down), static_cast<u16>(abs(delta)));
 				}
 				break;
@@ -148,8 +147,8 @@ namespace Insanity
 	}
 	void CMacOSXCocoaWindow::Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y)
 	{
-		NSEventType type = 0;
-		NSInteger buttonNumber = 0;
+		NSEventType type{};
+		NSInteger buttonNumber{};
 		switch(button)
 		{
 		case EMouseButton::Left:
@@ -196,7 +195,7 @@ namespace Insanity
 
 		NSPoint pt = NSMakePoint(x,y);
 		//use the message provided by the OMacOSXCocoaMouseEvent category on NSEvent.
-		NSEvent * evt = [NSEvent mouseEventWithType:type
+		NSEvent * evt{[NSEvent mouseEventWithType:type
 			location:pt
 			modifierFlags:0 
 			timestamp:[[NSProcessInfo processInfo] systemUptime]
@@ -208,12 +207,12 @@ namespace Insanity
 			buttonNumber:buttonNumber
 			deltaX:0.0f
 			deltaY:0.0f
-			deltaZ:0.0f];
+			deltaZ:0.0f]};
 		if(evt != nil) [NSApp sendEvent:evt];
 	}
 	void CMacOSXCocoaWindow::Key(EKey key, EKeyState state)
 	{
-		NSEvent * evt = [NSEvent keyEventWithType:(state == EKeyState::Down ? NSKeyDown : NSKeyUp)
+		NSEvent * evt{[NSEvent keyEventWithType:(state == EKeyState::Down ? NSKeyDown : NSKeyUp)
 			location:NSMakePoint(0,0) //I hope it doesn't care too much about this value
 			modifierFlags:0
 			timestamp:[[NSProcessInfo processInfo] systemUptime]
@@ -222,7 +221,7 @@ namespace Insanity
 			characters:@"" //could have a translator function, but hopefully it's not necessary
 			charactersIgnoringModifiers:@"" //as before
 			isARepeat:NO
-			keyCode:key];
+			keyCode:key]};
 		if(evt != nil) [NSApp sendEvent:evt];
 	}
 	void CMacOSXCocoaWindow::Scroll(EMouseScrollDirection dir, u16 delta)

@@ -13,24 +13,21 @@
 #include "../gel/gel.hpp"
 
 #include <iostream>
+#include <cassert>
 
 namespace Insanity
 {
 	CLinuxMesa9Renderer::CLinuxMesa9Renderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-		_ext(ext), _win(nullptr), _program(nullptr), _rect(new TRectangle<s16,u16>(0,0,0,0))
+		_ext{ext}, _win{}, _ctx{}, _fbc{}, _glxwin{}, _dpy{}, _program{}, _rect{new TRectangle<s16,u16>{0,0,0,0}}
 	{
-		_rect->Retain();
-		
-		Window xwin = _Init(win);
-		
-		int major = (int)cfg->GetProperty("OpenGL.version.major", (s64)3);
-		int minor = (int)cfg->GetProperty("OpenGL.version.minor", (s64)1);
+		Window xwin{_Init(win)};
+
+		int major{(int)cfg->GetProperty("OpenGL.version.major", s64{3})};
+		int minor{(int)cfg->GetProperty("OpenGL.version.minor", s64{1})};
 		
 		_MakeContext(xwin,major,minor);
 		
 		gel::init(major, minor);
-		
-		std::cout << "Using Linux Mesa 9 Renderer (OpenGL version " << major << "." << minor << ")." << std::endl;
 	}
 	CLinuxMesa9Renderer::~CLinuxMesa9Renderer()
 	{
@@ -38,8 +35,6 @@ namespace Insanity
 		
 		glXDestroyWindow(_dpy, _glxwin);
 		glXDestroyContext(_dpy, _ctx);
-		
-		_rect->Release();
 	}
 	
 	Window CLinuxMesa9Renderer::_Init(IWindow * win)
@@ -47,17 +42,17 @@ namespace Insanity
 		_win = win->As<CLinuxX11Window>();
 		if(!_win)
 		{
-			Default::Window * dwin = win->As<Default::Window>();
-			if(!dwin) return None;
+			WeakPtr<Default::Window> dwin{win->As<Default::Window>()};
+			assert(dwin);
 			
 			_win = dwin->GetExtended()->As<CLinuxX11Window>();
-			if(!_win) return None; //need a window to render to.
+			assert(_win); //need a window to render to.
 		}
 		
 		_dpy = CLinuxX11Window::GetDisplay();
 		_fbc = CLinuxX11Window::GetFBConfig();
-		
-		TRectangle<s16,u16> const * winrect = _win->GetRect();
+
+		WeakPtr<const TRectangle<s16,u16>> winrect{_win->GetRect()};
 		_rect->SetWidth(winrect->GetWidth());
 		_rect->SetHeight(winrect->GetHeight());
 		
@@ -65,7 +60,7 @@ namespace Insanity
 	}
 	void CLinuxMesa9Renderer::_MakeContext(Window xwin, int major, int minor)
 	{
-		u8 glxver = CLinuxX11Window::GetGLXVersion();
+		u8 glxver{CLinuxX11Window::GetGLXVersion()};
 		
 		//if glX version is at least 1.3
 		if(((glxver & 0xf0) == 0x10) && ((glxver & 0x0f) >= 3))
@@ -74,7 +69,7 @@ namespace Insanity
 			
 			if(glXCreateContextAttribsARB)
 			{
-				int glxcca_attribs[] =
+				int glxcca_attribs[]
 				{
 					GLX_CONTEXT_MAJOR_VERSION_ARB, major,
 					GLX_CONTEXT_MINOR_VERSION_ARB, minor,
@@ -131,14 +126,8 @@ namespace Insanity
 			if(!program->Link())
 				return false;
 				
-		if(_program) _program->Release();
 		_program = program;
-		if(_program)
-		{
-			_program->Retain();
-			
-			glUseProgram(program->As<CGenericGLShaderProgram>()->GetProgramName());
-		}
+		if(_program) glUseProgram(program->As<CGenericGLShaderProgram>()->GetProgramName());
 		else glUseProgram(0);
 		
 		return true;

@@ -6,31 +6,30 @@
 #if defined(PLATFORM_MSWINDOWS)
 
 #include <IWindow.hpp>
+#include <TRectangle.hpp>
 #include <Windows.h>
 
 #include "CWindowsWin32EventPumpTask.hpp"
 
 #include <Default/Object.hpp>
+#include <Ptr.hpp>
 
 namespace Insanity
 {
 	template<typename _xytype, typename _whtype>
 	class TRectangle;
 
-	template<typename _ctype>
-	class IString;
-
 	class IConfigObject;
 
 	class CWindowsWin32Window final : public IWindow, public Default::Object
 	{
 	private:
-		TRectangle<s16,u16> * _rect;
-		IWindow * _ext;
+		Ptr<TRectangle<s16,u16>> _rect;
+		WeakPtr<IWindow> _ext;
 		HWND _win;
 
 		static bool s_windowClassRegistered;
-		static CWindowsWin32EventPumpTask * s_pumpTask;
+		static Ptr<CWindowsWin32EventPumpTask> s_pumpTask;
 		static u64 s_winCount;
 
 		//for any messages before WindowProc can be assigned

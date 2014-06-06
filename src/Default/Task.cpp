@@ -6,7 +6,7 @@ namespace Insanity
 {
 	namespace Default
 	{
-		Task::Task() : Object()
+		Task::Task() : Object{}
 		{
 		}
 		Task::~Task()
@@ -19,7 +19,7 @@ namespace Insanity
 		}
 		bool Task::ShouldRequeue()
 		{
-			return true;
+			return false;
 		}
 		void Task::Dequeue()
 		{

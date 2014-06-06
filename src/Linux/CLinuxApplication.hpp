@@ -6,7 +6,9 @@
 #if defined(PLATFORM_LINUX)
 
 #include <IApplication.hpp>
+#include <Ptr.hpp>
 #include <vector>
+#include <memory>
 
 namespace Insanity
 {
@@ -16,8 +18,8 @@ namespace Insanity
 	class CLinuxApplication final : public IApplication
 	{
 	private:
-		std::vector<ITask*> _taskList;
-		IGarbageCollector * _gc;
+		std::vector<Ptr<ITask>> _taskList;
+		std::unique_ptr<IGarbageCollector> _gc;
 		mutable u64 _ref;
 		bool _running;
 		u8 _gcTicker;

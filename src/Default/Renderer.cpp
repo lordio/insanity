@@ -6,9 +6,8 @@ namespace Insanity
 {
 	namespace Default
 	{
-		Renderer::Renderer(IWindow * win, IConfigObject const * cfg)
+		Renderer::Renderer(IWindow * win, IConfigObject const * cfg) : _base{ IRenderer::Create(this, win, cfg) }, Object{}
 		{
-			_base = IRenderer::Create(this, win, cfg);
 			_base->Retain();
 		}
 		Renderer::~Renderer()

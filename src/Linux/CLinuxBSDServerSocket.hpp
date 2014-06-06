@@ -15,7 +15,6 @@ namespace Insanity
 	{
 		//int used instead of s32 because it's the name Unix uses.
 		int _sock;
-		//u64 _ref;
 	public:
 		CLinuxBSDServerSocket(u16 port);
 		~CLinuxBSDServerSocket();
@@ -28,14 +27,6 @@ namespace Insanity
 
 		IStreamSocket * Accept() override;
 		bool IsOpen() const override;
-
-		//==================================================
-		//Interface: IObject
-		//==================================================
-		/*void Retain() override;
-		void Release() override;
-		u64 GetReferenceCount() const override;
-		void Delete() override;*/
 	};
 }
 

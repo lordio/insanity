@@ -8,6 +8,7 @@
 #include <IWindow.hpp>
 #include <TRectangle.hpp>
 #include <default/Object.hpp>
+#include <Ptr.hpp>
 
 #include <X11/Xlib.h>
 #include <GL/glx.h>
@@ -20,7 +21,7 @@ namespace Insanity
 	class CLinuxX11Window final : public IWindow, public Default::Object
 	{
 		static Display * s_dpy;
-		static CLinuxX11EventPumpTask * s_pump;
+		static Ptr<CLinuxX11EventPumpTask> s_pump;
 		static u64 s_winCount;
 		static u8 s_glxVersion;
 		static s32 s_errorBase;
@@ -28,15 +29,15 @@ namespace Insanity
 		static GLXFBConfig s_fbc;
 		static Atom s_del;
 
-		TRectangle<s16,u16> * _rect;
-		IWindow * _ext;
+		Ptr<TRectangle<s16,u16>> _rect;
+		WeakPtr<IWindow> _ext;
 		Window _win;
 		
 		static void _InitXDisplay();
 		static void _InitGLX();
 		XVisualInfo * _GetXVisual(int redBits, int greenBits, int blueBits, int depthBits, bool doubleBuffer = true);
 		static void _InitWindowAttributes(XSetWindowAttributes * xswa, XVisualInfo const * xvi);
-		void _InitXWindow(IString<char> const * title, XVisualInfo const * xvi, XSetWindowAttributes * xswa);
+		void _InitXWindow(char const * title, XVisualInfo const * xvi, XSetWindowAttributes * xswa);
 		void _SetPumpProc();
 	public:
 		CLinuxX11Window(IWindow * ext, IConfigObject const * cfg);

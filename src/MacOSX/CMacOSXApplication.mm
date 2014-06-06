@@ -10,32 +10,29 @@
 #include <ITask.hpp>
 
 #import <AppKit/NSApplication.h>
-#import <Foundation/NSAutoreleasePool.h>
 #include <sched.h>
 #include "OMacOSXCocoaApplicationDelegate.hpp"
 
 #include <algorithm>
 
+//Need autoreleasepool blocks anywhere that creates temporary Objective-C objects.
+//	If all created objects outlive the method, no block is necessary.
+//	Also need one in a thread.
+
 namespace Insanity
 {
-	IApplication * IApplication::s_app = nullptr;
+	IApplication * IApplication::s_app{};
 
 	IApplication * IApplication::GetInstance()
 	{
 		if(s_app) return s_app;
 
-		return s_app = new CMacOSXApplication();
+		return s_app = new CMacOSXApplication{};
 	}
 
 	CMacOSXApplication::CMacOSXApplication() :
-		_gc(IGarbageCollector::Create()), _ref(0), _running(true)
+		_taskList{}, _gc{IGarbageCollector::Create()}, _ref{}, _running{true}, _gcTicker{}
 	{
-		//don't need to catch it, as it's added to the thread behind the scenes
-		//	may want it for [pool drain] in dtor.
-		//	Does ARC use the autorelease annotation? How will that work with this?
-		//	I'm thinking I'd need to put autorelease tags in any method that interacts with ObjC objects.
-		[[NSAutoreleasePool alloc] init];
-
 		[[NSApplication sharedApplication] setActivationPolicy:NSApplicationActivationPolicyRegular];
 		[NSApp setDelegate:[[OMacOSXCocoaApplicationDelegate alloc] init]];
 		[NSApp finishLaunching];
@@ -43,9 +40,6 @@ namespace Insanity
 	CMacOSXApplication::~CMacOSXApplication()
 	{
 		IMod::ClearCache();
-
-		_gc->Clean();
-		delete _gc;
 
 		s_app = nullptr;
 	}
@@ -65,7 +59,6 @@ namespace Insanity
 			if(!(*iter)->ShouldRequeue())
 			{
 				(*iter)->Dequeue();
-				(*iter)->Release();
 				iter = _taskList.erase(iter);
 			}
 			else iter++;
@@ -86,7 +79,7 @@ namespace Insanity
 	}
 	IGarbageCollector * CMacOSXApplication::GetGarbageCollector() const
 	{
-		return _gc;
+		return _gc.get();
 	}
 	void CMacOSXApplication::Yield() const
 	{
@@ -95,7 +88,6 @@ namespace Insanity
 	void CMacOSXApplication::RegisterTask(ITask * task)
 	{
 		_taskList.push_back(task);
-		task->Retain();
 	}
 	void CMacOSXApplication::Transfer(IObject * obj)
 	{

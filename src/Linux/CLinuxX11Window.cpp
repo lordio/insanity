@@ -73,44 +73,43 @@ namespace
 
 namespace Insanity
 {
-	Display * CLinuxX11Window::s_dpy = nullptr;
-	CLinuxX11EventPumpTask * CLinuxX11Window::s_pump = nullptr;
-	u64 CLinuxX11Window::s_winCount = 0; //when it goes to 0, unregister the event pump task.
-	u8 CLinuxX11Window::s_glxVersion = 0; //valid values are 0x10 (glX 1.0) through 0x14 (glX 1.4). 0xFF indicates no glX support.
-	s32 CLinuxX11Window::s_errorBase = 0; //add these to the error and event constants.
-	s32 CLinuxX11Window::s_eventBase = 0;
-	GLXFBConfig CLinuxX11Window::s_fbc = nullptr; //GLXFBConfig is a typedef'd pointer.
-	Atom CLinuxX11Window::s_del = None; //Atom is an XID (probably).
+	Display * CLinuxX11Window::s_dpy{};
+	Ptr<CLinuxX11EventPumpTask> CLinuxX11Window::s_pump{};
+	u64 CLinuxX11Window::s_winCount{}; //when it goes to 0, unregister the event pump task.
+	u8 CLinuxX11Window::s_glxVersion{}; //valid values are 0x10 (glX 1.0) through 0x14 (glX 1.4). 0xFF indicates no glX support.
+	s32 CLinuxX11Window::s_errorBase{}; //add these to the error and event constants.
+	s32 CLinuxX11Window::s_eventBase{};
+	GLXFBConfig CLinuxX11Window::s_fbc{}; //GLXFBConfig is a typedef'd pointer.
+	Atom CLinuxX11Window::s_del{}; //Atom is an XID (probably).
 
 	IWindow * IWindow::Create(IWindow * ext, IConfigObject const * cfg)
 	{
-		return new CLinuxX11Window(ext,cfg);
+		return new CLinuxX11Window{ext,cfg};
 	}
 
 	CLinuxX11Window::CLinuxX11Window(IWindow * ext, IConfigObject const * cfg) :
-		_rect(nullptr), _ext(ext), _win(0), _isOpen(false)
+		_rect{}, _ext{ext}, _win{}
 	{
-		_rect = new TRectangle<s16,u16>(
-			static_cast<s16>(cfg->GetProperty("dims.x", (s64)0)),
-			static_cast<s16>(cfg->GetProperty("dims.y", (s64)0)),
-			static_cast<u16>(cfg->GetProperty("dims.width", (s64)640)),
-			static_cast<u16>(cfg->GetProperty("dims.height", (s64)480)));
-		_rect->Retain();
+		_rect = new TRectangle<s16,u16>{
+			static_cast<s16>(cfg->GetProperty("dims.x", s64{})),
+			static_cast<s16>(cfg->GetProperty("dims.y", s64{})),
+			static_cast<u16>(cfg->GetProperty("dims.width", s64{640})),
+			static_cast<u16>(cfg->GetProperty("dims.height", s64{480}))};
 		
 		_InitXDisplay();
 		_InitGLX();
-		
-		XVisualInfo * xvi = _GetXVisual(
+
+		XVisualInfo * xvi{_GetXVisual(
 			static_cast<int>(cfg->GetProperty("Linux.GLX.red", (s64)8)),	//GLX since it has more to do with OpenGL than X...
 			static_cast<int>(cfg->GetProperty("Linux.GLX.green", (s64)8)),
 			static_cast<int>(cfg->GetProperty("Linux.GLX.blue", (s64)8)),
 			static_cast<int>(cfg->GetProperty("Linux.GLX.depth", (s64)24)),	//...especially here.
-			cfg->GetProperty("Linux.GLX.doubleBuffer", (s64)1) > 0);		//Sort of a cast to bool
+			cfg->GetProperty("Linux.GLX.doubleBuffer", (s64)1) > 0)};		//Sort of a cast to bool
 		
 		XSetWindowAttributes xswa;
 		_InitWindowAttributes(&xswa,xvi);
 		
-		_InitXWindow(cfg->GetProperty("title", IString<char>::Create("")), xvi, &xswa);
+		_InitXWindow(cfg->GetProperty("title", ""), xvi, &xswa);
 		
 		_isOpen = true;
 		
@@ -124,8 +123,6 @@ namespace Insanity
 	{
 		s_pump->Clear(_win);
 		
-		_rect->Release();
-		
 		//destroy the window
 		XDestroyWindow(s_dpy,_win);
 		
@@ -133,7 +130,15 @@ namespace Insanity
 		{
 			//if another window is created after the last one is destroyed, redo GLX initialization.
 			XFree(s_fbc);
+			s_fbc = None;
 			s_glxVersion = 0;
+			XCloseDisplay(s_dpy);
+			s_dpy = nullptr;
+			s_pump = nullptr;
+			s_errorBase = 0;
+			s_errorBase = 0;
+			XFree(s_del);
+			s_del = None;
 		}
 	}
 	
@@ -162,12 +167,12 @@ namespace Insanity
 	{
 		if(!s_glxVersion)
 		{
-			Bool isSupported = glXQueryExtension(s_dpy, &s_errorBase, &s_eventBase);
+			Bool isSupported{glXQueryExtension(s_dpy, &s_errorBase, &s_eventBase)};
 			if(!isSupported) s_glxVersion = 0xff;
 			else
 			{
-				int glxMajor = 0;
-				int glxMinor = 0;
+				int glxMajor{};
+				int glxMinor{};
 				glXQueryVersion(s_dpy,&glxMajor,&glxMinor);
 				s_glxVersion = static_cast<u8>( (glxMajor << 4) + glxMinor );
 			}
@@ -175,11 +180,11 @@ namespace Insanity
 	}
 	XVisualInfo * CLinuxX11Window::_GetXVisual(int redBits, int greenBits, int blueBits, int depthBits, bool doubleBuffer)
 	{
-		XVisualInfo * xvi = nullptr;
+		XVisualInfo * xvi{};
 		if(s_glxVersion != 0xFF)
 		{
-			GLXFBConfigID cfgid = 0; //XID typedef, which is an int of some stripe.
-			int attribs[] =
+			GLXFBConfigID cfgid{}; //XID typedef, which is an int of some stripe.
+			int attribs[]
 			{
 				//not bad candidates for a config script.
 				//May also want to specify TrueColor, as DirectColor and PseudoColor have undefined colormaps on creation.
@@ -192,11 +197,11 @@ namespace Insanity
 				GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT | GLX_PIXMAP_BIT | GLX_PBUFFER_BIT,
 				None
 			};
-			int cfgCount = 0;
-			GLXFBConfig * cfgs = glXChooseFBConfig(s_dpy,
+			int cfgCount{};
+			GLXFBConfig * cfgs{glXChooseFBConfig(s_dpy,
 				DefaultScreen(s_dpy),
 				attribs,	//attrib_list (array of ints)
-				&cfgCount);	//nelements (cfgs count)
+				&cfgCount)};	//nelements (cfgs count)
 				
 			//might be worthwhile to ensure cfgCount is not 0
 			//this way, if no valid context is returned, fall back on X rendering.
@@ -209,7 +214,7 @@ namespace Insanity
 				//first one should be fine for now, could also enumerate over them, but I don't see the point.
 				glXGetFBConfigAttrib(s_dpy, *cfgs, GLX_FBCONFIG_ID, reinterpret_cast<int*>(&cfgid));
 				XFree(cfgs);
-				int singleAttribs[] =
+				int singleAttribs[]
 				{
 					GLX_FBCONFIG_ID, static_cast<int>(cfgid),
 					None
@@ -228,7 +233,7 @@ namespace Insanity
 		xswa->event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | StructureNotifyMask | PointerMotionMask;
 		if(xvi) xswa->colormap = XCreateColormap(s_dpy, DefaultRootWindow(s_dpy), xvi->visual, AllocNone);
 	}
-	void CLinuxX11Window::_InitXWindow(IString<char> const * title, XVisualInfo const * xvi, XSetWindowAttributes * xswa)
+	void CLinuxX11Window::_InitXWindow(char const * title, XVisualInfo const * xvi, XSetWindowAttributes * xswa)
 	{
 		//_rect should already be defined
 		_win = XCreateWindow(s_dpy,
@@ -242,7 +247,7 @@ namespace Insanity
 			CWBackPixel | CWBorderPixel | CWEventMask | (xvi ? CWColormap : 0),	//attribute mask
 			xswa);	//XSetWindowAttributes*
 			
-		XStoreName(s_dpy, _win, title->Array());
+		XStoreName(s_dpy, _win, title);
 		
 		if(s_del == None) s_del = XInternAtom(s_dpy,"WM_DELETE_WINDOW",False);
 		
@@ -256,7 +261,7 @@ namespace Insanity
 
 		s_pump->RegisterProc(_win, [this](XEvent * xe) -> void
 		{
-			IWindow * call = (this->_ext ? this->_ext : this);
+			IWindow * call{(this->_ext ? this->_ext.Get() : this)};
 			//switch on the event type
 			switch(xe->type)
 			{
@@ -264,33 +269,23 @@ namespace Insanity
 				//maybe a paint handler isn't such a bad idea.
 				break;
 			case ButtonPress:
-				{
-					//scroll events are reported as buttons 4 and 5. Research mappings for 5-button mice (for EMouseButton::X1 and X2).
-					//Testing shows 4 is up, 5 is down.
-					if(xe->xbutton.button == 4) call->ScrollHandler(EMouseScrollDirection::Up,1);
-					else if(xe->xbutton.button == 5) call->ScrollHandler(EMouseScrollDirection::Down,1);
-					else
-					{
-						EMouseButton button = translate(xe->xbutton.button);
-						call->MouseHandler(button,EMouseButtonState::Down,xe->xbutton.x,xe->xbutton.y);
-					}
-				}
+				//scroll events are reported as buttons 4 and 5. Research mappings for 5-button mice (for EMouseButton::X1 and X2).
+				//Testing shows 4 is up, 5 is down.
+				if(xe->xbutton.button == 4) call->ScrollHandler(EMouseScrollDirection::Up,1);
+				else if(xe->xbutton.button == 5) call->ScrollHandler(EMouseScrollDirection::Down,1);
+				else call->MouseHandler(translate(xe->xbutton.button),EMouseButtonState::Down,xe->xbutton.x,xe->xbutton.y);
 				break;
 			case ButtonRelease:
-				{
-					//ignore scroll wheel events.
-					if(xe->xbutton.button == 4 || xe->xbutton.button == 5) break;
+				//ignore scroll wheel events.
+				if(xe->xbutton.button == 4 || xe->xbutton.button == 5) break;
 					
-					EMouseButton button = translate(xe->xbutton.button);
-				
-					//TODO: need to store and compare last up time (or down, depending) and report as double click instead (or in addition, again, depending)
-					call->MouseHandler(button,EMouseButtonState::Up,xe->xbutton.x,xe->xbutton.y);
-				}
+				//TODO: need to store and compare last up time (or down, depending) and report as double click instead (or in addition, again, depending)
+				call->MouseHandler(translate(xe->xbutton.button),EMouseButtonState::Up,xe->xbutton.x,xe->xbutton.y);
 				break;
 			case KeyPress:
 				{
-					int key = 1;
-					KeySym * sym = XGetKeyboardMapping(s_dpy, xe->xkey.keycode, 1, &key);
+					int key{};
+					KeySym * sym{XGetKeyboardMapping(s_dpy, xe->xkey.keycode, 1, &key)};
 					
 					call->KeyHandler((EKey)*sym,EKeyState::Down);
 					
@@ -299,8 +294,8 @@ namespace Insanity
 				break;
 			case KeyRelease:
 				{
-					int key = 1;
-					KeySym * sym = XGetKeyboardMapping(s_dpy, xe->xkey.keycode, 1, &key);
+					int key{};
+					KeySym * sym{XGetKeyboardMapping(s_dpy, xe->xkey.keycode, 1, &key)};
 					
 					call->KeyHandler((EKey)*sym,EKeyState::Up);
 					
@@ -347,7 +342,7 @@ namespace Insanity
 		//hopefully the X11 server fills in anything I haven't here.
 		//only forces send_event to True and sets the serial.
 		XEvent xe;
-		int downup = (state == EMouseButtonState::Up ? ButtonRelease : ButtonPress);
+		int downup{state == EMouseButtonState::Up ? ButtonRelease : ButtonPress};
 		//no way to have X11 report double-click events; track time of last up and report double if within certain limit (hard-baked or configured)
 		xe.type = downup;
 		xe.xbutton.send_event = True;
@@ -368,7 +363,7 @@ namespace Insanity
 	void CLinuxX11Window::Key(EKey key, EKeyState state)
 	{
 		XEvent xe;
-		int downup = (state == EKeyState::Down ? KeyPress : KeyRelease);
+		int downup{state == EKeyState::Down ? KeyPress : KeyRelease};
 		xe.type = downup;
 		xe.xkey.send_event = True;
 		xe.xkey.display = s_dpy;
@@ -384,7 +379,7 @@ namespace Insanity
 	void CLinuxX11Window::Scroll(EMouseScrollDirection dir, u16 INSANITY_UNUSED delta)
 	{
 		XEvent xe;
-		int scroll = (dir == EMouseScrollDirection::Up ? 4 : 5);
+		int scroll{dir == EMouseScrollDirection::Up ? 4 : 5};
 		xe.type = ButtonPress;
 		xe.xbutton.send_event = True;
 		xe.xbutton.display = s_dpy;
@@ -402,34 +397,19 @@ namespace Insanity
 	}
 	void CLinuxX11Window::Show(bool show)
 	{
-		//might be able to straight call the handler; no event for it that I know of
-		//if(_ext) _ext->ShowHandler(show);
-		//else ShowHandler(show);
-		
 		if(show) XMapWindow(s_dpy, _win);
 		else XUnmapWindow(s_dpy, _win);
 	}
 	void CLinuxX11Window::Move(s16 x, s16 y)
 	{
-		//might also have to call the handler for this and Resize
-		//if(_ext) _ext->MoveHandler(x,y);
-		//else MoveHandler(x,y);
-		
 		XMoveWindow(s_dpy, _win, x, y);
 	}
 	void CLinuxX11Window::Resize(u16 width, u16 height)
 	{
-		//if(_ext) _ext->ResizeHandler(width, height);
-		//else ResizeHandler(width, height);
-		
 		XResizeWindow(s_dpy, _win, width, height);
 	}
 	void CLinuxX11Window::Close()
 	{
-		//This actually has to send a ClientMessage with the delete atom attached.
-		//if(_ext) _ext->CloseHandler();
-		//else CloseHandler();
-		
 		XEvent xe;
 		xe.xclient.type = ClientMessage;
 		xe.xclient.send_event = True;

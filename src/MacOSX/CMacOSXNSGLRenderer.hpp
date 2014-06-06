@@ -5,8 +5,11 @@
 
 #if defined(PLATFORM_MACOSX)
 
+#include "CMacOSXCocoaWindow.hpp"
+#include <TRectangle.hpp>
 #include <IRenderer.hpp>
 #include <default/Object.hpp>
+#include <Ptr.hpp>
 
 @class NSWindow;
 @class OMacOSXCocoaOpenGLView;
@@ -19,12 +22,12 @@ namespace Insanity
     
     class CMacOSXNSGLRenderer final : public IRenderer, public Default::Object
     {
-        IRenderer * _ext;
-        OMacOSXCocoaOpenGLView * _nsrend;
-        CMacOSXCocoaWindow * _win;
+        WeakPtr<IRenderer> _ext;
+        OMacOSXCocoaOpenGLView * _nsrend; //ObjC object pointer; managed by ARC
+        WeakPtr<CMacOSXCocoaWindow> _win;
         
-        IShaderProgram * _program;
-		TRectangle<s16,u16> * _rect;
+        Ptr<IShaderProgram> _program;
+		Ptr<TRectangle<s16,u16>> _rect;
         
         NSWindow * _Init(IWindow * win);
         void _MakeContext(NSWindow * win, IConfigObject const * cfg);

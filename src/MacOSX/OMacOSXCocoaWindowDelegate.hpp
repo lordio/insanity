@@ -7,10 +7,11 @@
 
 #include <AppKit/NSWindow.h>
 #include "CMacOSXCocoaWindow.hpp"
+#include <Ptr.hpp>
 
 @interface OMacOSXCocoaWindowDelegate : NSObject <NSWindowDelegate>
 {
-	Insanity::CMacOSXCocoaWindow * _window;
+	Insanity::WeakPtr<Insanity::CMacOSXCocoaWindow> _window;
 }
 -(id)initWithWindow:(Insanity::CMacOSXCocoaWindow*)window;
 

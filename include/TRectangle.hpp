@@ -8,6 +8,7 @@
 namespace Insanity
 {
 	//can specify the type for x and y separately from width and height, defaults to the same.
+	//how necessary is it that this inherit from Object?
 	template<typename _xytype, typename _whtype = _xytype>
 	class TRectangle : public IClonable<TRectangle<_xytype,_whtype>>, public Default::Object
 	{

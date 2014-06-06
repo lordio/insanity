@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Insanity", "Insanity\Insanity.vcxproj", "{F50EDED5-2E6C-48EB-BEDA-0563565D3E9C}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -9,6 +9,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Insanity", "Insanity\Insani
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Gel", "Gel\Gel.vcxproj", "{7567FF72-95D5-4CE6-A0E2-2FB73240C6C2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{EB820C35-743D-45F3-80CD-89F5083B9BCB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7567FF72-95D5-4CE6-A0E2-2FB73240C6C2} = {7567FF72-95D5-4CE6-A0E2-2FB73240C6C2}
+		{F50EDED5-2E6C-48EB-BEDA-0563565D3E9C} = {F50EDED5-2E6C-48EB-BEDA-0563565D3E9C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConformanceTestModule", "ConformanceTestModule\ConformanceTestModule.vcxproj", "{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +51,28 @@ Global
 		{7567FF72-95D5-4CE6-A0E2-2FB73240C6C2}.Release|Win32.ActiveCfg = Release|Win32
 		{7567FF72-95D5-4CE6-A0E2-2FB73240C6C2}.Release|Win32.Build.0 = Release|Win32
 		{7567FF72-95D5-4CE6-A0E2-2FB73240C6C2}.Release|x64.ActiveCfg = Release|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Debug|Win32.Build.0 = Debug|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Debug|x64.ActiveCfg = Debug|x64
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Debug|x64.Build.0 = Debug|x64
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Release|Win32.ActiveCfg = Release|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Release|Win32.Build.0 = Release|Win32
+		{EB820C35-743D-45F3-80CD-89F5083B9BCB}.Release|x64.ActiveCfg = Release|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Debug|Win32.Build.0 = Debug|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Debug|x64.ActiveCfg = Debug|x64
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Debug|x64.Build.0 = Debug|x64
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Release|Win32.ActiveCfg = Release|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Release|Win32.Build.0 = Release|Win32
+		{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

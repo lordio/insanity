@@ -3,14 +3,15 @@
 
 #include <Constants.hpp>
 #include <IGarbageCollector.hpp>
-#include <vector>
+#include <IObject.hpp>
+#include <list>
 
 namespace Insanity
 {
 	class ATTRIBUTE_LOCAL CGenericGarbageCollector final : public IGarbageCollector
 	{
 		//use a std::unordered_set instead? To avoid duplication.
-		std::vector<IObject*> _pool;
+		std::list<IObject*> _pool;
 	public:
 		CGenericGarbageCollector();
 		~CGenericGarbageCollector();

@@ -12,12 +12,12 @@
 
 namespace Insanity
 {
-	DWORD CWindowsWin32SubThread::s_tls = 0;
-	bool CWindowsWin32SubThread::s_tlsInitialized = false;
+	DWORD CWindowsWin32SubThread::s_tls{};
+	bool CWindowsWin32SubThread::s_tlsInitialized{};
 
 	ISubThread * ISubThread::Create(ISubThread * ext, bool start)
 	{
-		return new CWindowsWin32SubThread(ext, start);
+		return new CWindowsWin32SubThread{ ext, start };
 	}
 
 	//since this may return either an Application or SubThread, must return common interface.
@@ -29,16 +29,16 @@ namespace Insanity
 	IThread * CWindowsWin32SubThread::_Current()
 	{
 		//If the TLS isn't initialized, must be running on only one thread.
-		if(!s_tlsInitialized) return IApplication::GetInstance();
+		if (!s_tlsInitialized) return IApplication::GetInstance();
 
-		void * thrd = TlsGetValue(s_tls);
+		void * thrd{ TlsGetValue(s_tls) };
 
 		//The main thread's TLS is never assigned. MSDN says TLS is initialized to NULL.
-		if(thrd == nullptr) return IApplication::GetInstance();
-		
+		if (thrd == nullptr) return IApplication::GetInstance();
+
 		//If ret has an extension (should be most common case), return that.
-		CWindowsWin32SubThread * ret = reinterpret_cast<CWindowsWin32SubThread*>(thrd);
-		return (ret->_ext ? ret->_ext : ret);
+		WeakPtr<CWindowsWin32SubThread> ret{ reinterpret_cast<CWindowsWin32SubThread*>(thrd) };
+		return (ret->_ext ? ret->_ext.Get() : ret.Get());
 	}
 
 	void CWindowsWin32SubThread::_TLSInit()
@@ -54,23 +54,24 @@ namespace Insanity
 	DWORD CALLBACK CWindowsWin32SubThread::_ThreadBoilerplate(void * params)
 	{
 		//the reference given in the ctor is assumed here
-		//params->self->Retain();
-		TlsSetValue(s_tls,params);
+		TlsSetValue(s_tls, params);
 
-		CWindowsWin32SubThread * self = reinterpret_cast<CWindowsWin32SubThread*>(params);
+		WeakPtr<CWindowsWin32SubThread> self{ reinterpret_cast<CWindowsWin32SubThread*>(params) };
 
 		self->Main();
 
-		self->_condition &= ~THREAD_RUNNING;
-		self->_condition |= THREAD_RETURNED;
-		self->_gc->Clean();
+		self->_condition = ThreadState::Returned;
 		self->Release();
 
 		return 0;
 	}
 
 	CWindowsWin32SubThread::CWindowsWin32SubThread(ISubThread * ext, bool start) :
-		_gc(IGarbageCollector::Create()), _ext(ext), _condition(0)
+		_taskList{},
+		_gc{ IGarbageCollector::Create() },
+		_ext{ ext },
+		_condition{ ThreadState::Waiting},
+		_gcTicker{}
 	{
 		_TLSInit();
 
@@ -78,7 +79,6 @@ namespace Insanity
 		Retain();
 
 		if(start) Start();
-		else _condition |= THREAD_WAITING;
 	}
 	CWindowsWin32SubThread::~CWindowsWin32SubThread()
 	{
@@ -96,13 +96,9 @@ namespace Insanity
 
 	void CWindowsWin32SubThread::Start()
 	{
-		if(_condition & THREAD_RUNNING ||
-			_condition & THREAD_RETURNED) return;
+		if (_condition != ThreadState::Waiting) return;
 
-		//bool wasWaiting = _condition & THREAD_WAITING;
-
-		_condition |= THREAD_RUNNING;
-		_condition &= ~THREAD_WAITING;
+		_condition = ThreadState::Running;
 
 		CreateThread(nullptr,1024,_ThreadBoilerplate,this,0,nullptr);
 	}
@@ -112,16 +108,15 @@ namespace Insanity
 	//=====================================================
 	bool CWindowsWin32SubThread::Update()
 	{
-		if(!(_condition & THREAD_RUNNING)) return false;
+		if (_condition != ThreadState::Running) return false;
 
-		for(auto iter = _taskList.begin(); iter < _taskList.end();)
+		for(auto iter = _taskList.begin(); iter != _taskList.end();)
 		{
 			(*iter)->Perform();
 			
 			if(!(*iter)->ShouldRequeue())
 			{
 				(*iter)->Dequeue();
-				(*iter)->Release();
 				iter = _taskList.erase(iter);
 			}
 			else iter++;
@@ -133,15 +128,15 @@ namespace Insanity
 			_gcTicker = 0;
 		}
 
-		return (_condition & THREAD_RUNNING) == THREAD_RUNNING;
+		return _condition == ThreadState::Running;
 	}
 	void CWindowsWin32SubThread::End()
 	{
-		_condition &= ~THREAD_RUNNING;
+		_condition = ThreadState::Returning;
 	}
 	IGarbageCollector * CWindowsWin32SubThread::GetGarbageCollector() const
 	{
-		return _gc;
+		return _gc.get();
 	}
 	void CWindowsWin32SubThread::Yield() const
 	{
@@ -150,7 +145,6 @@ namespace Insanity
 	void CWindowsWin32SubThread::RegisterTask(ITask * task)
 	{
 		_taskList.push_back(task);
-		task->Retain();
 	}
 	void CWindowsWin32SubThread::Transfer(IObject * obj)
 	{

@@ -14,21 +14,23 @@
 
 #include <cstring>
 #include <cstdio>
+#include <string>
+#include <memory>
 
 namespace Insanity
 {
 	IStreamSocket * IStreamSocket::Create(char const * host, u16 port)
 	{
-		return new CMacOSXBSDStreamSocket(host,port);
+		return new CMacOSXBSDStreamSocket{host,port};
 	}
 
 	CMacOSXBSDStreamSocket::CMacOSXBSDStreamSocket(char const * host, u16 port) : 
-		_sock(0)
+		Default::Object{}, _sock{}
 	{
 		Connect(host, port);
 	}
 	CMacOSXBSDStreamSocket::CMacOSXBSDStreamSocket(int sock) : 
-		_sock(sock)
+		Default::Object{}, _sock{sock}
 	{
 	}
 	CMacOSXBSDStreamSocket::~CMacOSXBSDStreamSocket()
@@ -48,13 +50,12 @@ namespace Insanity
 		hints.ai_family = AF_UNSPEC;
 		hints.ai_socktype = SOCK_STREAM;
 
-		addrinfo * ret = nullptr;
-		addrinfo * ptr = nullptr;
+		addrinfo * ret{};
+		addrinfo * ptr{};
 
-		char cport[6] = "";
-		snprintf(cport, 6, "%d", port);
+		std::string cport{std::to_string(port)};
 
-		getaddrinfo(host, cport, &hints, &ret);
+		getaddrinfo(host, cport.c_str(), &hints, &ret);
 
 		ptr = ret;
 
@@ -89,28 +90,24 @@ namespace Insanity
 
 	void CMacOSXBSDStreamSocket::Send(IByteArray const * arr)
 	{
-		u64 size = arr->Size();
+		u64 size{arr->Size()};
 		send(_sock, reinterpret_cast<char*>(&size), sizeof(u64), 0);
 		send(_sock, reinterpret_cast<char const*>(arr->Array()), static_cast<int>(size), 0);
 	}
 	void CMacOSXBSDStreamSocket::Receive(IByteArray * arr)
 	{
-		u64 size = 0;
+		u64 size{};
 		recv(_sock, reinterpret_cast<char*>(&size), sizeof(u64), 0);
 
-		u8 * buffer = new u8[size];
-		recv(_sock, reinterpret_cast<char*>(buffer), static_cast<int>(size), 0);
+		std::unique_ptr<u8[]> buffer{new u8[size]};
+		recv(_sock, reinterpret_cast<char*>(buffer.get()), static_cast<int>(size), 0);
 
-		arr->Write(buffer, size);
-
-		delete[] buffer;
+		arr->Write(buffer.get(), size);
 	}
 
 	bool CMacOSXBSDStreamSocket::HasPendingData() const
 	{
-		timeval tv;
-		tv.tv_usec = 0;
-		tv.tv_sec = 0;
+		timeval tv{};
 
 		fd_set set;
 		FD_ZERO(&set);

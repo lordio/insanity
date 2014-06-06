@@ -48,6 +48,8 @@ namespace
 
 	//documentation says NSDefaultMallocZone(), which GNUstep uses, is deprecated.
 	//	It also says to pass NULL to NSAllocateObject's third param for the default, so just do that.
+	//	NSAllocateObject isn't allowed in ARC. What about [NSEvent alloc]?
+	//	See what happens when compiling.
 	e = (NSEvent*)NSAllocateObject(self, 0, NULL);
 
 	//Builds on Mac, so seems to be okay.

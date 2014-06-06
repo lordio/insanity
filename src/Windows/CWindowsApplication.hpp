@@ -6,7 +6,9 @@
 #if defined(PLATFORM_MSWINDOWS)
 
 #include <IApplication.hpp>
-#include <vector>
+#include <Ptr.hpp>
+#include <list>
+#include <memory>
 
 namespace Insanity
 {
@@ -16,8 +18,8 @@ namespace Insanity
 	class CWindowsApplication final : public IApplication
 	{
 	private:
-		std::vector<ITask*> _taskList;
-		IGarbageCollector * _gc;
+		std::list<Ptr<ITask>> _taskList;
+		std::unique_ptr<IGarbageCollector> _gc; //is not reference counted, so manage with unique_ptr
 		mutable u64 _ref;
 		bool _running;
 		u8 _gcTicker;

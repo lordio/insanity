@@ -5,8 +5,12 @@
 
 #if defined(PLATFORM_MSWINDOWS)
 
+#include "CWindowsWin32Window.hpp"
+
 #include <IRenderer.hpp>
 #include <Default/Object.hpp>
+#include <TRectangle.hpp>
+#include <Ptr.hpp>
 
 #include <Windows.h>
 
@@ -27,9 +31,9 @@ namespace Insanity
 
 	class CWindowsDirect3D11Renderer final : public IRenderer, public Default::Object
 	{
-		TRectangle<s16,u16> * _rect;
-		IRenderer * _ext;
-		CWindowsWin32Window * _win;
+		Ptr<TRectangle<s16,u16>> _rect;
+		WeakPtr<IRenderer> _ext;
+		WeakPtr<CWindowsWin32Window> _win;
 
 		ID3D11Device * _dev;
 		ID3D11DeviceContext * _ctx;

@@ -13,26 +13,27 @@
 
 namespace Insanity
 {
-	IApplication * IApplication::s_app = nullptr;
+	IApplication * IApplication::s_app{};
 
 	IApplication * IApplication::GetInstance()
 	{
 		if(s_app) return s_app;
 		
-		return s_app = new CLinuxApplication();
+		return s_app = new CLinuxApplication{};
 	}
 	
 	CLinuxApplication::CLinuxApplication() :
-		_gc(IGarbageCollector::Create()), _ref(0), _running(true)
+		_taskList{}, 
+		_gc{IGarbageCollector::Create()}, 
+		_ref{}, 
+		_running{true},
+		_gcTicker{}
 	{
 	}
 	CLinuxApplication::~CLinuxApplication()
 	{
 		//Let go of all mods, to ensure proper cleanup.
 		IMod::ClearCache();
-		
-		_gc->Clean();
-		delete _gc;
 
 		s_app = nullptr;
 	}
@@ -56,7 +57,6 @@ namespace Insanity
 			if(!(*iter)->ShouldRequeue())
 			{
 				(*iter)->Dequeue();
-				(*iter)->Release();
 				iter = _taskList.erase(iter);
 			}
 			else iter++;
@@ -79,7 +79,7 @@ namespace Insanity
 	}
 	IGarbageCollector * CLinuxApplication::GetGarbageCollector() const
 	{
-		return _gc;
+		return _gc.Get();
 	}
 	void CLinuxApplication::Yield() const
 	{
@@ -88,7 +88,6 @@ namespace Insanity
 	void CLinuxApplication::RegisterTask(ITask * task)
 	{
 		_taskList.push_back(task);
-		task->Retain();
 	}
 	void CLinuxApplication::Transfer(IObject * obj)
 	{

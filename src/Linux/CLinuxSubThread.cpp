@@ -13,12 +13,12 @@
 
 namespace Insanity
 {
-	pthread_key_t CLinuxSubThread::s_curThreadKey = 0;
-	bool CLinuxSubThread::s_threadInit = false;
+	pthread_key_t CLinuxSubThread::s_curThreadKey{};
+	bool CLinuxSubThread::s_threadInit{};
 
 	ISubThread * ISubThread::Create(ISubThread * ext, bool start)
 	{
-		return new CLinuxSubThread(ext,start);
+		return new CLinuxSubThread{ext,start};
 	}
 
 	IThread * IThread::Current()
@@ -29,15 +29,15 @@ namespace Insanity
 	{
 		//if the TLS for current threads hasn't been initialized, then we must be running on the main thread.
 		if(!s_threadInit) return IApplication::GetInstance();
-		
+
 		//pthread_getspecific is guaranteed to return nullptr if it hasn't had a value set yet.
-		void * spec = pthread_getspecific(s_curThreadKey);
+		void * spec{pthread_getspecific(s_curThreadKey)};
 		
 		//if no value for this thread, then it's the main thread, as the Application doesn't know if there is a Thread class.
 		if(spec == nullptr) return IApplication::GetInstance();
 
-		CLinuxSubThread * ret = reinterpret_cast<CLinuxSubThread*>(spec);
-		return (ret->_ext ? ret->_ext : ret);
+		WeakPtr<CLinuxSubThread> ret{reinterpret_cast<CLinuxSubThread*>(spec)};
+		return (ret->_ext ? ret->_ext.Get() : ret.Get());
 		//if the key has been initialized, then return the extension, if available (should be).
 	}
 	void CLinuxSubThread::_TLSInit()
@@ -54,15 +54,13 @@ namespace Insanity
 		//startup phase
 		pthread_setspecific(s_curThreadKey,params);
 
-		CLinuxSubThread * self = reinterpret_cast<CLinuxSubThread*>(params);
+		WeakPtr<CLinuxSubThread> self{reinterpret_cast<CLinuxSubThread*>(params)};
 
 		//execute the requested thread function
 		self->Main();
 
 		//cleanup phase
-		self->_condition &= ~THREAD_RUNNING;
-		self->_condition |= THREAD_RETURNED;
-		self->_gc->Clean(); //Note: If the thread's return value is garbage collected, remember to untrack the object and delete it yourself. Or Transfer() it to another thread.
+		self->_condition = ThreadState::Returned;
 		self->Release();
 
 		return nullptr;
@@ -70,7 +68,11 @@ namespace Insanity
 
 	//A thread should be managed by its parent thread's garbage collector.
 	CLinuxSubThread::CLinuxSubThread(ISubThread * ext, bool start) :
-		_gc(IGarbageCollector::Create()), _ext(ext), _condition(0)
+		_taskList{},
+		_gc{IGarbageCollector::Create()},
+		_ext{ext},
+		_condition{ThreadState::Waiting},
+		_gcTicker{}
 	{
 		//NOTE: This ctor is being called in the parent thread.
 
@@ -80,7 +82,6 @@ namespace Insanity
 		Retain();
 
 		if(start) Start();
-		else _condition |= THREAD_WAITING;
 	}
 	CLinuxSubThread::~CLinuxSubThread()
 	{
@@ -92,11 +93,9 @@ namespace Insanity
 	void CLinuxSubThread::Start()
 	{
 		//if the thread is already running or completed, don't start it again.
-		if(_condition & THREAD_RUNNING ||
-			_condition & THREAD_RETURNED) return;
+		if(_condition != ThreadState::Waiting) return;
 
-		_condition |= THREAD_RUNNING;
-		_condition &= ~THREAD_WAITING;
+		_condition = ThreadState::Waiting;
 
 		//apparently the first param is needed, but we don't use it
 		pthread_t unused;
@@ -112,7 +111,7 @@ namespace Insanity
 	//=====================================================
 	bool CLinuxSubThread::Update()
 	{
-		if(!(_condition & THREAD_RUNNING)) return false;
+		if(_condition != ThreadState::Running) return false;
 
 		for(auto iter = _taskList.begin(); iter < _taskList.end();)
 		{
@@ -121,7 +120,6 @@ namespace Insanity
 			if(!(*iter)->ShouldRequeue())
 			{
 				(*iter)->Dequeue();
-				(*iter)->Release();
 				iter = _taskList.erase(iter);
 			}
 			else iter++;
@@ -133,11 +131,11 @@ namespace Insanity
 			_gcTicker = 0;
 		}
 
-		return (_condition & THREAD_RUNNING) == THREAD_RUNNING;
+		return _condition == ThreadState::Running;
 	}
 	void CLinuxSubThread::End()
 	{
-		_condition &= ~THREAD_RUNNING;
+		_condition = ThreadState::Returning;
 	}
 	IGarbageCollector * CLinuxSubThread::GetGarbageCollector() const
 	{
@@ -150,7 +148,6 @@ namespace Insanity
 	void CLinuxSubThread::RegisterTask(ITask * task)
 	{
 		_taskList.push_back(task);
-		task->Retain();
 	}
 	void CLinuxSubThread::Transfer(IObject * obj)
 	{

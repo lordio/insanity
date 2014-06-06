@@ -5,9 +5,10 @@
 #if defined(PLATFORM_LINUX)
 
 #include <IMod.hpp>
-#include <IString.hpp>
+#include <Ptr.hpp>
 #include <map>
 #include <string>
+#include <memory>
 
 #include <dlfcn.h>
 
@@ -16,9 +17,9 @@ namespace
 	struct ModPair
 	{
 		void * lib;
-		Insanity::IMod * mod;
+		Insanity::Ptr<Insanity::IMod> mod;
 	};
-	typedef std::map<std::string, ModPair*> ModMap;
+	typedef std::map<std::string, std::unique_ptr<ModPair>> ModMap;
 	ModMap s_cache;
 }
 
@@ -33,31 +34,28 @@ namespace Insanity
 			if (tmp != s_cache.end()) return tmp->second->mod;
 		}
 
-		IString<char> * libName = IString<char>::Create(modName);
-		libName->Append(".so");
+		std::string libName{modName};
+		libName += ".so";
 
-		void * mod = dlopen(libName->Array(), RTLD_LAZY | RTLD_GLOBAL);
-		ModCtor ctor = (ModCtor)dlsym(mod,"InitMod");
-		IMod * modObject = ctor();
+		void * mod{dlopen(libName.c_str(), RTLD_LAZY | RTLD_GLOBAL)};
+		ModCtor ctor{(ModCtor)dlsym(mod,"InitMod")};
+		WeakPtr<IMod> modObject{ctor()};
 
-		s_cache[modName] = new ModPair{mod, modObject};
-		modObject->Retain();
+		s_cache[modName].reset(new ModPair{mod, modObject});
 
 		return modObject;
 	}
 	
 	void IMod::ShrinkCache()
 	{
-		for(ModMap::iterator pr = s_cache.begin(); pr != s_cache.end();)
+		for(auto pr = s_cache.begin(); pr != s_cache.end();)
 		{
 			//if the only reference to it is ours...
 			if(pr->second->mod->GetReferenceCount() == 1)
 			{
 				//mods don't use normal garbage collection, so going to refcount 0 deletes them.
-				pr->second->mod->Release(); //should delete the mod object, since we held the last reference.
 				dlclose(pr->second->lib);
 				
-				delete pr->second;
 				pr = s_cache.erase(pr);
 			}
 			else pr++;
@@ -67,14 +65,10 @@ namespace Insanity
 	{
 		//Assume no relevant references exist to mods (most likely case is program shutdown)
 		//Would it make more sense to start at the end, since least-dependent mods should be at the beginning?
-		for(ModMap::iterator pr = s_cache.begin(); s_cache.size() > 0;)
+		for(auto pr = s_cache.begin(); s_cache.size() > 0;)
 		{
-			//Release, not Delete; the Garbage Collector won't like it if something it tracks has already been deleted.
-			//Mods (using Default::Mod) aren't GC'ed. Delete was correct.
-			pr->second->mod->Delete();
 			dlclose(pr->second->lib);
 			
-			delete pr->second;
 			pr = s_cache.erase(pr);
 		}
 	}

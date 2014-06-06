@@ -25,7 +25,6 @@
 #include "IServerSocket.hpp"
 #include "IShaderProgram.hpp"
 #include "IStreamSocket.hpp"
-#include "IString.hpp"
 #include "ISubThread.hpp"
 #include "IWindow.hpp"
 

@@ -1,13 +1,13 @@
 #ifndef INSANITY_COM_POINTER
 #define INSANITY_COM_POINTER
 
-//"First of May" ASL
 //"Kiss Me" Klingon
 
 #include "Constants.hpp"
 
 namespace Insanity
 {
+	//okay for use internally, but not for methods, interface statics, or Default classes.
 	template<typename _comtype, bool _strong = true>
 	class Ptr
 	{
@@ -31,23 +31,23 @@ namespace Insanity
 			if(_strong && _ptr) _ptr->Release();
 		}
 
-		operator _comtype*()
+		inline operator _comtype*()
 		{
 			return _ptr;
 		}
-		operator _comtype*() const
+		inline operator _comtype*() const
 		{
 			return _ptr;
 		}
-		_comtype * operator->()
+		inline _comtype * operator->()
 		{
 			return _ptr;
 		}
-		_comtype * operator->() const
+		inline _comtype * operator->() const
 		{
 			return _ptr;
 		}
-		_comtype * operator=(_comtype * ptr)
+		inline _comtype * operator=(_comtype * ptr)
 		{
 			if(_strong && _ptr) _ptr->Release();
 			_ptr = ptr;
@@ -56,7 +56,7 @@ namespace Insanity
 			return _ptr;
 		}
 		template<bool strong>
-		_comtype * operator=(Ptr<_comtype,strong> const & ptr)
+		inline _comtype * operator=(Ptr<_comtype,strong> const & ptr)
 		{
 			if(_strong && _ptr) _ptr->Release();
 			_ptr = (_comtype*)ptr;
@@ -64,14 +64,19 @@ namespace Insanity
 
 			return _ptr;
 		}
-		bool operator==(_comtype const * ptr) const
+		inline bool operator==(_comtype const * ptr) const
 		{
 			return _ptr == ptr;
 		}
 		template<bool strong>
-		bool operator==(Ptr<_comtype,strong> const & ptr) const
+		inline bool operator==(Ptr<_comtype,strong> const & ptr) const
 		{
 			return _ptr == (_comtype*)ptr;
+		}
+
+		inline _comtype * Get() const
+		{
+			return _ptr;
 		}
 	};
 

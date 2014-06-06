@@ -2,30 +2,29 @@
 
 #include "CGenericByteArray.hpp"
 
-#include <IString.hpp>
 #include <string>
 
 namespace Insanity
 {
 	namespace
 	{
-		inline void _write_bytes(std::vector<u8> * vec, u8 const * bytes, u64 count)
+		inline void _write_bytes(std::vector<u8> & vec, u8 const * bytes, u64 count)
 		{
-			for(s64 i = count - 1; i >= 0; i--) vec->push_back(bytes[i]);
+			for(s64 i = count - 1; i >= 0; i--) vec.push_back(bytes[i]);
 		}
-		inline void _read_bytes(std::vector<u8> * vec, u64 & offset, u8 * bytes, u64 count)
+		inline void _read_bytes(std::vector<u8> & vec, u64 & offset, u8 * bytes, u64 count)
 		{
-			for(s64 i = count - 1; i >= 0; i--, offset++) bytes[i] = vec->at(offset);
+			for(s64 i = count - 1; i >= 0; i--, offset++) bytes[i] = vec[offset];
 		}
 	}
 
 	IByteArray * IByteArray::Create()
 	{
-		return new CGenericByteArray();
+		return new CGenericByteArray{};
 	}
 
 	CGenericByteArray::CGenericByteArray() :
-		_offset(0)//, _ref(0)
+		_vec{}, _offset{}
 	{
 	}
 	CGenericByteArray::~CGenericByteArray()
@@ -41,15 +40,15 @@ namespace Insanity
 	}
 	void CGenericByteArray::Write(u16 val)
 	{
-		_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
+		_write_bytes(_vec,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Write(u32 val)
 	{
-		_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
+		_write_bytes(_vec,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Write(u64 val)
 	{
-		_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
+		_write_bytes(_vec,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Write(s8 val)
 	{
@@ -57,15 +56,15 @@ namespace Insanity
 	}
 	void CGenericByteArray::Write(s16 val)
 	{
-		_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
+		_write_bytes(_vec,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Write(s32 val)
 	{
-		_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
+		_write_bytes(_vec,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Write(s64 val)
 	{
-		_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
+		_write_bytes(_vec,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Write(bool val)
 	{
@@ -74,11 +73,11 @@ namespace Insanity
 	void CGenericByteArray::Write(float val)
 	{
 		//naive implementation for floating-point types
-		_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
+		_write_bytes(_vec,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Write(double val)
 	{
-		_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
+		_write_bytes(_vec,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Write(long double ATTRIBUTE_UNUSED val)
 	{
@@ -88,13 +87,6 @@ namespace Insanity
 		//for(u8 i = 0; i < 10 - sizeof(val); i++) _vec.push_back((u8)0);
 
 		//_write_bytes(&_vec,reinterpret_cast<u8*>(&val),sizeof(val));
-	}
-	void CGenericByteArray::Write(IString<char> const * val)
-	{
-		//TODO: Rewrite once String is defined.
-		//_write_bytes(&_vec, reinterpret_cast<u8 const*>(val->Array()), val->Size());
-		Write(reinterpret_cast<u8 const*>(val->Array()),val->Size());
-		_vec.push_back((u8)0);
 	}
 	void CGenericByteArray::Write(IByteArray const * val)
 	{
@@ -117,15 +109,15 @@ namespace Insanity
 	}
 	void CGenericByteArray::Read(u16 & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Read(u32 & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Read(u64 & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Read(s8 & val)
 	{
@@ -134,15 +126,15 @@ namespace Insanity
 	}
 	void CGenericByteArray::Read(s16 & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Read(s32 & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Read(s64 & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Read(bool & val)
 	{
@@ -151,25 +143,17 @@ namespace Insanity
 	}
 	void CGenericByteArray::Read(float & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Read(double & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 	}
 	void CGenericByteArray::Read(long double & val)
 	{
-		_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
+		_read_bytes(_vec,_offset,reinterpret_cast<u8*>(&val),sizeof(val));
 		//cheat the offset ahead if on a nonstandard compiler
 		_offset += 10 - sizeof(long double);
-	}
-	void CGenericByteArray::Read(IString<char> * val)
-	{
-		//TODO: Swap with real implementation once it's written.
-		//_read_bytes(&_vec,_offset,reinterpret_cast<u8*>(val),sizeof(val));
-		val->Assign("");
-		while(_vec[_offset] != 0) val->Append((char)_vec[_offset++]);
-		_offset++; //make sure we point past the null terminator.
 	}
 	void CGenericByteArray::Read(u8 * val, u64 length)
 	{
