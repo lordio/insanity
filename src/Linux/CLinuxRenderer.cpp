@@ -7,14 +7,14 @@
 #include <IRenderer.hpp>
 #include <IConfigObject.hpp>
 
-#include "../../experimental/CLinuxMesa9Renderer.hpp"
+#include "CLinuxMesa9Renderer.hpp"
 
 namespace Insanity
 {
 	//not interacted with, just passed along to ctors.
 	class IWindow;
 	
-	IRenderer * IRenderer::Create(IRenderer * ext, IWindow * win, IConfigObject * cfg)
+	IRenderer * IRenderer::Create(IRenderer * ext, IWindow * win, IConfigObject const * cfg)
 	{
 		s64 major{cfg->GetProperty("OpenGL.version.major", s64{2})};
 		s64 minor{cfg->GetProperty("OpenGL.version.minor", s64{1})};

@@ -79,7 +79,7 @@ namespace Insanity
 	}
 	IGarbageCollector * CLinuxApplication::GetGarbageCollector() const
 	{
-		return _gc.Get();
+		return _gc.get();
 	}
 	void CLinuxApplication::Yield() const
 	{

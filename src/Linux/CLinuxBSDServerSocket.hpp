@@ -6,8 +6,7 @@
 #if defined(PLATFORM_LINUX)
 
 #include <IServerSocket.hpp>
-
-#include <Default.hpp>
+#include <Default/Object.hpp>
 
 namespace Insanity
 {

@@ -8,7 +8,7 @@
 #include <IMutex.hpp>
 #include <pthread.h>
 
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
 
 namespace Insanity
 {

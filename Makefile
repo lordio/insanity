@@ -6,7 +6,7 @@ ALLSOURCE:=$(wildcard src/Linux/*.cpp) $(wildcard src/Generic/*.cpp) $(wildcard 
 ALLOBJ:=$(patsubst src/%.cpp,obj/%.o,$(ALLSOURCE))
 
 all: $(ALLOBJ) $(wildcard include/*)
-	$(CC) -o bin/Linux/libinsanity.so $(BUILDALLFLAGS) $(ALLOBJ)
+	$(CC) -o bin/Linux/libinsanity.so $(ALLOBJ) $(BUILDALLFLAGS)
 
 obj/Default/%.o: src/Default/%.cpp $(wildcard include/*)
 	$(CC) -o $@ $< $(CFLAGS)

@@ -104,12 +104,12 @@ namespace Insanity
 		std::unique_ptr<u8[]> buffer{new u8[size]};
 		recv(_sock,reinterpret_cast<char*>(buffer.get()),static_cast<int>(size),0);
 
-		arr->Write(buffer,size);
+		arr->Write(buffer.get(),size);
 	}
 
 	bool CLinuxBSDStreamSocket::HasPendingData() const
 	{
-		timeval tv{};
+		timeval tv{0,0};
 
 		fd_set set;
 		FD_ZERO(&set);

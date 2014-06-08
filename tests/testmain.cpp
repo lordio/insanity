@@ -6,8 +6,13 @@ using namespace Insanity;
 #include <TString.hpp>
 #include <Default/Thread.hpp>
 
+#if defined(PLATFORM_MSWINDOWS)
 #define PREFIX "../../../tests/"
 #define MODPREFIX "../../../bin/Win32/"
+#elif defined(PLATFORM_LINUX)
+#define PREFIX "../../tests/"
+#define MODPREFIX ""
+#endif
 
 class ConformanceTest
 {
@@ -78,6 +83,11 @@ Tests the following objects:
 	Application
 	Window
 	ConfigFile
+	
+Results:
+  Windows: Successful.
+  Linux: Failed. (app->Update did not return false)
+  MacOSX: Not yet run.
 */
 private:
 	class WECTWindow final : public Default::Window
@@ -175,6 +185,8 @@ private:
 			//set bit and end test.
 			_handlers |= (1 << 24);
 			
+			std::cout << "CloseHandler called." << std::endl;
+			
 			IApplication::GetInstance()->End();
 		}
 		
@@ -240,6 +252,7 @@ protected:
 		win->Scroll(EMouseScrollDirection::Down, 1);
 		win->Scroll(EMouseScrollDirection::Up, 1);
 		
+		//For some reason, X11 processes the close message when debugging, but not when just running.
 		win->Close();
 		
 		//if no equivalent to SendMessage (Win32) / NSApplication -sendEvent: (Cocoa) on X11,

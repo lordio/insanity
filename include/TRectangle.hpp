@@ -2,7 +2,7 @@
 #define INSANITY_TEMPLATE_RECTANGLE
 
 #include "Constants.hpp"
-#include "default/Object.hpp"
+#include "Default/Object.hpp"
 #include "IClonable.hpp"
 
 namespace Insanity

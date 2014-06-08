@@ -11,7 +11,7 @@
 #include <list>
 #include <memory>
 
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
 
 namespace Insanity
 {

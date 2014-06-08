@@ -7,7 +7,7 @@
 #include <IWindow.hpp>
 #include <IConfigObject.hpp>
 #include "CLinuxX11Window.hpp"
-#include <default/Window.hpp>
+#include <Default/Window.hpp>
 #include "../Generic/CGenericOpenGL41ShaderProgram.hpp"
 
 #include "../../gel/gel.hpp"
@@ -107,7 +107,7 @@ namespace Insanity
 			//have to use GLX 1.2 interface. Shouldn't be necessary.
 		}
 
-		glViewport(_rect->GetX(), _rect->GetY(), _rect->GetWidth, _rect->GetHeight());
+		glViewport(_rect->GetX(), _rect->GetY(), _rect->GetWidth(), _rect->GetHeight());
 	}
 	
 	//=====================================================

@@ -7,6 +7,7 @@
 #include "CLinuxBSDStreamSocket.hpp"
 #include <Ptr.hpp>
 
+#include <string>
 #include <cstdio>
 #include <cstring>
 
@@ -89,7 +90,7 @@ namespace Insanity
 
 	IStreamSocket * CLinuxBSDServerSocket::Accept()
 	{
-		timeval tv{};
+		timeval tv{0,0};
 
 		fd_set fd;
 		FD_ZERO(&fd);

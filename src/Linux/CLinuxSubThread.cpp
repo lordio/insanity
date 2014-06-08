@@ -113,7 +113,7 @@ namespace Insanity
 	{
 		if(_condition != ThreadState::Running) return false;
 
-		for(auto iter = _taskList.begin(); iter < _taskList.end();)
+		for(auto iter = _taskList.begin(); iter != _taskList.end();)
 		{
 			(*iter)->Perform();
 			
@@ -139,7 +139,7 @@ namespace Insanity
 	}
 	IGarbageCollector * CLinuxSubThread::GetGarbageCollector() const
 	{
-		return _gc;
+		return _gc.get();
 	}
 	void CLinuxSubThread::Yield() const
 	{
@@ -154,7 +154,7 @@ namespace Insanity
 		IThread::Current()->GetGarbageCollector()->Untrack(obj);
 		_gc->Track(obj);
 	}
-	void CLinuxSubThread::IsCurrentThread() const
+	bool CLinuxSubThread::IsCurrentThread() const
 	{
 		return IThread::Current() == (IThread*)this;
 	}

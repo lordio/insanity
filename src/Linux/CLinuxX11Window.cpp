@@ -5,9 +5,7 @@
 #if defined(PLATFORM_LINUX)
 
 #include <IApplication.hpp>
-#include <IString.hpp>
 #include "CLinuxX11EventPumpTask.hpp"
-#include "../unused/ConfigFile.hpp"
 #include <IConfigObject.hpp>
 
 #include <GL/gl.h>
@@ -111,8 +109,6 @@ namespace Insanity
 		
 		_InitXWindow(cfg->GetProperty("title", ""), xvi, &xswa);
 		
-		_isOpen = true;
-		
 		if(xvi) XFree(xvi);
 		
 		_SetPumpProc();
@@ -137,8 +133,6 @@ namespace Insanity
 			s_pump = nullptr;
 			s_errorBase = 0;
 			s_errorBase = 0;
-			XFree(s_del);
-			s_del = None;
 		}
 	}
 	
@@ -376,7 +370,7 @@ namespace Insanity
 		XSendEvent(s_dpy, _win, True, 
 			(downup == ButtonRelease ? ButtonReleaseMask : ButtonPressMask), &xe);
 	}
-	void CLinuxX11Window::Scroll(EMouseScrollDirection dir, u16 INSANITY_UNUSED delta)
+	void CLinuxX11Window::Scroll(EMouseScrollDirection dir, u16 ATTRIBUTE_UNUSED delta)
 	{
 		XEvent xe;
 		int scroll{dir == EMouseScrollDirection::Up ? 4 : 5};
@@ -417,23 +411,24 @@ namespace Insanity
 		xe.xclient.window = _win;
 		xe.xclient.format = 32;
 		xe.xclient.data.l[0] = s_del;
+		xe.xclient.message_type = 0x142; //should be the WM_PROTOCOLS atom
 		XSendEvent(s_dpy, _win, True, ClientMessage, &xe);
 	}
 	
-	void CLinuxX11Window::MouseHandler(EMouseButton INSANITY_UNUSED button, 
-		EMouseButtonState INSANITY_UNUSED state, 
-		u16 INSANITY_UNUSED x, 
-		u16 INSANITY_UNUSED y)
+	void CLinuxX11Window::MouseHandler(EMouseButton ATTRIBUTE_UNUSED button, 
+		EMouseButtonState ATTRIBUTE_UNUSED state, 
+		u16 ATTRIBUTE_UNUSED x, 
+		u16 ATTRIBUTE_UNUSED y)
 	{
 	}
-	void CLinuxX11Window::KeyHandler(EKey INSANITY_UNUSED key, 
-		EKeyState INSANITY_UNUSED state)
+	void CLinuxX11Window::KeyHandler(EKey ATTRIBUTE_UNUSED key, 
+		EKeyState ATTRIBUTE_UNUSED state)
 	{
 	}
-	void CLinuxX11Window::ScrollHandler(EMouseScrollDirection INSANITY_UNUSED dir, u16 INSANITY_UNUSED delta)
+	void CLinuxX11Window::ScrollHandler(EMouseScrollDirection ATTRIBUTE_UNUSED dir, u16 ATTRIBUTE_UNUSED delta)
 	{
 	}
-	void CLinuxX11Window::ShowHandler(bool INSANITY_UNUSED show)
+	void CLinuxX11Window::ShowHandler(bool ATTRIBUTE_UNUSED show)
 	{
 	}
 	void CLinuxX11Window::MoveHandler(s16 x, s16 y)

@@ -6,7 +6,7 @@
 
 #include "../src/Linux/CLinuxX11Window.hpp"
 #include "../src/Generic/CGenericGLShaderProgram.hpp"
-#include <default/Window.hpp>
+#include <Default/Window.hpp>
 #include <IConfigObject.hpp>
 #include <TRectangle.hpp>
 

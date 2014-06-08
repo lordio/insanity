@@ -7,7 +7,7 @@
 
 #include <IWindow.hpp>
 #include <TRectangle.hpp>
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
 #include <Ptr.hpp>
 
 #include <X11/Xlib.h>

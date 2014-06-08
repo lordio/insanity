@@ -3,7 +3,7 @@
 
 #include <Constants.hpp>
 #include <IConfigObject.hpp>
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
 
 #include <string>
 #include <map>

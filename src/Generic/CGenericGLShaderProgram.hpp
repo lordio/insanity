@@ -6,7 +6,7 @@
 #if !defined(PLATFORM_MACOSX)
 
 #include <IShaderProgram.hpp>
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
 #include "IOpenGLShaderProgram.hpp"
 
 #include "../../gel/gel.hpp"
