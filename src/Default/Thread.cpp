@@ -6,14 +6,13 @@ namespace Insanity
 {
 	namespace Default
 	{
-		Thread::Thread()
+		Thread::Thread() : _base{ ISubThread::Create(this, false) }, Object{}
 		{
 			//need a way to override IThread::Current to return this instead of _base.
 
 			//If it's known that IThread implementations may have an extension, it can do
 			//	if(curr->ext ? curr->ext : curr)
 
-			_base = ISubThread::Create(this,false);
 			_base->Retain();
 		}
 		Thread::~Thread()

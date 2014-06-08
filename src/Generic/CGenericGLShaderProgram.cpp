@@ -4,12 +4,14 @@
 
 #if !defined(PLATFORM_MACOSX)
 
-#include <IString.hpp>
 #include <TVector.hpp>
 #include <TMatrix.hpp>
 
 #include <fstream>
 #include <iostream>
+#include <string>
+#include <cassert>
+#include <memory>
 
 namespace
 {
@@ -38,9 +40,8 @@ namespace
 namespace Insanity
 {
 	CGenericGLShaderProgram::CGenericGLShaderProgram() :
-		_programName(glCreateProgram()), _linked(false)
+		_programName{ glCreateProgram() }, _linked{ false }
 	{
-		std::cout << "program name: " << _programName << std::endl;
 	}
 	CGenericGLShaderProgram::~CGenericGLShaderProgram()
 	{
@@ -59,37 +60,35 @@ namespace Insanity
 	{
 		if (_linked) return false;
 
-		IString<char> * shader = IString<char>::Create();
-		shader->Retain();
-
 		//add some more checks that, if failed, will return false
 
 		//ensure the file was loaded
-		std::ifstream shaderFile(filename);
+		std::ifstream shaderFile{ filename };
+		assert(shaderFile);
 
-		char holder = 0;
-		while (shaderFile.get(holder)) shader->Append(holder);
+		std::string shader{};
+		char holder{};
+		while (shaderFile.get(holder)) shader += holder;
 
-		GLuint shaderName = glCreateShader(translate(type));
+		GLuint shaderName{ glCreateShader(translate(type)) };
 
-		char const * shaderCArray = shader->Array();
+		char const * shaderCArray{ shader.c_str() };
 
 		//ensure compilation worked.
 		glShaderSource(shaderName, 1, &shaderCArray, nullptr);
 		glCompileShader(shaderName);
-		
-		GLint status = 0;
+
+		GLint status{};
 		glGetShaderiv(shaderName,GL_COMPILE_STATUS, &status);
 		if (status == GL_FALSE)
 		{
-			GLint loglen = 0;
-			glGetShaderiv(shaderName,GL_INFO_LOG_LENGTH,&loglen);
+			GLint loglen{};
+			glGetShaderiv(shaderName, GL_INFO_LOG_LENGTH, &loglen);
+
+			std::unique_ptr<char []> log{ new char[loglen] };
+			glGetShaderInfoLog(shaderName, loglen, &loglen, log.get());
 			
-			char * log = new char[loglen];
-			glGetShaderInfoLog(shaderName, loglen, &loglen, log);
-			
-			std::cout << log << std::endl;
-			delete [] log;
+			std::cerr << log.get() << std::endl;
 
 			return false;
 		}
@@ -98,8 +97,6 @@ namespace Insanity
 
 		glDeleteShader(shaderName);
 
-		shader->Release();
-
 		return true;
 	}
 	bool CGenericGLShaderProgram::Link()
@@ -107,21 +104,20 @@ namespace Insanity
 		if(_linked) return true; //Program already linked.
 		
 		glLinkProgram(_programName);
-		
-		GLint status = 0;
+
+		GLint status{};
 		glGetProgramiv(_programName, GL_LINK_STATUS, &status);
 		
 		if(status == GL_FALSE)
 		{
-			int len = 0;
+			GLint len{};
 			glGetProgramiv(_programName, GL_INFO_LOG_LENGTH, &len);
+
+			std::unique_ptr<char []> log{ new char[len] };
+			glGetProgramInfoLog(_programName, len, &len, log.get());
 			
-			char * log = new char[len];
-			glGetProgramInfoLog(_programName, len, &len, log);
+			std::cerr << log.get() << std::endl;
 			
-			std::cout << log << std::endl;
-			
-			delete [] log;
 			return false;
 		}
 		
@@ -130,15 +126,13 @@ namespace Insanity
 		glGetProgramiv(_programName, GL_VALIDATE_STATUS, &status);
 		if (status == GL_FALSE)
 		{
-			int len = 0;
+			GLint len{};
 			glGetProgramiv(_programName, GL_INFO_LOG_LENGTH, &len);
 
-			char * log = new char[len];
+			std::unique_ptr<char []> log{ new char[len] };
 
-			glGetProgramInfoLog(_programName, len, &len, log);
-			std::cout << log << std::endl;
-
-			delete [] log;
+			glGetProgramInfoLog(_programName, len, &len, log.get());
+			std::cout << log.get() << std::endl;
 
 			return false;
 		}
@@ -184,49 +178,39 @@ namespace Insanity
 	void CGenericGLShaderProgram::SetUniform(char const * name, bool value)
 	{
 		glUniform1i(glGetUniformLocation(_programName, name), (value ? 1 : 0));
-		//glProgramUniform1i(_programName, glGetUniformLocation(_programName, name), (value ? 1 : 0));
 	}
 	void CGenericGLShaderProgram::SetUniform(char const * name, int value)
 	{
-		//glProgramUniform requires OpenGL 4.1
 		glUniform1i(glGetUniformLocation(_programName, name), value);
-		//glProgramUniform1i(_programName, glGetUniformLocation(_programName, name), value);
 	}
 	void CGenericGLShaderProgram::SetUniform(char const * name, float value)
 	{
 		glUniform1f(glGetUniformLocation(_programName, name), value);
-		//glProgramUniform1f(_programName, glGetUniformLocation(_programName, name), value);
 	}
 	void CGenericGLShaderProgram::SetUniform(char const * name, TVector<float, 2> const& value)
 	{
 		glUniform2fv(glGetUniformLocation(_programName, name), 1, value);
-		//glProgramUniform2fv(_programName, glGetUniformLocation(_programName, name), 1, value);
 	}
 	void CGenericGLShaderProgram::SetUniform(char const * name, TVector<float, 3> const& value)
 	{
 		glUniform3fv(glGetUniformLocation(_programName, name), 1, value);
-		//glProgramUniform3fv(_programName, glGetUniformLocation(_programName, name), 1, value);
 	}
 	void CGenericGLShaderProgram::SetUniform(char const * name, TVector<float, 4> const& value)
 	{
 		glUniform4fv(glGetUniformLocation(_programName, name), 1, value);
-		//glProgramUniform4fv(_programName, glGetUniformLocation(_programName, name), 1, value);
 	}
 	void CGenericGLShaderProgram::SetUniform(char const * name, TMatrix<float, 2> const& value)
 	{
 		//transpose (third param) may need to be GL_FALSE
 		glUniformMatrix2fv(glGetUniformLocation(_programName, name), 1, GL_TRUE, value);
-		//glProgramUniformMatrix2fv(_programName, glGetUniformLocation(_programName, name), 1, GL_TRUE, value);
 	}
 	void CGenericGLShaderProgram::SetUniform(char const * name, TMatrix<float, 3> const& value)
 	{
 		glUniformMatrix3fv(glGetUniformLocation(_programName, name), 1, GL_TRUE, value);
-		//glProgramUniformMatrix3fv(_programName, glGetUniformLocation(_programName, name), 1, GL_TRUE, value);
 	}
 	void CGenericGLShaderProgram::SetUniform(char const * name, TMatrix<float, 4> const& value)
 	{
 		glUniformMatrix4fv(glGetUniformLocation(_programName, name), 1, GL_TRUE, value);
-		//glProgramUniformMatrix4fv(_programName, glGetUniformLocation(_programName, name), 1, GL_TRUE, value);
 	}
 }
 

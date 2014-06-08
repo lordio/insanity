@@ -6,8 +6,7 @@
 
 namespace Insanity
 {
-	CWindowsWin32CriticalSection::CWindowsWin32CriticalSection() //:
-		//_ref(0)
+	CWindowsWin32CriticalSection::CWindowsWin32CriticalSection() : Default::Object{}
 	{
 		InitializeCriticalSection(&_mtx);
 	}
@@ -31,27 +30,6 @@ namespace Insanity
 	{
 		return TryEnterCriticalSection(&_mtx) != FALSE;
 	}
-
-	//=====================================================
-	//Interface: IObject
-	//=====================================================
-	//void CWindowsWin32CriticalSection::Retain()
-	//{
-	//	_ref++;
-	//}
-	//void CWindowsWin32CriticalSection::Release()
-	//{
-	//	if(_ref == 0) return;
-	//	--_ref;
-	//}
-	//u64 CWindowsWin32CriticalSection::GetReferenceCount() const
-	//{
-	//	return _ref;
-	//}
-	//void CWindowsWin32CriticalSection::Delete()
-	//{
-	//	delete this;
-	//}
 }
 
 #endif

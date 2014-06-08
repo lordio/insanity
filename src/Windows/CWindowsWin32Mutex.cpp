@@ -11,15 +11,14 @@ namespace Insanity
 	IMutex * IMutex::Create()
 	{
 		//in most cases, this is what you really want
-		return new CWindowsWin32CriticalSection();
+		return new CWindowsWin32CriticalSection{};
 
 		//scriptable create will allow Windows-specific property that creates a Mutex instead.
 	}
 
 	CWindowsWin32Mutex::CWindowsWin32Mutex() :
-		_mtx(NULL)//, _ref(0)
+		_mtx{ CreateMutex(nullptr, FALSE, nullptr) }
 	{
-		_mtx = CreateMutex(nullptr,FALSE,nullptr);
 	}
 	CWindowsWin32Mutex::~CWindowsWin32Mutex()
 	{
@@ -39,30 +38,9 @@ namespace Insanity
 	}
 	bool CWindowsWin32Mutex::TryLock()
 	{
-		DWORD ret = WaitForSingleObject(_mtx,0);
+		DWORD ret{ WaitForSingleObject(_mtx, 0) };
 		return !(ret == WAIT_TIMEOUT || ret == WAIT_ABANDONED);
 	}
-
-	//=====================================================
-	//Interface: IObject
-	//=====================================================
-	//void CWindowsWin32Mutex::Retain()
-	//{
-	//	++_ref;
-	//}
-	//void CWindowsWin32Mutex::Release()
-	//{
-	//	if(_ref == 0) return;
-	//	--_ref;
-	//}
-	//u64 CWindowsWin32Mutex::GetReferenceCount() const
-	//{
-	//	return _ref;
-	//}
-	//void CWindowsWin32Mutex::Delete()
-	//{
-	//	delete this;
-	//}
 }
 
 #endif

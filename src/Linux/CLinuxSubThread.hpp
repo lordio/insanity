@@ -6,10 +6,12 @@
 #if defined(PLATFORM_LINUX)
 
 #include <ISubThread.hpp>
+#include <Ptr.hpp>
 #include <pthread.h>
-#include <vector>
+#include <list>
+#include <memory>
 
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
 
 namespace Insanity
 {
@@ -18,27 +20,22 @@ namespace Insanity
 	
 	class CLinuxSubThread final : public ISubThread, public Default::Object
 	{
+		enum class ThreadState : u8
+		{
+			Waiting,
+			Running,
+			Returning,
+			Returned
+		};
+
 		static pthread_key_t s_curThreadKey;
 		static bool s_threadInit;
 
-		std::vector<ITask*> _taskList;
-		IGarbageCollector * _gc;
-		ISubThread * _ext;
-		u8 _condition;
+		std::list<Ptr<ITask>> _taskList;
+		std::unique_ptr<IGarbageCollector> _gc;
+		WeakPtr<ISubThread> _ext;
+		ThreadState _condition;
 		u8 _gcTicker;
-
-		//Thread states:
-		//Running is mutually exclusive with waiting and returned states.
-		//It is possible no condition applies (a thread has started and not yet returned, and something has requested its execution end).
-
-		//Thread has not yet started execution.
-		static const u8 THREAD_WAITING = 0x01;
-		
-		//Thread execution has completed.
-		static const u8 THREAD_RETURNED = 0x02;
-
-		//Thread should keep running.
-		static const u8 THREAD_RUNNING = 0x04;
 
 		struct _BoilerplateParams;
 

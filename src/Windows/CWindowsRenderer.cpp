@@ -14,26 +14,26 @@ namespace Insanity
 {
 	IRenderer * IRenderer::Create(IRenderer * ext, IWindow * win, IConfigObject const * cfg)
 	{
-		bool preferD3D = cfg->GetProperty("Windows.useDirect3D",(s64)0) >= 1;
-		IRenderer * ret = nullptr;
+		bool preferD3D{ cfg->GetProperty("Windows.useDirect3D", s64{}) >= 1 };
+		WeakPtr<IRenderer> ret{};
 
 		if (preferD3D)
 		{
 			//D3D
-			s64 version = cfg->GetProperty("Windows.D3D.version", (s64)9);
+			s64 version{ cfg->GetProperty("Windows.D3D.version", s64{ 9 }) };
 			switch (version)
 			{
 			case 9:
-				ret = new CWindowsDirect3D9Renderer(ext,win,cfg);
+				ret = new CWindowsDirect3D9Renderer{ ext, win, cfg };
 			case 11:
-				ret = new CWindowsDirect3D11Renderer(ext,win,cfg);
+				ret = new CWindowsDirect3D11Renderer{ ext, win, cfg };
 			}
 		}
 		else
 		{
 			//WGL
-			s64 major = cfg->GetProperty("OpenGL.version.major", (s64)2);
-			s64 minor = cfg->GetProperty("OpenGL.version.minor", (s64)1);
+			s64 major{ cfg->GetProperty("OpenGL.version.major", s64{ 2 }) };
+			s64 minor{ cfg->GetProperty("OpenGL.version.minor", s64{ 1 }) };
 
 			switch (major)
 			{
@@ -43,7 +43,7 @@ namespace Insanity
 				{
 				case 3:
 				case 4:
-					ret = new CWindowsWGLRenderer(ext,win,cfg);
+					ret = new CWindowsWGLRenderer{ ext, win, cfg };
 				}
 			}
 		}

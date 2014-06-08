@@ -7,10 +7,13 @@
 
 #include <ISubThread.hpp>
 #include <default/Object.hpp>
+#include <ITask.hpp>
+#include <Ptr.hpp>
 
-#include <vector>
+#include <list>
+#include <memory>
 
-@class MacObjCThreadWrapper;
+@class OMacOSXCocoaThread;
 
 namespace Insanity
 {
@@ -20,19 +23,19 @@ namespace Insanity
 	class CMacOSXCocoaSubThread final : public ISubThread, public Default::Object
 	{
 	private:
-		std::vector<ITask*> _tasks;
-		IGarbageCollector * _gc;
-		ISubThread * _ext;
-		MacObjCThreadWrapper * _thrd;
-		u8 _condition;
-		u8 _gcTicker;
-		
-		enum ThreadState
+		enum class ThreadState : u8
 		{
-			ThreadWaiting = 0x01,	//thread has not yet started running
-			ThreadRunning = 0x02,	//thread is active (not necessarily running right now, but hasn't been ended)
-			ThreadReturned = 0x04	//thread has finished execution
+			Waiting,
+			Running,
+			Returning,
+			Returned
 		};
+		std::list<Ptr<ITask>> _tasks;
+		std::unique_ptr<IGarbageCollector> _gc;
+		WeakPtr<ISubThread> _ext;
+		OMacOSXCocoaThread * _thrd; //ARC pointer.
+		ThreadState _condition;
+		u8 _gcTicker;
 	public:
 		CMacOSXCocoaSubThread(ISubThread * ext, bool start);
 		~CMacOSXCocoaSubThread();

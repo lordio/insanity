@@ -5,8 +5,10 @@
 
 #if defined(PLATFORM_LINUX)
 
+#include "CLinuxX11Window.hpp"
 #include <IRenderer.hpp>
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
+#include <Ptr.hpp>
 
 #include <X11/Xlib.h>
 #include <GL/glx.h>
@@ -20,16 +22,16 @@ namespace Insanity
 	//	By design, Mesa uses GLX
 	class CLinuxMesa9Renderer final : public IRenderer, public Default::Object
 	{
-		IRenderer * _ext;
-		CLinuxX11Window * _win;
+		WeakPtr<IRenderer> _ext;
+		WeakPtr<CLinuxX11Window> _win;
 		
 		GLXContext _ctx;
 		GLXFBConfig _fbc;
 		GLXWindow _glxwin;
 		Display * _dpy;
 		
-		IShaderProgram * _program;
-		TRectangle<s16,u16> * _rect;
+		Ptr<IShaderProgram> _program;
+		Ptr<TRectangle<s16,u16>> _rect;
 		
 		//Initializes _win, _fbc, and _dpy
 		//	Returns None if [win] is neither a CLinuxX11Window, nor a Default::Window extending a CLinuxX11Window.

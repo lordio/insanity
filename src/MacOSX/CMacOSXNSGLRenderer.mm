@@ -6,54 +6,18 @@
 
 #include "CMacOSXCocoaWindow.hpp"
 #include "CMacOSXOpenGLShaderProgram.hpp"
+#include "OMacOSXCocoaOpenGLView.hpp"
 #include <IWindow.hpp>
 #include <IConfigObject.hpp>
 #include <TRectangle.hpp>
 #include <default/Window.hpp>
 
+#import <AppKit/NSWindow.h>
 #import <AppKit/NSOpenGL.h>
 #import <AppKit/NSOpenGLView.h>
 #include <OpenGL/gl3.h>
 
-@interface _Insanity_MacOSXNSGLRenderer : NSOpenGLView
-{
-}
-
--(id)initWithConfig:(Insanity::IConfigObject const*)cfg window:(Insanity::CMacOSXCocoaWindow*)win;
-@end
-
-@implementation _Insanity_MacOSXNSGLRenderer
--(id)initWithConfig:(Insanity::IConfigObject const*)cfg window:(Insanity::CMacOSXCocoaWindow*)win
-{
-	//get properties from cfg, initialize ctx and fmt.
-	//need some way to entirely skip unused boolean values.
-	NSOpenGLPixelFormatAttribute pfa[] =
-	{
-		NSOpenGLPFAColorSize, static_cast<NSOpenGLPixelFormatAttribute>(cfg->GetProperty("MacOSX.NSOpenGL.color", (Insanity::s64)32)),
-		NSOpenGLPFADepthSize, static_cast<NSOpenGLPixelFormatAttribute>(cfg->GetProperty("MacOSX.NSOpenGL.depth", (Insanity::s64)24)),
-		NSOpenGLPFAStencilSize, static_cast<NSOpenGLPixelFormatAttribute>(cfg->GetProperty("MacOSX.NSOpenGL.stencil", (Insanity::s64)0)),
-		NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-		static_cast<NSOpenGLPixelFormatAttribute>((cfg->GetProperty("MacOSX.NSOpenGL.accelerated", (Insanity::s64)1) ? NSOpenGLPFAAccelerated : 0)),
-		0
-	};
-    
-    //what I could do is provide enough spaces for all the possible Boolean values
-    //  (or, at least the ones the should be configurable), and check each,
-    //  setting the first empty spot to an active Boolean.
-
-	NSOpenGLPixelFormat * fmt = [[[NSOpenGLPixelFormat alloc] initWithAttributes:pfa] autorelease];
-	NSOpenGLContext * ctx = [[[NSOpenGLContext alloc] initWithFormat:fmt shareContext:nil] autorelease];
-
-    //TODO: replace nil (frame) with window's content rectangle.
-    Insanity::TRectangle<Insanity::s16, Insanity::u16> const * winrect = win->GetRect();
-	if(![super initWithFrame:NSMakeRect(winrect->GetX(), winrect->GetY(), winrect->GetWidth(), winrect->GetHeight()) pixelFormat:fmt]) return nil;
-
-	[self setOpenGLContext:ctx];
-	[ctx makeCurrentContext];
-	
-	return self;
-}
-@end
+#include <cassert>
 
 namespace Insanity
 {
@@ -61,14 +25,12 @@ namespace Insanity
     {
     	//no special processing to do here, Macs only ever provide one OpenGL level.
     	//could split up between 3.3 and 4.1 (the two supported levels on 10.9, based on hardware)
-        return new CMacOSXNSGLRenderer(ext,win,cfg);
+        return new CMacOSXNSGLRenderer{ext,win,cfg};
     }
     
     CMacOSXNSGLRenderer::CMacOSXNSGLRenderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-        _ext(ext), _nsrend(nil), _win(nullptr), _rect(new TRectangle<s16,u16>(0,0,0,0))
+        _ext{ext}, _nsrend{nil}, _win{}, _program{}, _rect{new TRectangle<s16,u16>{0,0,0,0}}
     {
-		_rect->Retain();
-
         NSWindow * nswin = _Init(win);
         
         //each version of MacOSX supports a specific version of OpenGL. No more, no less.
@@ -77,9 +39,8 @@ namespace Insanity
     }
     CMacOSXNSGLRenderer::~CMacOSXNSGLRenderer()
     {
-        [_nsrend release];
-
-		_rect->Release();
+		[_nsrend setOpenGLContext:nil];
+		[NSOpenGLContext clearCurrentContext];
     }
     
     NSWindow * CMacOSXNSGLRenderer::_Init(IWindow * win)
@@ -89,14 +50,14 @@ namespace Insanity
         if(!_win)
         {
             //Try interpreting it as a Default::Window, and getting the extended window.
-            Default::Window * dwin = win->As<Default::Window>();
-            if(!dwin) return nil; //If it's not a Default::Window, then shrug.
+            WeakPtr<Default::Window> dwin{win->As<Default::Window>()};
+            assert(dwin); //If it's not a Default::Window, then shrug.
             
             _win = dwin->GetExtended()->As<CMacOSXCocoaWindow>();
-            if(!_win) return nil; //If that failed, we really don't know.
+            assert(_win); //If that failed, we really don't know.
         }
         
-		TRectangle<s16,u16> const * winrect = _win->GetRect();
+		WeakPtr<const TRectangle<s16,u16>> winrect{_win->GetRect()};
 		_rect->SetWidth(winrect->GetWidth());
 		_rect->SetHeight(winrect->GetHeight());
 
@@ -104,7 +65,7 @@ namespace Insanity
     }
     void CMacOSXNSGLRenderer::_MakeContext(NSWindow * win, IConfigObject const * cfg)
     {
-        _nsrend = [[_Insanity_MacOSXNSGLRenderer alloc] initWithConfig:cfg window:_win];
+        _nsrend = [[OMacOSXCocoaOpenGLView alloc] initWithConfig:cfg window:_win];
         [win setContentView:_nsrend];
         //is that all it takes? I know initWithConfig:window: does most of the work, but is there ANYTHING else to do from here?
     }
@@ -134,7 +95,7 @@ namespace Insanity
     }
 	IShaderProgram * CMacOSXNSGLRenderer::CreateShaderProgram()
 	{
-		return new CMacOSXOpenGLShaderProgram();
+		return new CMacOSXOpenGLShaderProgram{};
 	}
 	bool CMacOSXNSGLRenderer::UseShaderProgram(IShaderProgram * program)
 	{
@@ -142,13 +103,9 @@ namespace Insanity
 			if(!program->Link())
 				return false;
 		
-		if(_program) _program->Release();
 		_program = program;
-		if(_program)
-		{
-			_program->Retain();
-			glUseProgram(program->As<CMacOSXOpenGLShaderProgram>()->GetProgramName());
-		}
+
+		if(_program) glUseProgram(program->As<CMacOSXOpenGLShaderProgram>()->GetProgramName());
 		else glUseProgram(0);
 		
 		return true;

@@ -5,8 +5,12 @@
 
 #if defined(PLATFORM_LINUX)
 
+#include "CLinuxX11Window.hpp"
+
 #include <IRenderer.hpp>
-#include <default/Object.hpp>
+#include <IShaderProgram.hpp>
+#include <Default/Object.hpp>
+#include <Ptr.hpp>
 
 #include <X11/Xlib.h>
 #include <GL/glx.h>
@@ -21,15 +25,15 @@ namespace Insanity
 	//Non-Mesa GLX; should be used for versions higher than 3.1 (Mesa 9) or 3.3 (Mesa 10), for systems with manufacturer drivers.
 	class CLinuxGLXRenderer final : public IRenderer, public Default::Object
 	{
-		IRenderer * _ext;
-		CLinuxX11Window * _win;
+		WeakPtr<IRenderer> _ext;
+		WeakPtr<CLinuxX11Window> _win;
 		GLXContext _ctx;
 		GLXFBConfig _fbc;
 		GLXWindow _glxwin;
 		Display * _dpy;
 		
-		IShaderProgram * _program;
-		TRectangle<s16,u16> * _rect;
+		Ptr<IShaderProgram> _program;
+		Ptr<TRectangle<s16,u16>> _rect;
 		
 		//=================================================
 		//Performs initialization of simple members:
@@ -46,8 +50,6 @@ namespace Insanity
 		//=================================================
 		void _MakeContext(Window xwin, int major, int minor);
 	public:
-		CLinuxGLXRenderer(IWindow * win);
-		CLinuxGLXRenderer(IRenderer * ext, IWindow * win);
 		CLinuxGLXRenderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg);
 		~CLinuxGLXRenderer();
 		

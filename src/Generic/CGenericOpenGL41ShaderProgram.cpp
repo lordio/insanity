@@ -4,12 +4,14 @@
 
 #if !defined(PLATFORM_MACOSX)
 
-#include <IString.hpp>
 #include <TVector.hpp>
 #include <TMatrix.hpp>
 
 #include <fstream>
 #include <iostream>
+#include <string>
+#include <cassert>
+#include <memory>
 
 namespace
 {
@@ -38,7 +40,7 @@ namespace
 namespace Insanity
 {
 	CGenericOpenGL41ShaderProgram::CGenericOpenGL41ShaderProgram() :
-		_programName(glCreateProgram()), _linked(false)
+		_programName{ glCreateProgram() }, _linked{ false }
 	{
 	}
 	CGenericOpenGL41ShaderProgram::~CGenericOpenGL41ShaderProgram()
@@ -56,44 +58,36 @@ namespace Insanity
 	//=====================================================
 	bool CGenericOpenGL41ShaderProgram::AddShader(EShaderType type, char const * filename)
 	{
-		if (_linked) return false;
-
-		IString<char> * shader = IString<char>::Create();
-		shader->Retain();
+		assert(!_linked);
 
 		//add some more checks that, if failed, will return false
 
-		//ensure the file was loaded
-		std::ifstream shaderFile(filename);
-		if (!shaderFile)
-		{
-			std::cout << "Shader file \"" << filename << "\" does not exist." << std::endl;
-			return false;
-		}
+		std::ifstream shaderFile{ filename };
+		assert(shaderFile);
 
-		char holder = 0;
-		while (shaderFile.get(holder)) shader->Append(holder);
+		std::string shader{};
+		char holder{};
+		while (shaderFile.get(holder)) shader += holder;
 
-		GLuint shaderName = glCreateShader(translate(type));
+		GLuint shaderName{ glCreateShader(translate(type)) };
 
-		char const * shaderCArray = shader->Array();
+		char const * shaderCArray{ shader.c_str() };
 
 		//ensure compilation worked.
 		glShaderSource(shaderName, 1, &shaderCArray, nullptr);
 		glCompileShader(shaderName);
-		
-		GLint status = 0;
+
+		GLint status{};
 		glGetShaderiv(shaderName,GL_COMPILE_STATUS, &status);
 		if (status == GL_FALSE)
 		{
-			GLint loglen = 0;
-			glGetShaderiv(shaderName,GL_INFO_LOG_LENGTH,&loglen);
+			GLint loglen{};
+			glGetShaderiv(shaderName, GL_INFO_LOG_LENGTH, &loglen);
+
+			std::unique_ptr<char []> log{ new char[loglen] };
+			glGetShaderInfoLog(shaderName, loglen, &loglen, log.get());
 			
-			char * log = new char[loglen];
-			glGetShaderInfoLog(shaderName, loglen, &loglen, log);
-			
-			std::cout << log << std::endl;
-			delete [] log;
+			std::cerr << log.get() << std::endl;
 
 			return false;
 		}
@@ -102,8 +96,6 @@ namespace Insanity
 
 		glDeleteShader(shaderName);
 
-		shader->Release();
-
 		return true;
 	}
 	bool CGenericOpenGL41ShaderProgram::Link()
@@ -111,21 +103,20 @@ namespace Insanity
 		if(_linked) return true;
 		
 		glLinkProgram(_programName);
-		
-		GLint status = 0;
+
+		GLint status{};
 		glGetProgramiv(_programName, GL_LINK_STATUS, &status);
 		
 		if(status == GL_FALSE)
 		{
-			int len = 0;
+			GLint len{};
 			glGetProgramiv(_programName, GL_INFO_LOG_LENGTH, &len);
+
+			std::unique_ptr<char []> log{ new char[len] };
+			glGetProgramInfoLog(_programName, len, &len, log.get());
 			
-			char * log = new char[len];
-			glGetProgramInfoLog(_programName, len, &len, log);
+			std::cerr << log.get() << std::endl;
 			
-			std::cout << log << std::endl;
-			
-			delete [] log;
 			return false;
 		}
 		
@@ -134,15 +125,13 @@ namespace Insanity
 		glGetProgramiv(_programName, GL_VALIDATE_STATUS, &status);
 		if (status == GL_FALSE)
 		{
-			int len = 0;
+			GLint len{};
 			glGetProgramiv(_programName, GL_INFO_LOG_LENGTH, &len);
 
-			char * log = new char[len];
+			std::unique_ptr<char []> log{ new char[len] };
 
-			glGetProgramInfoLog(_programName, len, &len, log);
-			std::cout << log << std::endl;
-
-			delete [] log;
+			glGetProgramInfoLog(_programName, len, &len, log.get());
+			std::cerr << log.get() << std::endl;
 
 			return false;
 		}

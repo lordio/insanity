@@ -5,9 +5,7 @@
 
 #if defined(PLATFORM_LINUX)
 
-//#include <ITask.hpp>
-//#include <default/Object.hpp>
-#include <default/Task.hpp>
+#include <Default/Task.hpp>
 
 #include <map>
 #include <functional>

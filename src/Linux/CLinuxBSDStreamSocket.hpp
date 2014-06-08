@@ -6,7 +6,7 @@
 #if defined(PLATFORM_LINUX)
 
 #include <IStreamSocket.hpp>
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
 
 namespace Insanity
 {

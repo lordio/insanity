@@ -17,7 +17,6 @@ namespace Insanity
 	class CWindowsWin32CriticalSection final : public IMutex, public Default::Object
 	{
 		CRITICAL_SECTION _mtx;
-		//u64 _ref;
 	public:
 		CWindowsWin32CriticalSection();
 		~CWindowsWin32CriticalSection();
@@ -28,14 +27,6 @@ namespace Insanity
 		void Lock() override;
 		void Unlock() override;
 		bool TryLock() override;
-
-		//=================================================
-		//Interface: IObject
-		//=================================================
-		//void Retain() override;
-		//void Release() override;
-		//u64 GetReferenceCount() const override;
-		//void Delete() override;
 	};
 }
 

@@ -4,16 +4,14 @@
 #include <IObject.hpp>
 #include <algorithm>
 
-#include <functional>
-
 namespace Insanity
 {
 	IGarbageCollector * IGarbageCollector::Create()
 	{
-		return new CGenericGarbageCollector();
+		return new CGenericGarbageCollector{};
 	}
 
-	CGenericGarbageCollector::CGenericGarbageCollector()
+	CGenericGarbageCollector::CGenericGarbageCollector() : _pool{}
 	{
 	}
 	CGenericGarbageCollector::~CGenericGarbageCollector()
@@ -37,7 +35,7 @@ namespace Insanity
 	}
 	void CGenericGarbageCollector::Collect()
 	{
-        for(auto iter = _pool.begin(); iter < _pool.end();)
+        for(auto iter = _pool.begin(); iter != _pool.end();)
         {
             if((*iter)->GetReferenceCount() == 0)
             {
@@ -48,31 +46,6 @@ namespace Insanity
             }
             else iter++;
         }
-		/*IObject * last = nullptr;
-
-		for(auto iter = _pool.begin(); iter < _pool.end();)
-		{
-			if((*iter)->GetReferenceCount() != 0)
-			{
-				last = *iter;
-				iter++;
-			}
-			else
-			{
-				(*iter)->Delete();
-				_pool.erase(iter);
-
-				//iterator invalidated. find last checked object (or vector start if last is nullptr)
-				if(last == nullptr) iter = _pool.begin();
-				else
-				{
-					iter = std::find(_pool.begin(),_pool.end(),last);
-					iter++;
-				}
-				//is it possible for the destruction of an object created second to destroy an object earlier in the vector? I don't think so.
-				//	since GarbageCollector handles destruction. Elsewhere things should just retain and release.
-			}
-		}*/
 	}
 	void CGenericGarbageCollector::Clean()
 	{

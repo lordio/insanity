@@ -27,8 +27,7 @@ namespace Insanity
 		//Retrieves specified property as type of [def],
 		//	or returns [def] if property was not specified.
 		//=================================================
-		virtual IString<char> const * GetProperty(char const * propName, char const * def) const = 0;
-		virtual IString<char> const * GetProperty(char const * propName, IString<char> const * def) const = 0;
+		virtual char const * GetProperty(char const * propName, char const * def) const = 0; //should return char const *
 		virtual s64 GetProperty(char const * propName, s64 def) const = 0;
 		virtual double GetProperty(char const * propName, double def) const = 0;
 		
@@ -36,7 +35,6 @@ namespace Insanity
 		//Sets property to a new value.
 		//=================================================
 		virtual void SetProperty(char const * propName, char const * value) = 0;
-		virtual void SetProperty(char const * propName, IString<char> const * value) = 0;
 		virtual void SetProperty(char const * propName, s64 value) = 0;
 		virtual void SetProperty(char const * propName, double value) = 0;
 	};

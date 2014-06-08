@@ -7,14 +7,29 @@
 #include <IThread.hpp>
 #include <IGarbageCollector.hpp>
 #include <IApplication.hpp>
-#include <IString.hpp>
 #include <TRectangle.hpp>
 #include <IConfigObject.hpp>
+#include "WindowsStringConversion.hpp"
 
 #include <windowsx.h>
 #include <CommCtrl.h>
 
 #include <iostream>
+#include <string>
+
+namespace
+{
+	RECT _GetAdjustedRect(Insanity::TRectangle<Insanity::s16, Insanity::u16> const * rect)
+	{
+		RECT ret;
+		ret.left = rect->GetLeft();
+		ret.right = rect->GetRight();
+		ret.top = rect->GetTop();
+		ret.bottom = rect->GetBottom();
+		AdjustWindowRectEx(&ret, WS_OVERLAPPEDWINDOW, FALSE, WS_EX_OVERLAPPEDWINDOW);
+		return ret;
+	}
+}
 
 namespace Insanity
 {
@@ -23,9 +38,9 @@ namespace Insanity
 		return new CWindowsWin32Window(ext, cfg);
 	}
 
-	bool CWindowsWin32Window::s_windowClassRegistered = false;
-	CWindowsWin32EventPumpTask * CWindowsWin32Window::s_pumpTask = nullptr;
-	u64 CWindowsWin32Window::s_winCount = 0;
+	bool CWindowsWin32Window::s_windowClassRegistered{};
+	Ptr<CWindowsWin32EventPumpTask> CWindowsWin32Window::s_pumpTask{};
+	u64 CWindowsWin32Window::s_winCount{};
 
 	u64 CWindowsWin32Window::GetWindowCount()
 	{
@@ -33,9 +48,9 @@ namespace Insanity
 	}
 
 	CWindowsWin32Window::CWindowsWin32Window(IWindow * ext, IConfigObject const * cfg) :
-		_ext(ext), _rect(nullptr)
+		_rect(nullptr), _ext(ext), _win(NULL)
 	{
-		HMODULE hInst = GetModuleHandle(nullptr);
+		HMODULE hInst{ GetModuleHandle(nullptr) };
 
 		_InitWindowClass(hInst);
 		_InitEventPump();
@@ -48,14 +63,13 @@ namespace Insanity
 	{
 		if(--s_winCount == 0)
 		{
-			s_pumpTask->Release(); //The windows don't need it anymore.
+			s_pumpTask = nullptr; //The windows don't need it anymore.
 			//the pump task will not be deleted until it's dequeued from the thread task list.
 		}
 		
 		//A comment on SetWindowSubclass says to remove the subclass before destroying the window.
 		RemoveWindowSubclass(_win,WindowProc,0);
 		DestroyWindow(_win);
-		_rect->Release();
 	}
 
 	void CWindowsWin32Window::_InitWindowClass(HINSTANCE hInst)
@@ -85,26 +99,22 @@ namespace Insanity
 	void CWindowsWin32Window::_InitWindow(HINSTANCE hInst, IConfigObject const * cfg)
 	{
 		//_rect stores the dimensions of the client area of the window.
-		_rect = new TRectangle<s16, u16>(static_cast<s16>(cfg->GetProperty("dims.x", (s64)0)),
-			static_cast<s16>(cfg->GetProperty("dims.y", (s64)0)),
-			static_cast<u16>(cfg->GetProperty("dims.width", (s64)640)),
-			static_cast<u16>(cfg->GetProperty("dims.height", (s64)480)));
-		_rect->Retain();
+		_rect = new TRectangle<s16, u16>(static_cast<s16>(cfg->GetProperty("dims.x", s64{})),
+			static_cast<s16>(cfg->GetProperty("dims.y", s64{})),
+			static_cast<u16>(cfg->GetProperty("dims.width", s64{ 640 })),
+			static_cast<u16>(cfg->GetProperty("dims.height", s64{ 480 })));
 		
 		//Need to adjust for non-client area of window for CreateWindow.
-		RECT adj;
-		adj.left = _rect->GetLeft();
-		adj.top = _rect->GetTop();
-		adj.right = _rect->GetRight();
-		adj.bottom = _rect->GetBottom();
-		AdjustWindowRectEx(&adj, WS_OVERLAPPEDWINDOW, FALSE, WS_EX_OVERLAPPEDWINDOW);
+		RECT&& adj = _GetAdjustedRect(_rect);
 		
 		//convert the title to a wchar_t string. Let the garbage collector take care of it.
-		IString<wchar_t> * wtitle = IString<wchar_t>::Create(cfg->GetProperty("title", ""));
+		//IString<wchar_t> * wtitle = IString<wchar_t>::Create(cfg->GetProperty("title", ""));
+		std::wstring wtitle{};
+		atow(cfg->GetProperty("title", ""), wtitle);
 
 		_win = CreateWindowExW(WS_EX_OVERLAPPEDWINDOW,	//will either want this or options for fullscreen
 			L"InsanityWindowClass",						//Constant
-			wtitle->Array(),							//Good candidate for Config file
+			wtitle.c_str(),								//Good candidate for Config file
 			WS_OVERLAPPEDWINDOW,						//as dwExStyle
 			adj.left, adj.top,
 			adj.right - adj.left, adj.bottom - adj.top,	//Dimensions are another good candidate
@@ -137,13 +147,12 @@ namespace Insanity
 	LRESULT CALLBACK CWindowsWin32Window::WindowProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam, UINT_PTR uSubclassId, DWORD_PTR dwRefData)
 	{
 		//this is the main method for processing window messages.
-		CWindowsWin32Window * self = reinterpret_cast<CWindowsWin32Window*>(dwRefData);
-		self->Retain();
+		WeakPtr<CWindowsWin32Window> self{ reinterpret_cast<CWindowsWin32Window*>(dwRefData) };
 
-		IWindow * call = (self->_ext ? self->_ext : self);
+		WeakPtr<IWindow> call{ static_cast<IWindow*>(self->_ext ? self->_ext.Get() : self.Get()) };
 
 		POINTS pt = MAKEPOINTS(lParam);
-		WORD highWParam = HIWORD(wParam);
+		WORD highWParam{ HIWORD(wParam) };
 
 		switch(msg)
 		{
@@ -190,7 +199,6 @@ namespace Insanity
 			call->KeyHandler((EKey) wParam, EKeyState::Down);
 			break;
 		case WM_CLOSE:
-			std::cout << "Close message received." << std::endl;
 			call->CloseHandler();
 			break;
 		case WM_SHOWWINDOW:
@@ -213,7 +221,7 @@ namespace Insanity
 		case WM_MOUSEWHEEL:
 			{
 				//need the sign from highWParam
-				SHORT delta = (SHORT)highWParam;
+				SHORT delta{ (SHORT) highWParam };
 				
 				//the second parameter to ScrollHandler is a simple magnitude (unsigned), so take the absolute value.
 				call->ScrollHandler((delta > 0 ? EMouseScrollDirection::Up : EMouseScrollDirection::Down), abs(delta / WHEEL_DELTA));
@@ -221,7 +229,6 @@ namespace Insanity
 			break;
 		}
 
-		self->Release();
 		return DefSubclassProc(wnd,msg,wParam,lParam);
 	}
 	
@@ -264,8 +271,8 @@ namespace Insanity
 	}
 	void CWindowsWin32Window::Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y)
 	{
-		UINT msg = 0;
-		WORD xButton = 0;
+		UINT msg{};
+		WORD xButton{};
 		switch (button)
 		{
 		case EMouseButton::Left:
@@ -305,10 +312,9 @@ namespace Insanity
 				break;
 			}
 		}
-		DWORD tmpX = x;
-		DWORD tmpY = y;
-		LPARAM lParam = (tmpY << 16) | tmpX;
-		PostMessage(_win, msg, xButton << 16, lParam);
+		DWORD tmpX{ x };
+		DWORD tmpY{ y };
+		PostMessage(_win, msg, xButton << 16, MAKELPARAM(tmpX, tmpY));
 	}
 	void CWindowsWin32Window::Key(EKey key, EKeyState state)
 	{
@@ -318,7 +324,7 @@ namespace Insanity
 	void CWindowsWin32Window::Scroll(EMouseScrollDirection dir, u16 delta)
 	{
 		//mask off the sign bit (shouldn't cause problems)
-		SHORT postDelta = delta & 0x7fff;
+		SHORT postDelta{ delta & 0x7fff } ;
 		postDelta *= (dir == EMouseScrollDirection::Up ? 1 : -1);
 		
 		//Last parameter should be the current mouse position, but that's not provided nor tracked internally.
@@ -326,15 +332,15 @@ namespace Insanity
 	}
 	void CWindowsWin32Window::Show(bool show)
 	{
-		ShowWindow(_win, (show ? SW_SHOWNORMAL : SW_HIDE));
+		PostMessage(_win, WM_SHOWWINDOW, show, 0);
 	}
 	void CWindowsWin32Window::Move(s16 x, s16 y)
 	{
-		MoveWindow(_win,x,y,0,0,TRUE);
+		PostMessage(_win, WM_MOVE, 0, MAKELPARAM(x, y));
 	}
 	void CWindowsWin32Window::Resize(u16 width, u16 height)
 	{
-		MoveWindow(_win,0,0,width,height,TRUE);
+		PostMessage(_win, WM_SIZE, SIZE_RESTORED, MAKELPARAM(width, height));
 	}
 	void CWindowsWin32Window::Close()
 	{

@@ -25,7 +25,6 @@
 #include "IServerSocket.hpp"
 #include "IShaderProgram.hpp"
 #include "IStreamSocket.hpp"
-#include "IString.hpp"
 #include "ISubThread.hpp"
 #include "IWindow.hpp"
 
@@ -37,12 +36,22 @@
 //Singleton Application
 #include "IApplication.hpp"
 
+//Module
+//	(instantiable, but each is unique)
+#include "IMod.hpp"
+
+//Helper classes
+#include "EKeyMap.hpp"
 #include "Ptr.hpp"
 #include "TMatrix.hpp"
 #include "TRectangle.hpp"
 #include "TVector.hpp"
 
-#if INSANITY_BUILDING(INSANITY_MSWINDOWS)
+//Default classes
+//	(provide most common necessary implementation, but are generally overridable)
+#include "Default.hpp"
+
+#if defined(PLATFORM_MSWINDOWS)
 //link against insanity library
 #	pragma comment(lib, "Insanity.lib")
 

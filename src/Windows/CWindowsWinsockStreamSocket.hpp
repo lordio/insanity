@@ -15,7 +15,6 @@ namespace Insanity
 	class CWindowsWinsockStreamSocket final : public IStreamSocket, public Default::Object
 	{
 		SOCKET _sock;
-		//u64 _ref;
 	public:
 		CWindowsWinsockStreamSocket(char const * host, u16 port);
 		CWindowsWinsockStreamSocket(SOCKET accepted);
@@ -32,14 +31,6 @@ namespace Insanity
 
 		bool HasPendingData() const override;
 		bool IsConnected() const override;
-
-		//=================================================
-		//Interface: IObject
-		//=================================================
-		//void Retain() override;
-		//void Release() override;
-		//u64 GetReferenceCount() const override;
-		//void Delete () override;
 	};
 }
 

@@ -45,15 +45,6 @@
     <Filter Include="Implementations\Generic\ByteArray">
       <UniqueIdentifier>{51c964bd-9b1b-46b7-8c40-9661e8709e11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Implementations\Generic\String">
-      <UniqueIdentifier>{9789949f-98cb-47b0-a974-a0aa52acdf6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implementations\Generic\String\Char">
-      <UniqueIdentifier>{13d76a3f-899b-4585-9aeb-aeeea0b5af4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implementations\Generic\String\WCharT">
-      <UniqueIdentifier>{4f3e5b61-02cb-4916-9d48-2978b0c3b8f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Implementations\Generic\ConfigObject">
       <UniqueIdentifier>{7d4625e8-ee53-4c6e-819f-a7a0a2bb82d8}</UniqueIdentifier>
     </Filter>
@@ -216,6 +207,18 @@
     <Filter Include="Non-Interface Headers">
       <UniqueIdentifier>{1c3e816c-4c26-45bf-a77f-c55ea8fc1065}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Application\AppDelegate">
+      <UniqueIdentifier>{36b9a5d9-4e56-4ac3-979e-091b1d488489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Window\WindowDelegate">
+      <UniqueIdentifier>{2adc7951-892f-4cc1-a21c-cb547f5787e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\SubThread\Thread">
+      <UniqueIdentifier>{7c5d914f-477f-415b-9ca1-f2afcd7b36e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementations\MacOSX\Cocoa\Window\NSEvent">
+      <UniqueIdentifier>{25e94b95-4ac3-4681-a1f9-db23b553a4d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\IApplication.hpp">
@@ -257,9 +260,6 @@
     <ClInclude Include="..\..\..\include\IStreamSocket.hpp">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\IString.hpp">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\ISubThread.hpp">
       <Filter>Interfaces</Filter>
     </ClInclude>
@@ -289,12 +289,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Generic\CGenericByteArray.hpp">
       <Filter>Implementations\Generic\ByteArray</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Generic\CGenericCharString.hpp">
-      <Filter>Implementations\Generic\String\Char</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Generic\CGenericWCharTString.hpp">
-      <Filter>Implementations\Generic\String\WCharT</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Generic\CGenericConfigObject.hpp">
       <Filter>Implementations\Generic\ConfigObject</Filter>
@@ -425,6 +419,27 @@
     <ClInclude Include="..\..\..\src\Linux\CLinuxGLXRenderer.hpp">
       <Filter>Implementations\Linux\Renderer\GLX</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockTracker.hpp">
+      <Filter>Implementations\Windows\Winsock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Application\AppDelegate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Window\WindowDelegate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\TString.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Windows\WindowsStringConversion.hpp">
+      <Filter>Implementations\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaThread.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\SubThread\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\NSEvent+OMacOSXCocoaMouseEvent.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Window\NSEvent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Default\Object.cpp">
@@ -447,12 +462,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Generic\CGenericByteArray.cpp">
       <Filter>Implementations\Generic\ByteArray</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Generic\CGenericCharString.cpp">
-      <Filter>Implementations\Generic\String\Char</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Generic\CGenericWCharTString.cpp">
-      <Filter>Implementations\Generic\String\WCharT</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Generic\CGenericConfigObject.cpp">
       <Filter>Implementations\Generic\ConfigObject</Filter>
@@ -559,6 +568,12 @@
     <ClCompile Include="..\..\..\src\Linux\CLinuxGLXRenderer.cpp">
       <Filter>Implementations\Linux\Renderer\GLX</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockTracker.cpp">
+      <Filter>Implementations\Windows\Winsock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Windows\WindowsStringConversion.cpp">
+      <Filter>Implementations\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\MacOSX\CMacOSXApplication.mm">
@@ -583,5 +598,17 @@
       <Filter>Implementations\MacOSX\OpenGL\ShaderProgram</Filter>
     </None>
     <None Include="..\..\..\Makefile" />
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Application\AppDelegate</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Window\WindowDelegate</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaThread.mm">
+      <Filter>Implementations\MacOSX\Cocoa\SubThread\Thread</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\NSEvent+OMacOSXCocoaMouseEvent.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Window\NSEvent</Filter>
+    </None>
   </ItemGroup>
 </Project>

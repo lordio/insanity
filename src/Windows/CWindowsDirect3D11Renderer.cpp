@@ -10,6 +10,8 @@
 #include <TRectangle.hpp>
 #include <d3d11.h>
 
+#include <cassert>
+
 #pragma comment(lib, "d3d11.lib")
 
 namespace Insanity
@@ -17,16 +19,11 @@ namespace Insanity
 	//IRenderer Create methods should be moved to their own .cpp, that uses a configobject property to determine whether to use
 	//	OpenGL, or D3D (and in the latter case, which version)
 	CWindowsDirect3D11Renderer::CWindowsDirect3D11Renderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-		_ext(ext), _rect(new TRectangle<s16,u16>(0,0,0,0))
+		_rect{ new TRectangle<s16, u16>(0, 0, 0, 0) }, _ext{ ext }, _win{}
 	{
-		_rect->Retain();
-
-		HWND wnd = _Init(win);
+		HWND wnd{ _Init(win) };
 
 		_MakeContext(wnd,cfg);
-
-		u16 wWidth = win->GetRect()->GetWidth();
-		u16 wHeight = win->GetRect()->GetHeight();
 	}
 	CWindowsDirect3D11Renderer::~CWindowsDirect3D11Renderer()
 	{
@@ -35,8 +32,6 @@ namespace Insanity
 		_swap->Release();
 		_dev->Release();
 		_ctx->Release();
-
-		_rect->Release();
 	}
 
 	HWND CWindowsDirect3D11Renderer::_Init(IWindow * win)
@@ -45,11 +40,11 @@ namespace Insanity
 		if (!_win)
 		{
 			//try the window as a Default::Window
-			Default::Window * dwin = win->As<Default::Window>();
-			if (!dwin) return NULL; //if that failed, give up
+			WeakPtr<Default::Window> dwin{ win->As<Default::Window>() };
+			assert(dwin); //can't do anything meaningful without dwin.
 
 			_win = dwin->GetExtended()->As<CWindowsWin32Window>();
-			if (!_win) return NULL; //that didn't work, either. Too bad.
+			assert(_win); //that didn't work, either. Too bad.
 		}
 
 		TRectangle<s16, u16> const * winrect = _win->GetRect();
@@ -94,7 +89,7 @@ namespace Insanity
 			&features, //D3D_FEATURE_LEVEL*, needed? Not marked "opt" in docs.
 			&_ctx); //ID3D11DeviceContext**
 
-		ID3D11Texture2D * backBuffer;
+		ID3D11Texture2D * backBuffer{};
 		_swap->GetBuffer(0, __uuidof(ID3D11RenderTargetView), (void**) &backBuffer);
 
 		_dev->CreateRenderTargetView(backBuffer, nullptr, &_view);

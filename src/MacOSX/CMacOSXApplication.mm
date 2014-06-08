@@ -11,106 +11,36 @@
 
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSEvent.h>
-#import <Foundation/NSAutoreleasePool.h>
 #include <sched.h>
+#include "OMacOSXCocoaApplicationDelegate.hpp"
 
 #include <algorithm>
 
-//figure out a policy for Objective-C classes defined to help OSX implementations.
-//	id est, keep them in the file they are used with, or a separate file?
-//	Also, a uniform naming scheme.
-#if 0
-@interface InsanityApplicationDelegate : NSObject <NSApplicationDelegate>
-{
-}
-@end
-
-@implementation InsanityApplicationDelegate
--(NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication*)sender
-{
-	return NSTerminateNow;
-}
--(BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)sender
-{
-	return YES;
-}
-@end
-
-@interface InsanityApplication : NSApplication
-{
-	bool insAppIsRunning;
-	CMacOSXCocoaEventPumpTask * pumpTask;
-}
-@end
-
-@implementation InsanityApplication
-//Is init called on NSApplication subclasses?
--(id) init
-{
-	if(self = [super init])
-	{
-		insAppIsRunning = true;
-
-		[self setActivationPolicy:NSApplicationActivationPolicyRegular];
-		[self setDelegate: [[InsanityApplicationDelegate alloc] init]];
-	}
-
-	return self;
-}
-//=========================================================
-//Retrieve all available events from OSX event queue, and
-//	process them.
-//Returns false if an event has requested the application
-//	terminate.
-//=========================================================
--(bool) processEvents
-{
-	NSEvent * evt = nil;
-
-	while(evt = [self nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantPast] inMode:NSDefaultRunLoopMode dequeue:YES])
-	{
-		[self sendEvent: evt];
-	}
-}
--(void) terminate:(id) sender
-{
-	insAppIsRunning = false;
-
-	[super terminate:sender];
-}
-@end
-#endif //0
+//Need autoreleasepool blocks anywhere that creates temporary Objective-C objects.
+//	If all created objects outlive the method, no block is necessary.
+//	Also need one in a thread.
 
 namespace Insanity
 {
-	IApplication * IApplication::s_app = nullptr;
+	IApplication * IApplication::s_app{};
 
 	IApplication * IApplication::GetInstance()
 	{
 		if(s_app) return s_app;
 
-		return s_app = new CMacOSXApplication();
+		return s_app = new CMacOSXApplication{};
 	}
 
 	CMacOSXApplication::CMacOSXApplication() :
-		_gc(IGarbageCollector::Create()), _ref(0), _running(true)
+		_taskList{}, _gc{IGarbageCollector::Create()}, _ref{}, _running{true}, _gcTicker{}
 	{
-		//don't need to catch it, as it's added to the thread behind the scenes
-		//	may want it for [pool drain] in dtor.
-		//	Does ARC use the autorelease annotation? How will that work with this?
-		//	I'm thinking I'd need to put autorelease tags in any method that interacts with ObjC objects.
-		[[NSAutoreleasePool alloc] init];
-
-		//do I need to provide a delegate for anything?
 		[[NSApplication sharedApplication] setActivationPolicy:NSApplicationActivationPolicyRegular];
+		[NSApp setDelegate:[[OMacOSXCocoaApplicationDelegate alloc] init]];
 		[NSApp finishLaunching];
 	}
 	CMacOSXApplication::~CMacOSXApplication()
 	{
 		IMod::ClearCache();
-
-		_gc->Clean();
-		delete _gc;
 
 		s_app = nullptr;
 	}
@@ -130,7 +60,6 @@ namespace Insanity
 			if(!(*iter)->ShouldRequeue())
 			{
 				(*iter)->Dequeue();
-				(*iter)->Release();
 				iter = _taskList.erase(iter);
 			}
 			else iter++;
@@ -151,7 +80,7 @@ namespace Insanity
 	}
 	IGarbageCollector * CMacOSXApplication::GetGarbageCollector() const
 	{
-		return _gc;
+		return _gc.get();
 	}
 	void CMacOSXApplication::Yield() const
 	{
@@ -160,7 +89,6 @@ namespace Insanity
 	void CMacOSXApplication::RegisterTask(ITask * task)
 	{
 		_taskList.push_back(task);
-		task->Retain();
 	}
 	void CMacOSXApplication::Transfer(IObject * obj)
 	{

@@ -1,14 +1,13 @@
 #define INSANITY_BUILDING_LIBRARY
 
-#include <default/Renderer.hpp>
+#include <Default/Renderer.hpp>
 
 namespace Insanity
 {
 	namespace Default
 	{
-		Renderer::Renderer(IWindow * win, IConfigObject const * cfg)
+		Renderer::Renderer(IWindow * win, IConfigObject const * cfg) :  Object{}, _base{ IRenderer::Create(this, win, cfg) }
 		{
-			_base = IRenderer::Create(this, win, cfg);
 			_base->Retain();
 		}
 		Renderer::~Renderer()

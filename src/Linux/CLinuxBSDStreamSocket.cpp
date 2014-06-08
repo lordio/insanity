@@ -13,20 +13,22 @@
 #include <cstring>
 #include <unistd.h>
 
+#include <memory>
+
 namespace Insanity
 {
 	IStreamSocket * IStreamSocket::Create(char const * host, u16 port)
 	{
-		return new CLinuxBSDStreamSocket(host,port);
+		return new CLinuxBSDStreamSocket{host,port};
 	}
 
 	CLinuxBSDStreamSocket::CLinuxBSDStreamSocket(char const * host, u16 port) :
-		_sock(0)//, _ref(0)
+		Default::Object{}, _sock(0)
 	{
 		Connect(host,port);
 	}
 	CLinuxBSDStreamSocket::CLinuxBSDStreamSocket(int sock) :
-		_sock(sock)//, _ref(0)
+		Default::Object{}, _sock(sock)
 	{
 	}
 	CLinuxBSDStreamSocket::~CLinuxBSDStreamSocket()
@@ -49,10 +51,9 @@ namespace Insanity
 		addrinfo * ret = nullptr;
 		addrinfo * ptr = nullptr;
 
-		char cport[6] = "";
-		snprintf(cport,6,"%d",port); //should be base 10
+		std::string cport{std::to_string(port)};
 
-		getaddrinfo(host,cport,&hints,&ret);
+		getaddrinfo(host,cport.c_str(),&hints,&ret);
 
 		ptr = ret;
 
@@ -88,7 +89,7 @@ namespace Insanity
 
 	void CLinuxBSDStreamSocket::Send(IByteArray const * arr)
 	{
-		u64 size = arr->Size();
+		u64 size{arr->Size()};
 		send(_sock,reinterpret_cast<char*>(&size),sizeof(u64),0);
 		send(_sock,reinterpret_cast<char const*>(arr->Array()),static_cast<int>(size),0);
 		//for no clear reason, size is a signed 32-bit int.
@@ -97,22 +98,18 @@ namespace Insanity
 	}
 	void CLinuxBSDStreamSocket::Receive(IByteArray * arr)
 	{
-		u64 size = 0;
+		u64 size{};
 		recv(_sock,reinterpret_cast<char*>(&size),sizeof(u64),0);
 
-		u8 * buffer = new u8[size];
-		recv(_sock,reinterpret_cast<char*>(buffer),static_cast<int>(size),0);
+		std::unique_ptr<u8[]> buffer{new u8[size]};
+		recv(_sock,reinterpret_cast<char*>(buffer.get()),static_cast<int>(size),0);
 
-		arr->Write(buffer,size);
-
-		delete [] buffer;
+		arr->Write(buffer.get(),size);
 	}
 
 	bool CLinuxBSDStreamSocket::HasPendingData() const
 	{
-		timeval tv;
-		tv.tv_sec = 0;
-		tv.tv_usec = 0;
+		timeval tv{0,0};
 
 		fd_set set;
 		FD_ZERO(&set);
@@ -127,27 +124,6 @@ namespace Insanity
 	{
 		return (_sock != 0);
 	}
-
-	//=====================================================
-	//Interface: IObject
-	//=====================================================
-	/*void CLinuxBSDStreamSocket::Retain()
-	{
-		++_ref;
-	}
-	void CLinuxBSDStreamSocket::Release()
-	{
-		if(_ref == 0) return;
-		--_ref;
-	}
-	u64 CLinuxBSDStreamSocket::GetReferenceCount() const
-	{
-		return _ref;
-	}
-	void CLinuxBSDStreamSocket::Delete()
-	{
-		delete this;
-	}*/
 }
 
 #endif

@@ -12,7 +12,7 @@
 
 namespace Insanity
 {
-	CWindowsWin32EventPumpTask::CWindowsWin32EventPumpTask()
+	CWindowsWin32EventPumpTask::CWindowsWin32EventPumpTask() : Default::Task{}
 	{
 	}
 	CWindowsWin32EventPumpTask::~CWindowsWin32EventPumpTask()

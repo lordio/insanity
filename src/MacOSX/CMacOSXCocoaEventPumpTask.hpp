@@ -12,7 +12,6 @@
 #import <AppKit/NSWindow.h>
 
 @class NSEvent;
-//@class NSWindow;
 
 namespace Insanity
 {

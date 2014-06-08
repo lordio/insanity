@@ -13,24 +13,27 @@
 
 #include <d3d9.h>
 
+#include <cassert>
+
 #pragma comment(lib, "d3d9.lib")
 
 namespace Insanity
 {
 	CWindowsDirect3D9Renderer::CWindowsDirect3D9Renderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-		_ext(ext), _win(nullptr), _rect(new TRectangle<s16,u16>(0,0,0,0))
+		Default::Object{},
+		_ext{ ext },
+		_win{},
+		_rect{ new TRectangle<s16, u16>(0, 0, 0, 0) },
+		_d3d9{},
+		_dev{}
 	{
-		_rect->Retain();
-
-		HWND hwnd = _Init(win);
+		HWND hwnd{ _Init(win) };
 		_MakeContext(hwnd, cfg);
 	}
 	CWindowsDirect3D9Renderer::~CWindowsDirect3D9Renderer()
 	{
 		_dev->Release();
 		_d3d9->Release();
-
-		_rect->Release();
 	}
 
 	HWND CWindowsDirect3D9Renderer::_Init(IWindow * win)
@@ -38,11 +41,11 @@ namespace Insanity
 		_win = win->As<CWindowsWin32Window>();
 		if (_win == nullptr)
 		{
-			Default::Window * dwin = win->As<Default::Window>();
-			if (!dwin) return NULL;
+			WeakPtr<Default::Window> dwin{ win->As<Default::Window>() };
+			assert(dwin);
 
 			_win = dwin->GetExtended()->As<CWindowsWin32Window>();
-			if (!_win) return NULL;
+			assert(_win);
 		}
 
 		TRectangle<s16, u16> const * winrect = _win->GetRect();
@@ -62,7 +65,7 @@ namespace Insanity
 		d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 		d3dpp.Windowed = TRUE;
 
-		_d3d9->CreateDevice(NULL,D3DDEVTYPE_HAL, hwnd, 0, nullptr, &_dev);
+		_d3d9->CreateDevice(NULL, D3DDEVTYPE_HAL, hwnd, 0, &d3dpp, &_dev);
 	}
 
 	//=====================================================

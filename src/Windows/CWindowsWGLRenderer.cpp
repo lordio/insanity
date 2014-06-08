@@ -17,16 +17,23 @@
 #include "../../gel/gel.hpp"
 #include <gl/wglext.h>
 
+#include <cassert>
+
 #pragma comment(lib, "opengl32.lib")
 
 namespace Insanity
 {
 	CWindowsWGLRenderer::CWindowsWGLRenderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-		_ext(ext), _rect(new TRectangle<s16, u16>(0,0,0,0))
+		_ext{ ext },
+		_win{},
+		_dc{},
+		_rc{},
+		_program{},
+		_rect{ new TRectangle<s16, u16>(0, 0, 0, 0) },
+		_major{},
+		_minor{}
 	{
-		_rect->Retain();
-
-		HWND hwnd = _Init(win);
+		HWND hwnd{ _Init(win) };
 
 		_MakeContext(hwnd, cfg);
 	}
@@ -36,8 +43,6 @@ namespace Insanity
 
 		//so that's confusing. WGL uses wglDeleteContext, whereas GLX has glXDestroyContext.
 		wglDeleteContext(_rc);
-
-		_rect->Release();
 	}
 
 	HWND CWindowsWGLRenderer::_Init(IWindow * win)
@@ -47,17 +52,17 @@ namespace Insanity
 
 		if (_win == nullptr)
 		{
-			Default::Window * dwin = win->As<Default::Window>();
-			if (dwin == nullptr) return NULL; //making a renderer is meaningless if we can't use the provided window
+			WeakPtr<Default::Window> dwin{ win->As<Default::Window>() };
+			assert(dwin); //making a renderer is meaningless if we can't use the provided window
 
 			_win = dwin->GetExtended()->As<CWindowsWin32Window>();
-			if (_win == nullptr) return NULL;
+			assert(_win);
 		}
 
-		HWND ret = _win->GetWindow();
+		HWND ret{ _win->GetWindow() };
 		_dc = GetDC(ret);
 
-		TRectangle<s16, u16> const * winrect = _win->GetRect();
+		WeakPtr<const TRectangle<s16, u16>> winrect = _win->GetRect();
 		_rect->SetWidth(winrect->GetWidth());
 		_rect->SetHeight(winrect->GetHeight());
 
@@ -88,14 +93,14 @@ namespace Insanity
 		//dwVisibleMask and bReserved might be made available, if I determine their use.
 		SetPixelFormat(_dc, ChoosePixelFormat(_dc, &pfd), &pfd);
 
-		HGLRC tmp = wglCreateContext(_dc);
+		HGLRC tmp{ wglCreateContext(_dc) };
 		wglMakeCurrent(_dc, tmp);
 
 		_major = static_cast<int>(cfg->GetProperty("OpenGL.version.major", (s64) 2));
 		_minor = static_cast<int>(cfg->GetProperty("OpenGL.version.minor", (s64) 1));
 
-		PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC) wglGetProcAddress("wglCreateContextAttribsARB");
-		int attribs[] =
+		auto wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC) wglGetProcAddress("wglCreateContextAttribsARB");
+		int attribs[]
 		{
 			WGL_CONTEXT_MAJOR_VERSION_ARB, _major,
 			WGL_CONTEXT_MINOR_VERSION_ARB, _minor,
@@ -148,14 +153,8 @@ namespace Insanity
 			if (!program->Link())
 				return false;
 
-		if (_program) _program->Release();
 		_program = program;
-		if (_program)
-		{
-			_program->Retain();
-
-			glUseProgram(program->As<IOpenGLShaderProgram>()->GetProgramName());
-		}
+		if (_program) glUseProgram(program->As<IOpenGLShaderProgram>()->GetProgramName());
 		else glUseProgram(0);
 
 		return true;

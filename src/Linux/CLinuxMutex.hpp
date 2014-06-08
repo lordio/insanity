@@ -8,14 +8,13 @@
 #include <IMutex.hpp>
 #include <pthread.h>
 
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
 
 namespace Insanity
 {
 	class CLinuxMutex final : public IMutex, public Default::Object
 	{
 		pthread_mutex_t _mtx;
-		//u64 _ref;
 	public:
 		CLinuxMutex();
 		~CLinuxMutex();
@@ -26,14 +25,6 @@ namespace Insanity
 		void Lock() override;
 		void Unlock() override;
 		bool TryLock() override;
-
-		//=================================================
-		//Interface: IObject
-		//=================================================
-		/*void Retain() override;
-		void Release() override;
-		u64 GetReferenceCount() const override;
-		void Delete() override;*/
 	};
 }
 

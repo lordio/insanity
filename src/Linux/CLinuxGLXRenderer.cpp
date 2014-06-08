@@ -7,37 +7,31 @@
 #include <IWindow.hpp>
 #include <IConfigObject.hpp>
 #include "CLinuxX11Window.hpp"
-#include <default/Window.hpp>
+#include <Default/Window.hpp>
 #include "../Generic/CGenericOpenGL41ShaderProgram.hpp"
 
 #include "../../gel/gel.hpp"
 #include <GL/glxext.h>
 
 #include <iostream>
+#include <cassert>
 
 namespace Insanity
 {
-	CLinuxGLXRenderer::CLinuxGLXRenderer(IWindow * win) : CLinuxGLXRenderer(nullptr, win) {}
-	CLinuxGLXRenderer::CLinuxGLXRenderer(IRenderer * ext, IWindow * win) :
-		_ext(ext), _ctx(nullptr), _rect(new TRectangle<s16,u16>(0,0,0,0))
-	{
-		_rect->Retain();
-
-		Window xwin = _Init(win);
-		
-		_MakeContext(xwin, 3, 0);
-		
-		gel::init(3,0);
-	}
 	CLinuxGLXRenderer::CLinuxGLXRenderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-		_ext(ext), _ctx(nullptr), _rect(new TRectangle<s16,u16>(0,0,0,0))
+		_ext{ext},
+		_win{},
+		_ctx{},
+		_fbc{},
+		_glxwin{},
+		_dpy{},
+		_program{},
+		_rect{new TRectangle<s16,u16>{0,0,0,0}}
 	{
-		_rect->Retain();
+		Window xwin{_Init(win)};
 
-		Window xwin = _Init(win);
-		
-		int major = (int)cfg->GetProperty("OpenGL.version.major", (s64)2);
-		int minor = (int)cfg->GetProperty("OpenGL.version.minor", (s64)1);
+		int major{static_cast<int>(cfg->GetProperty("OpenGL.version.major", s64{2}))};
+		int minor{static_cast<int>(cfg->GetProperty("OpenGL.version.minor", s64{1}))};
 		
 		_MakeContext(xwin, major, minor);
 		
@@ -50,8 +44,6 @@ namespace Insanity
 		
 		glXDestroyWindow(_dpy, _glxwin);
 		glXDestroyContext(_dpy, _ctx);
-
-		_rect->Release();
 	}
 	
 	Window CLinuxGLXRenderer::_Init(IWindow * win)
@@ -60,17 +52,17 @@ namespace Insanity
 		if(_win == nullptr)
 		{
 			//win may be a Default::Window. Try casting to that, and getting the extended object.
-			Default::Window * dwin = win->As<Default::Window>();
-			if(dwin == nullptr) return None; //No idea, then.
+			WeakPtr<Default::Window> dwin{win->As<Default::Window>()};
+			assert(dwin); //No idea, then.
 			
 			_win = dwin->GetExtended()->As<CLinuxX11Window>();
-			if(_win == nullptr) return None; //Again, no idea.
+			assert(_win); //Again, no idea.
 		}
 		
 		_dpy = CLinuxX11Window::GetDisplay();
 		_fbc = CLinuxX11Window::GetFBConfig();
 
-		TRectangle<s16,u16> const * winrect = _win->GetRect();
+		WeakPtr<const TRectangle<s16,u16>> winrect{_win->GetRect()};
 		_rect->SetWidth(winrect->GetWidth());
 		_rect->SetHeight(winrect->GetHeight());
 
@@ -79,20 +71,20 @@ namespace Insanity
 	void CLinuxGLXRenderer::_MakeContext(Window xwin, int major, int minor)
 	{
 		//Check the GLX version, and switch based on that.
-		u8 version = CLinuxX11Window::GetGLXVersion();
+		u8 version{CLinuxX11Window::GetGLXVersion()};
 		
 		//if the GLX version is at least 1.3, use the newer context creation interface.
 		//Otherwise, assume older GLX interface.
 		//version is packed; high nybble is major version, low nybble is minor version.
 		if(((version & 0xf0) == 0x10) && ((version & 0x0f) >= 3))
 		{
-			PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribsARB = (PFNGLXCREATECONTEXTATTRIBSARBPROC)glXGetProcAddress((GLubyte*)"glXCreateContextAttribsARB");
+			auto glXCreateContextAttribsARB = (PFNGLXCREATECONTEXTATTRIBSARBPROC)glXGetProcAddress((GLubyte*)"glXCreateContextAttribsARB");
 
 			//Documentation of glXGetProcAddress says it returns nullptr if the function does not exist.
 			//	Experimentation supports this.
 			if(glXCreateContextAttribsARB)
 			{
-				int glxcca_attribs[] =
+				int glxcca_attribs[]
 				{
 					GLX_CONTEXT_MAJOR_VERSION_ARB, major,
 					GLX_CONTEXT_MINOR_VERSION_ARB, minor,
@@ -115,7 +107,7 @@ namespace Insanity
 			//have to use GLX 1.2 interface. Shouldn't be necessary.
 		}
 
-		glViewport(_rect->GetX(), _rect->GetY(), _rect->GetWidth, _rect->GetHeight());
+		glViewport(_rect->GetX(), _rect->GetY(), _rect->GetWidth(), _rect->GetHeight());
 	}
 	
 	//=====================================================
@@ -142,7 +134,7 @@ namespace Insanity
 	}
 	IShaderProgram * CLinuxGLXRenderer::CreateShaderProgram()
 	{
-		return new CGenericOpenGL41ShaderProgram();
+		return new CGenericOpenGL41ShaderProgram{};
 	}
 	bool CLinuxGLXRenderer::UseShaderProgram(IShaderProgram * program)
 	{
@@ -150,13 +142,8 @@ namespace Insanity
 			if(!program->Link())
 				return false;
 		
-		if(_program) _program->Release();
 		_program = program;
-		if(_program)
-		{
-			_program->Retain();
-			glUseProgram(program->As<CGenericOpenGL41ShaderProgram>()->GetProgramName());
-		}
+		if(_program) glUseProgram(program->As<CGenericOpenGL41ShaderProgram>()->GetProgramName());
 		else glUseProgram(0);
 		
 		return true;

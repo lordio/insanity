@@ -3,6 +3,7 @@ bin/
 notes/
 proj/MSVC2013/*/x64
 proj/XCode5/*/build
+proj/XCode5/**/xcuserdata
 
 # Compiled Object files
 *.slo

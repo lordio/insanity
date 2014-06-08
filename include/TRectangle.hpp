@@ -2,12 +2,13 @@
 #define INSANITY_TEMPLATE_RECTANGLE
 
 #include "Constants.hpp"
-#include "default/Object.hpp"
+#include "Default/Object.hpp"
 #include "IClonable.hpp"
 
 namespace Insanity
 {
 	//can specify the type for x and y separately from width and height, defaults to the same.
+	//how necessary is it that this inherit from Object?
 	template<typename _xytype, typename _whtype = _xytype>
 	class TRectangle : public IClonable<TRectangle<_xytype,_whtype>>, public Default::Object
 	{

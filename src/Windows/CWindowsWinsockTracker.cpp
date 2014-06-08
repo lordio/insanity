@@ -5,7 +5,7 @@
 
 namespace Insanity
 {
-	u64 CWindowsWinsockTracker::s_ref = 0;
+	u64 CWindowsWinsockTracker::s_ref{};
 	
 	void CWindowsWinsockTracker::Retain()
 	{
@@ -22,9 +22,6 @@ namespace Insanity
 		if(s_ref == 0) return;
 		
 		//if s_ref is 0 after decrement
-		if(--s_ref == 0)
-		{
-			WSACleanup();
-		}
+		if(--s_ref == 0) WSACleanup();
 	}
 }

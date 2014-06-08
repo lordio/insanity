@@ -4,11 +4,13 @@
 
 #if defined(PLATFORM_MACOSX)
 
-#include <IString.hpp>
 #include <TVector.hpp>
 
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <memory>
+#include <cassert>
 
 namespace
 {
@@ -54,47 +56,41 @@ namespace Insanity
 	bool CMacOSXOpenGLShaderProgram::AddShader(EShaderType type, char const * filename)
 	{
 		if (_linked) return false;
-
-		IString<char> * shader = IString<char>::Create();
-		shader->Retain();
-
 		//add some more checks that, if failed, will return false
 
 		//ensure the file was loaded
-		std::ifstream shaderFile(filename);
+		std::ifstream shaderFile{filename};
+		assert(shaderFile);
 
-		char holder = 0;
-		while (shaderFile.get(holder)) shader->Append(holder);
+		char holder{};
+		std::string shader{};
+		while (shaderFile.get(holder)) shader += holder;
 
-		GLuint shaderName = glCreateShader(translate(type));
+		GLuint shaderName{glCreateShader(translate(type))};
 
-		char const * shaderCArray = shader->Array();
+		char const * shaderCArray{shader.c_str()};
 
 		//ensure compilation worked.
 		glShaderSource(shaderName, 1, &shaderCArray, nullptr);
 		glCompileShader(shaderName);
 		
-		GLint status = 0;
+		GLint status{};
 		glGetShaderiv(shaderName,GL_COMPILE_STATUS, &status);
 		if (status == GL_FALSE)
 		{
-			GLint loglen = 0;
+			GLint loglen{};
 			glGetShaderiv(shaderName,GL_INFO_LOG_LENGTH,&loglen);
 			
-			char * log = new char[loglen];
-			glGetShaderInfoLog(shaderName, loglen, &loglen, log);
+			std::unique_ptr<char[]> log{new char[loglen]};
+			glGetShaderInfoLog(shaderName, loglen, &loglen, log.get());
 			
-			std::cout << log << std::endl;
-			delete [] log;
+			std::cerr << log << std::endl;
 
 			return false;
 		}
 
 		glAttachShader(_programName, shaderName);
-
 		glDeleteShader(shaderName);
-
-		shader->Release();
 
 		return true;
 	}
@@ -104,20 +100,19 @@ namespace Insanity
 		
 		glLinkProgram(_programName);
 		
-		GLint status = 0;
+		GLint status{};
 		glGetProgramiv(_programName, GL_LINK_STATUS, &status);
 		
 		if(status == GL_FALSE)
 		{
-			int len = 0;
+			GLint len{};
 			glGetProgramiv(_programName, GL_INFO_LOG_LENGTH, &len);
 			
-			char * log = new char[len];
-			glGetProgramInfoLog(_programName, len, &len, log);
+			std::unique_ptr<char[]> log{new char[len]};
+			glGetProgramInfoLog(_programName, len, &len, log.get());
 			
 			std::cout << log << std::endl;
 			
-			delete [] log;
 			return false;
 		}
 		
@@ -126,15 +121,13 @@ namespace Insanity
 		glGetProgramiv(_programName, GL_VALIDATE_STATUS, &status);
 		if (status == GL_FALSE)
 		{
-			int len = 0;
+			int len{};
 			glGetProgramiv(_programName, GL_INFO_LOG_LENGTH, &len);
 
-			char * log = new char[len];
+			std::unique_ptr<char[]> log{new char[len]};
 
-			glGetProgramInfoLog(_programName, len, &len, log);
+			glGetProgramInfoLog(_programName, len, &len, log.get());
 			std::cout << log << std::endl;
-
-			delete [] log;
 
 			return false;
 		}

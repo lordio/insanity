@@ -15,27 +15,30 @@
 
 namespace Insanity
 {
-	IApplication * IApplication::s_app = nullptr;
+	IApplication * IApplication::s_app{};
 
 	IApplication * IApplication::GetInstance()
 	{
 		if(s_app) return s_app;
 
-		return s_app = new CWindowsApplication();
+		return s_app = new CWindowsApplication{};
 	}
 
 	CWindowsApplication::CWindowsApplication() :
-		_gc(IGarbageCollector::Create()), _ref(0), _running(true)
+		_taskList{},
+		_gc{ IGarbageCollector::Create() },
+		_ref{},
+		_running{ true },
+		_gcTicker{}
 	{
 	}
 	CWindowsApplication::~CWindowsApplication()
 	{
 		IMod::ClearCache();
 
-		_gc->Clean();
-		delete _gc;
-
 		s_app = nullptr;
+
+		//_gc (as a unique_ptr<>) will delete the garbage collector, which will also clear it.
 	}
 
 	//========================================================
@@ -47,14 +50,13 @@ namespace Insanity
 		if(!_running) return false;
 
 		//Run all waiting tasks.
-		for (auto iter = _taskList.begin(); iter < _taskList.end();)
+		for (auto iter = _taskList.begin(); iter != _taskList.end();)
 		{
 			(*iter)->Perform();
 
 			if (!(*iter)->ShouldRequeue())
 			{
 				(*iter)->Dequeue();
-				(*iter)->Release();
 				iter = _taskList.erase(iter); //erase returns a valid iterator pointing to the element after the erased one
 			}
 			else iter++;
@@ -78,7 +80,7 @@ namespace Insanity
 	}
 	IGarbageCollector * CWindowsApplication::GetGarbageCollector() const
 	{
-		return _gc;
+		return _gc.get();
 	}
 	void CWindowsApplication::Yield() const
 	{
@@ -87,7 +89,6 @@ namespace Insanity
 	void CWindowsApplication::RegisterTask(ITask * task)
 	{
 		_taskList.push_back(task);
-		task->Retain(); //tasklist keeps tasks with strong pointers.
 	}
 	void CWindowsApplication::Transfer(IObject * obj)
 	{

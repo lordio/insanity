@@ -5,7 +5,9 @@
 #if defined(PLATFORM_LINUX)
 
 #include "CLinuxBSDStreamSocket.hpp"
+#include <Ptr.hpp>
 
+#include <string>
 #include <cstdio>
 #include <cstring>
 
@@ -18,11 +20,11 @@ namespace Insanity
 {
 	IServerSocket * IServerSocket::Create(u16 port)
 	{
-		return new CLinuxBSDServerSocket(port);
+		return new CLinuxBSDServerSocket{port};
 	}
 
 	CLinuxBSDServerSocket::CLinuxBSDServerSocket(u16 port) :
-		_sock(0)//, _ref(0)
+		Default::Object{}, _sock{}
 	{
 		Listen(port);
 	}
@@ -38,8 +40,7 @@ namespace Insanity
 	{
 		if(_sock != 0) Close();
 
-		char cport[6] = "";
-		snprintf(cport,6,"%d",port);
+		std::string cport{std::to_string(port)};
 
 		addrinfo hints;
 		memset(&hints,0,sizeof(hints));
@@ -47,10 +48,10 @@ namespace Insanity
 		hints.ai_socktype = SOCK_STREAM;
 		hints.ai_family = AF_UNSPEC;
 
-		addrinfo * list = nullptr;
-		addrinfo * ptr = nullptr;
+		addrinfo * list{};
+		addrinfo * ptr{};
 
-		getaddrinfo(nullptr,cport,&hints,&list);
+		getaddrinfo(nullptr,cport.c_str(),&hints,&list);
 
 		ptr = list;
 
@@ -89,8 +90,7 @@ namespace Insanity
 
 	IStreamSocket * CLinuxBSDServerSocket::Accept()
 	{
-		timeval tv;
-		memset(&tv,0,sizeof(tv));
+		timeval tv{0,0};
 
 		fd_set fd;
 		FD_ZERO(&fd);
@@ -101,9 +101,9 @@ namespace Insanity
 		if(FD_ISSET(_sock,&fd))
 		{
 			sockaddr_storage unused1;
-			socklen_t unused2 = sizeof(unused1);
-			int accepted = accept(_sock,reinterpret_cast<sockaddr*>(&unused1),&unused2);
-			CLinuxBSDStreamSocket * acc = new CLinuxBSDStreamSocket(accepted);
+			socklen_t unused2{sizeof(unused1)};
+			int accepted{accept(_sock,reinterpret_cast<sockaddr*>(&unused1),&unused2)};
+			WeakPtr<CLinuxBSDStreamSocket> acc{new CLinuxBSDStreamSocket{accepted}};
 			return acc;
 		}
 
@@ -115,27 +115,6 @@ namespace Insanity
 		//otherwise, it is not open.
 		return (_sock != 0);
 	}
-
-	//===================================================
-	//Interface: IObject
-	//===================================================
-	/*void CLinuxBSDServerSocket::Retain()
-	{
-		++_ref;
-	}
-	void CLinuxBSDServerSocket::Release()
-	{
-		if(_ref == 0) return;
-		--_ref;
-	}
-	u64 CLinuxBSDServerSocket::GetReferenceCount() const
-	{
-		return _ref;
-	}
-	void CLinuxBSDServerSocket::Delete()
-	{
-		delete this;
-	}*/
 }
 
 #endif

@@ -131,6 +131,16 @@
 		7E637D4118DB4917007F02BA /* EWindowsWin32KeyMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E637CE818DB4917007F02BA /* EWindowsWin32KeyMap.cpp */; };
 		7E637D5018DBFEE4007F02BA /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E637D4F18DBFEE4007F02BA /* AppKit.framework */; };
 		7E637D5218DBFF0E007F02BA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E637D5118DBFF0E007F02BA /* OpenGL.framework */; };
+		7E637D5D18ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7E637D5318ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.hpp */; };
+		7E637D5E18ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E637D5418ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.mm */; };
+		7E637D5F18ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7E637D5518ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.hpp */; };
+		7E637D6018ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E637D5618ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.mm */; };
+		7E637D6118ECCECF007F02BA /* OMacOSXCocoaOpenGLView.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7E637D5718ECCECF007F02BA /* OMacOSXCocoaOpenGLView.hpp */; };
+		7E637D6218ECCECF007F02BA /* OMacOSXCocoaOpenGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E637D5818ECCECF007F02BA /* OMacOSXCocoaOpenGLView.mm */; };
+		7E637D6318ECCECF007F02BA /* OMacOSXCocoaThread.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7E637D5918ECCECF007F02BA /* OMacOSXCocoaThread.hpp */; };
+		7E637D6418ECCECF007F02BA /* OMacOSXCocoaThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E637D5A18ECCECF007F02BA /* OMacOSXCocoaThread.mm */; };
+		7E637D6518ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7E637D5B18ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.hpp */; };
+		7E637D6618ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E637D5C18ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -270,6 +280,16 @@
 		7E637CE818DB4917007F02BA /* EWindowsWin32KeyMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EWindowsWin32KeyMap.cpp; sourceTree = "<group>"; };
 		7E637D4F18DBFEE4007F02BA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		7E637D5118DBFF0E007F02BA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		7E637D5318ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "NSEvent+OMacOSXCocoaMouseEvent.hpp"; sourceTree = "<group>"; };
+		7E637D5418ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSEvent+OMacOSXCocoaMouseEvent.mm"; sourceTree = "<group>"; };
+		7E637D5518ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OMacOSXCocoaApplicationDelegate.hpp; sourceTree = "<group>"; };
+		7E637D5618ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OMacOSXCocoaApplicationDelegate.mm; sourceTree = "<group>"; };
+		7E637D5718ECCECF007F02BA /* OMacOSXCocoaOpenGLView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OMacOSXCocoaOpenGLView.hpp; sourceTree = "<group>"; };
+		7E637D5818ECCECF007F02BA /* OMacOSXCocoaOpenGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OMacOSXCocoaOpenGLView.mm; sourceTree = "<group>"; };
+		7E637D5918ECCECF007F02BA /* OMacOSXCocoaThread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OMacOSXCocoaThread.hpp; sourceTree = "<group>"; };
+		7E637D5A18ECCECF007F02BA /* OMacOSXCocoaThread.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OMacOSXCocoaThread.mm; sourceTree = "<group>"; };
+		7E637D5B18ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OMacOSXCocoaWindowDelegate.hpp; sourceTree = "<group>"; };
+		7E637D5C18ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OMacOSXCocoaWindowDelegate.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -443,6 +463,16 @@
 		7E637CBA18DB4917007F02BA /* MacOSX */ = {
 			isa = PBXGroup;
 			children = (
+				7E637D5318ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.hpp */,
+				7E637D5418ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.mm */,
+				7E637D5518ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.hpp */,
+				7E637D5618ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.mm */,
+				7E637D5718ECCECF007F02BA /* OMacOSXCocoaOpenGLView.hpp */,
+				7E637D5818ECCECF007F02BA /* OMacOSXCocoaOpenGLView.mm */,
+				7E637D5918ECCECF007F02BA /* OMacOSXCocoaThread.hpp */,
+				7E637D5A18ECCECF007F02BA /* OMacOSXCocoaThread.mm */,
+				7E637D5B18ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.hpp */,
+				7E637D5C18ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.mm */,
 				7E637CBB18DB4917007F02BA /* CMacOSXApplication.hpp */,
 				7E637CBC18DB4917007F02BA /* CMacOSXApplication.mm */,
 				7E637CBD18DB4917007F02BA /* CMacOSXBSDServerSocket.cpp */,
@@ -522,6 +552,8 @@
 				7E637C7818DB490D007F02BA /* IGarbageCollector.hpp in Headers */,
 				7E637D3C18DB4917007F02BA /* CWindowsWin32Window.hpp in Headers */,
 				7E637C8018DB490D007F02BA /* IStreamSocket.hpp in Headers */,
+				7E637D5D18ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.hpp in Headers */,
+				7E637D6118ECCECF007F02BA /* OMacOSXCocoaOpenGLView.hpp in Headers */,
 				7E637C6B18DB490D007F02BA /* Object.hpp in Headers */,
 				7E637D0918DB4917007F02BA /* CLinuxMesa9Renderer.hpp in Headers */,
 				7E637C7A18DB490D007F02BA /* IMutex.hpp in Headers */,
@@ -529,6 +561,7 @@
 				7E637C8718DB490D007F02BA /* TMatrix.hpp in Headers */,
 				7E637CFF18DB4917007F02BA /* IOpenGLShaderProgram.hpp in Headers */,
 				7E637D1318DB4917007F02BA /* CLinuxX11Window.hpp in Headers */,
+				7E637D5F18ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.hpp in Headers */,
 				7E637C8618DB490D007F02BA /* Ptr.hpp in Headers */,
 				7E637D1F18DB4917007F02BA /* CMacOSXCocoaSubThread.hpp in Headers */,
 				7E637C6C18DB490D007F02BA /* Renderer.hpp in Headers */,
@@ -543,6 +576,7 @@
 				7E637C7C18DB490D007F02BA /* IObject.hpp in Headers */,
 				7E637C6918DB490D007F02BA /* Constants.hpp in Headers */,
 				7E637D2118DB4917007F02BA /* CMacOSXCocoaWindow.hpp in Headers */,
+				7E637D6318ECCECF007F02BA /* OMacOSXCocoaThread.hpp in Headers */,
 				7E637C6F18DB490D007F02BA /* Window.hpp in Headers */,
 				7E637C7D18DB490D007F02BA /* IRenderer.hpp in Headers */,
 				7E637D0F18DB4917007F02BA /* CLinuxSubThread.hpp in Headers */,
@@ -568,6 +602,7 @@
 				7E637D3318DB4917007F02BA /* CWindowsWin32CriticalSection.hpp in Headers */,
 				7E637D2C18DB4917007F02BA /* CWindowsDirect3D11Renderer.hpp in Headers */,
 				7E637C8418DB490D007F02BA /* IThread.hpp in Headers */,
+				7E637D6518ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.hpp in Headers */,
 				7E637C7718DB490D007F02BA /* IConfigObject.hpp in Headers */,
 				7E637C7318DB490D007F02BA /* IApplication.hpp in Headers */,
 				7E637D0518DB4917007F02BA /* CLinuxBSDStreamSocket.hpp in Headers */,
@@ -659,9 +694,11 @@
 				7E637D3918DB4917007F02BA /* CWindowsWin32SubThread.cpp in Sources */,
 				7E637D3618DB4917007F02BA /* CWindowsWin32Mod.cpp in Sources */,
 				7E637D1418DB4917007F02BA /* ELinuxX11KeyMap.cpp in Sources */,
+				7E637D6218ECCECF007F02BA /* OMacOSXCocoaOpenGLView.mm in Sources */,
 				7E637CF318DB4917007F02BA /* CGenericConfigFile.cpp in Sources */,
 				7E637CEF18DB4917007F02BA /* CGenericByteArray.cpp in Sources */,
 				7E637D0E18DB4917007F02BA /* CLinuxSubThread.cpp in Sources */,
+				7E637D6018ECCECF007F02BA /* OMacOSXCocoaApplicationDelegate.mm in Sources */,
 				7E637D2718DB4917007F02BA /* CMacOSXOpenGLShaderProgram.mm in Sources */,
 				7E637D0418DB4917007F02BA /* CLinuxBSDStreamSocket.cpp in Sources */,
 				7E637D0218DB4917007F02BA /* CLinuxBSDServerSocket.cpp in Sources */,
@@ -670,11 +707,13 @@
 				7E637D2318DB4917007F02BA /* CMacOSXMod.cpp in Sources */,
 				7E637CFB18DB4917007F02BA /* CGenericOpenGL41ShaderProgram.cpp in Sources */,
 				7E637D3018DB4917007F02BA /* CWindowsWGLRenderer.cpp in Sources */,
+				7E637D5E18ECCECF007F02BA /* NSEvent+OMacOSXCocoaMouseEvent.mm in Sources */,
 				7E637CF718DB4917007F02BA /* CGenericGarbageCollector.cpp in Sources */,
 				7E637D3D18DB4917007F02BA /* CWindowsWinsockServerSocket.cpp in Sources */,
 				7E637CEA18DB4917007F02BA /* Object.cpp in Sources */,
 				7E637D3718DB4917007F02BA /* CWindowsWin32Mutex.cpp in Sources */,
 				7E637CED18DB4917007F02BA /* Thread.cpp in Sources */,
+				7E637D6618ECCECF007F02BA /* OMacOSXCocoaWindowDelegate.mm in Sources */,
 				7E637D1C18DB4917007F02BA /* CMacOSXCocoaEventPumpTask.mm in Sources */,
 				7E637D2518DB4917007F02BA /* CMacOSXNSGLRenderer.mm in Sources */,
 				7E637D0818DB4917007F02BA /* CLinuxMesa9Renderer.cpp in Sources */,
@@ -693,6 +732,7 @@
 				7E637D4118DB4917007F02BA /* EWindowsWin32KeyMap.cpp in Sources */,
 				7E637CFD18DB4917007F02BA /* CGenericWCharTString.cpp in Sources */,
 				7E637D2F18DB4917007F02BA /* CWindowsRenderer.cpp in Sources */,
+				7E637D6418ECCECF007F02BA /* OMacOSXCocoaThread.mm in Sources */,
 				7E637D1018DB4917007F02BA /* CLinuxX11EventPumpTask.cpp in Sources */,
 				7E637D2218DB4917007F02BA /* CMacOSXCocoaWindow.mm in Sources */,
 				7E637D1718DB4917007F02BA /* CMacOSXBSDServerSocket.cpp in Sources */,

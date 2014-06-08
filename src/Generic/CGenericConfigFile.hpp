@@ -3,7 +3,8 @@
 
 #include <Constants.hpp>
 #include <IConfigFile.hpp>
-#include <default/Object.hpp>
+#include <Default/Object.hpp>
+#include <Ptr.hpp>
 
 #include <string>
 #include <map>
@@ -13,10 +14,10 @@ namespace Insanity
 	class CGenericConfigFile final : public IConfigFile, public Default::Object
 	{
 	private:
-		std::map<std::string,IConfigObject*> _objMap;
+		std::map<std::string,Ptr<IConfigObject>> _objMap;
 		bool _valid;
 		
-		static std::map<std::string,IConfigFile*> s_cache;
+		static std::map<std::string,Ptr<IConfigFile>> s_cache;
 	public:
 		CGenericConfigFile(char const * filename);
 		~CGenericConfigFile();

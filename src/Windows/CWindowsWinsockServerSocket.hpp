@@ -15,7 +15,6 @@ namespace Insanity
 	class CWindowsWinsockServerSocket final : public IServerSocket, public Default::Object
 	{
 		SOCKET _sock;
-		//u64 _ref;
 	public:
 		CWindowsWinsockServerSocket(u16 port);
 		~CWindowsWinsockServerSocket();
@@ -27,14 +26,6 @@ namespace Insanity
 		bool Close() override;
 		IStreamSocket * Accept() override;
 		bool IsOpen() const override;
-
-		//=================================================
-		//Interface: IObject
-		//=================================================
-		//void Retain() override;
-		//void Release() override;
-		//u64 GetReferenceCount() const override;
-		//void Delete() override;
 	};
 }
 

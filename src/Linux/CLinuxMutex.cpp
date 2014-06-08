@@ -8,11 +8,11 @@ namespace Insanity
 {
 	IMutex * IMutex::Create()
 	{
-		return new CLinuxMutex();
+		return new CLinuxMutex{};
 	}
 
-	CLinuxMutex::CLinuxMutex() //:
-		//_ref(0)
+	CLinuxMutex::CLinuxMutex() :
+		Default::Object{}
 	{
 		pthread_mutex_init(&_mtx,nullptr);
 	}
@@ -38,27 +38,6 @@ namespace Insanity
 		//Will return EBUSY if lock is not acquired
 		return pthread_mutex_trylock(&_mtx) == 0;
 	}
-
-	//=====================================================
-	//Interface: IObject
-	//=====================================================
-	/*void CLinuxMutex::Retain()
-	{
-		++_ref;
-	}
-	void CLinuxMutex::Release()
-	{
-		if(_ref == 0) return;
-		--_ref;
-	}
-	u64 CLinuxMutex::GetReferenceCount() const
-	{
-		return _ref;
-	}
-	void CLinuxMutex::Delete()
-	{
-		delete this;
-	}*/
 }
 
 #endif

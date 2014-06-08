@@ -5,26 +5,30 @@
 
 #if defined(PLATFORM_MSWINDOWS)
 
+#include "CWindowsWin32Window.hpp"
+
 #include <IRenderer.hpp>
 #include <default/Object.hpp>
+#include <TRectangle.hpp>
+#include <IShaderProgram.hpp>
+#include <Ptr.hpp>
 
 #include <Windows.h>
 
 namespace Insanity
 {
-	class CWindowsWin32Window;
 	class IConfigObject;
 	
 	class CWindowsWGLRenderer final : public IRenderer, public Default::Object
 	{
 	private:
-		IRenderer * _ext;
-		CWindowsWin32Window * _win;
+		WeakPtr<IRenderer> _ext;
+		WeakPtr<CWindowsWin32Window> _win;
 		HDC _dc;
 		HGLRC _rc;
 
-		IShaderProgram * _program;
-		TRectangle<s16,u16> * _rect;
+		Ptr<IShaderProgram> _program;
+		Ptr<TRectangle<s16,u16>> _rect;
 
 		u8 _major;
 		u8 _minor;

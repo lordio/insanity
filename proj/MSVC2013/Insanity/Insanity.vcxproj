@@ -42,23 +42,21 @@
     <ClInclude Include="..\..\..\include\IServerSocket.hpp" />
     <ClInclude Include="..\..\..\include\IShaderProgram.hpp" />
     <ClInclude Include="..\..\..\include\IStreamSocket.hpp" />
-    <ClInclude Include="..\..\..\include\IString.hpp" />
     <ClInclude Include="..\..\..\include\ISubThread.hpp" />
     <ClInclude Include="..\..\..\include\ITask.hpp" />
     <ClInclude Include="..\..\..\include\IThread.hpp" />
     <ClInclude Include="..\..\..\include\IWindow.hpp" />
     <ClInclude Include="..\..\..\include\Ptr.hpp" />
+    <ClInclude Include="..\..\..\include\TString.hpp" />
     <ClInclude Include="..\..\..\include\TMatrix.hpp" />
     <ClInclude Include="..\..\..\include\TRectangle.hpp" />
     <ClInclude Include="..\..\..\include\TVector.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericByteArray.hpp" />
-    <ClInclude Include="..\..\..\src\Generic\CGenericCharString.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericConfigFile.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericConfigObject.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericGarbageCollector.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericGLShaderProgram.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.hpp" />
-    <ClInclude Include="..\..\..\src\Generic\CGenericWCharTString.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxApplication.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxBSDServerSocket.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.hpp" />
@@ -77,6 +75,10 @@
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\NSEvent+OMacOSXCocoaMouseEvent.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaThread.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsApplication.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsDirect3D11Renderer.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsDirect3D9Renderer.hpp" />
@@ -88,6 +90,8 @@
     <ClInclude Include="..\..\..\src\Windows\CWindowsWin32Window.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockServerSocket.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockStreamSocket.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\CWindowsWinsockTracker.hpp" />
+    <ClInclude Include="..\..\..\src\Windows\WindowsStringConversion.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Default\Mod.cpp" />
@@ -97,13 +101,11 @@
     <ClCompile Include="..\..\..\src\Default\Thread.cpp" />
     <ClCompile Include="..\..\..\src\Default\Window.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericByteArray.cpp" />
-    <ClCompile Include="..\..\..\src\Generic\CGenericCharString.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericConfigFile.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericConfigObject.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericGarbageCollector.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericGLShaderProgram.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.cpp" />
-    <ClCompile Include="..\..\..\src\Generic\CGenericWCharTString.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxApplication.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxBSDServerSocket.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.cpp" />
@@ -133,7 +135,9 @@
     <ClCompile Include="..\..\..\src\Windows\CWindowsWin32Window.cpp" />
     <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockServerSocket.cpp" />
     <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockStreamSocket.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\CWindowsWinsockTracker.cpp" />
     <ClCompile Include="..\..\..\src\Windows\EWindowsWin32KeyMap.cpp" />
+    <ClCompile Include="..\..\..\src\Windows\WindowsStringConversion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Makefile" />
@@ -144,6 +148,10 @@
     <None Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.mm" />
     <None Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.mm" />
     <None Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.mm" />
+    <None Include="..\..\..\src\MacOSX\NSEvent+OMacOSXCocoaMouseEvent.mm" />
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.mm" />
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaThread.mm" />
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.mm" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F50EDED5-2E6C-48EB-BEDA-0563565D3E9C}</ProjectGuid>

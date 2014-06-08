@@ -16,7 +16,6 @@ namespace Insanity
 	{
 		std::vector<u8> _vec;
 		u64 _offset;
-		//u64 _ref;
 	public:
 		CGenericByteArray();
 		~CGenericByteArray();
@@ -36,7 +35,6 @@ namespace Insanity
 		void Write(float val) override;
 		void Write(double val) override;
 		void Write(long double val) override;
-		void Write(IString<char> const * val) override;
 		void Write(IByteArray const * val) override;
 		void Write(u8 const * val, u64 length) override;
 
@@ -52,21 +50,12 @@ namespace Insanity
 		void Read(float & val) override;
 		void Read(double & val) override;
 		void Read(long double & val) override;
-		void Read(IString<char> * val) override;
 		void Read(u8 * val, u64 length) override;
 
 		u8 const * Array() const override;
 		u64 Size() const override;
 		void Clip() override;
 		void Clear() override;
-		
-		//=================================================
-		//Interface: IObject
-		//=================================================
-		//void Retain() const override;
-		//void Release() const override;
-		//u64 GetReferenceCount() const override;
-		//void Delete() override;
 	};
 }
 
