@@ -6,6 +6,7 @@
 
 #include <WS2tcpip.h>
 #include <IByteArray.hpp>
+#include "CWindowsWinsockTracker.hpp"
 
 #include <IThread.hpp>
 #include <IGarbageCollector.hpp>
@@ -20,32 +21,21 @@ namespace Insanity
 	}
 
 	CWindowsWinsockStreamSocket::CWindowsWinsockStreamSocket(char const * host, u16 port) :
-		_sock(0)//, _ref(0)
+		_sock(0)
 	{
-		{
-			WSAData unused;
-			WSAStartup(MAKEWORD(2,2),&unused);
-			//No ill effects from multiple calls
-			//	Just call WSACleanup an equal number of times.
-		}
+		CWindowsWinsockTracker::Retain();
 		Connect(host,port);
 	}
 	CWindowsWinsockStreamSocket::CWindowsWinsockStreamSocket(SOCKET accepted) :
-		_sock(accepted)//, _ref(0)
+		_sock(accepted)
 	{
-		//since it always cleans up in the dtor, need to startup, even though it will always already have been started.
-		{
-			WSAData unused;
-			WSAStartup(MAKEWORD(2,2),&unused);
-		}
+		CWindowsWinsockTracker::Retain();
 	}
 	CWindowsWinsockStreamSocket::~CWindowsWinsockStreamSocket()
 	{
 		if(_sock) Close();
 
-		//startup and cleanup manage a reference counter in the Winsock DLL
-		//when it goes to 0, cleanup actually occurs.
-		WSACleanup();
+		CWindowsWinsockTracker::Release();
 	}
 
 	//=====================================================
@@ -137,27 +127,6 @@ namespace Insanity
 	{
 		return (_sock != 0);
 	}
-
-	//=====================================================
-	//Interface: IObject
-	//=====================================================
-	//void CWindowsWinsockStreamSocket::Retain()
-	//{
-	//	++_ref;
-	//}
-	//void CWindowsWinsockStreamSocket::Release()
-	//{
-	//	if(_ref == 0) return;
-	//	--_ref;
-	//}
-	//u64 CWindowsWinsockStreamSocket::GetReferenceCount() const
-	//{
-	//	return _ref;
-	//}
-	//void CWindowsWinsockStreamSocket::Delete()
-	//{
-	//	delete this;
-	//}
 }
 
 #endif
