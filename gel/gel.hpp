@@ -5,7 +5,9 @@
 
 //deprecated functions are not included
 
-#if !(defined(__APPLE__) || defined(__MACH__))
+#if (defined(__APPLE__) || defined(__MACH__))
+#error Gel is unnecessary on Macs, as all available OpenGL functions are natively exported.
+#endif
 
 #if defined(_WIN32)
 #	define GEL_MSWINDOWS
@@ -36,13 +38,6 @@
 #	else
 #		define GEL_API
 #	endif //defined(__linux__) || defined(__linux)
-#elif defined(__APPLE__) && defined(__MACH__)
-#	define GEL_MACOSX
-#	if defined(GEL_BUILDING_LIBRARY)
-#		define GEL_API __attribute__((visibility("default")))
-#	else
-#		define GEL_API
-#	endif //GEL_BUILDING_LIBRARY
 #endif //_WIN32
 
 #include <GL/gl.h>
@@ -709,7 +704,5 @@ namespace gel
 #		pragma comment(lib,"Gel.lib")
 #	endif //!GEL_BUILDING_LIBRARY
 #endif //GEL_MSWINDOWS
-
-#endif //PLATFORM_MACOSX
 
 #endif //GEL
