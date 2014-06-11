@@ -379,8 +379,8 @@ Tests the following objects:
 	ConfigObject
  
  Results:
-    Windows: Successful (should release module before closing library)
-    Linux: Successful (should release module before closing library)
+    Windows: Successful.
+    Linux: Successful.
     MacOSX: Successful.
 */
 protected:
