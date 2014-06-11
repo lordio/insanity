@@ -62,6 +62,8 @@ namespace Insanity
             //If the only reference is the cache reference...
             if(iter->second->mod->GetReferenceCount() == 1)
             {
+				//need to release the mod before closing the library.
+				iter->second->mod = nullptr;
                 FreeLibrary(iter->second->lib);
                 
                 iter = s_cache.erase(iter);
@@ -73,6 +75,7 @@ namespace Insanity
     {
         for(auto iter = s_cache.begin(); iter != s_cache.end();)
         {
+			iter->second->mod = nullptr;
             FreeLibrary(iter->second->lib);
             
             iter = s_cache.erase(iter);
