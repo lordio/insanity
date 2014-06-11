@@ -53,7 +53,7 @@ namespace Insanity
 			//if the only reference to it is ours...
 			if(pr->second->mod->GetReferenceCount() == 1)
 			{
-				//mods don't use normal garbage collection, so going to refcount 0 deletes them.
+				pr->second->mod = nullptr;
 				dlclose(pr->second->lib);
 				
 				pr = s_cache.erase(pr);
@@ -67,6 +67,7 @@ namespace Insanity
 		//Would it make more sense to start at the end, since least-dependent mods should be at the beginning?
 		for(auto pr = s_cache.begin(); s_cache.size() > 0;)
 		{
+			pr->second->mod = nullptr;
 			dlclose(pr->second->lib);
 			
 			pr = s_cache.erase(pr);
