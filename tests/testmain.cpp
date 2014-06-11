@@ -12,6 +12,9 @@ using namespace Insanity;
 #elif defined(PLATFORM_LINUX)
 #define PREFIX "../../tests/"
 #define MODPREFIX ""
+#elif defined(PLATFORM_MACOSX)
+#define PREFIX "../../../tests/"
+#define MODPREFIX "../../../bin/MacOSX/Debug/"
 #endif
 
 class ConformanceTest
@@ -87,7 +90,7 @@ Tests the following objects:
 Results:
   Windows: Successful.
   Linux: Failed. (app->Update did not return false)
-  MacOSX: Not yet run.
+  MacOSX: Failed. (app->Update did not return false; window requires user to click before processing events)
 */
 private:
 	class WECTWindow final : public Default::Window
@@ -304,6 +307,11 @@ Tests the following objects:
 	ByteArray (done)
 	Mutex(?)
 	Task(?)
+ 
+ Results:
+    Windows: Successful.
+    Linux: Successful.
+    MacOSX: Successful.
 */
 	class ConnectingThread : public Default::Thread
 	{
@@ -369,6 +377,11 @@ Todo:
 Tests the following objects:
 	Mod (really should rename it to Module)
 	ConfigObject
+ 
+ Results:
+    Windows: Successful (should release module before closing library)
+    Linux: Successful (should release module before closing library)
+    MacOSX: Successful.
 */
 protected:
 	bool DoTests() override

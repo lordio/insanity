@@ -84,7 +84,7 @@ namespace Insanity
 			std::unique_ptr<char[]> log{new char[loglen]};
 			glGetShaderInfoLog(shaderName, loglen, &loglen, log.get());
 			
-			std::cerr << log << std::endl;
+			std::cerr << log.get() << std::endl;
 
 			return false;
 		}
@@ -111,7 +111,7 @@ namespace Insanity
 			std::unique_ptr<char[]> log{new char[len]};
 			glGetProgramInfoLog(_programName, len, &len, log.get());
 			
-			std::cout << log << std::endl;
+			std::cout << log.get() << std::endl;
 			
 			return false;
 		}
@@ -127,7 +127,7 @@ namespace Insanity
 			std::unique_ptr<char[]> log{new char[len]};
 
 			glGetProgramInfoLog(_programName, len, &len, log.get());
-			std::cout << log << std::endl;
+			std::cout << log.get() << std::endl;
 
 			return false;
 		}

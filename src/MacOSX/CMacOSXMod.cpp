@@ -36,7 +36,7 @@ namespace Insanity
 		std::string libName{modName};
 		libName += ".dylib";
 
-		void * mod{dlopen(libName->Array(), RTLD_LAZY | RTLD_GLOBAL)};
+		void * mod{dlopen(libName.c_str(), RTLD_LAZY | RTLD_GLOBAL)};
 		ModCtor ctor{(ModCtor)dlsym(mod,"InitMod")};
 		WeakPtr<IMod> modObject{ctor()};
         
@@ -51,6 +51,7 @@ namespace Insanity
         {
             if(iter->second->mod->GetReferenceCount() == 1)
             {
+                iter->second->mod = nullptr;
                 dlclose(iter->second->lib);
                 
                 iter = s_cache.erase(iter);
@@ -63,6 +64,8 @@ namespace Insanity
         //might this need to reverse-iterate, so that least-dependent mods are unloaded last?
         for(auto iter = s_cache.begin(); iter != s_cache.end();)
         {
+            //important to release the mod before closing the library.
+            iter->second->mod = nullptr;
             dlclose(iter->second->lib);
             
             iter = s_cache.erase(iter);

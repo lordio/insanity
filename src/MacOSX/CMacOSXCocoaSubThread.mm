@@ -98,9 +98,9 @@ namespace Insanity
 	//=====================================================
 	bool CMacOSXCocoaSubThread::Update()
 	{
-		if(!(_condition & ThreadRunning)) return false;
+		if(_condition != ThreadState::Running) return false;
 
-		for(auto iter = _tasks.begin(); iter < _tasks.end();)
+		for(auto iter = _tasks.begin(); iter != _tasks.end();)
 		{
 			(*iter)->Perform();
 
@@ -117,7 +117,7 @@ namespace Insanity
 			_gcTicker = 0;
 		}
 
-		return (_condition & ThreadRunning) == ThreadRunning;
+		return _condition == ThreadState::Running;
 	}
 	void CMacOSXCocoaSubThread::End()
 	{

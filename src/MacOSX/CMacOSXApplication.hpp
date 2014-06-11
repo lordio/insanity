@@ -10,6 +10,8 @@
 #include <list>
 #include <memory>
 
+@class OMacOSXCocoaApplicationDelegate;
+
 namespace Insanity
 {
 	class IGarbageCollector;
@@ -23,6 +25,9 @@ namespace Insanity
 		mutable u64 _ref;
 		bool _running;
 		u8 _gcTicker;
+        
+        //NSApplication doesn't retain the delegate for whatever reason, so create a static reference to it.
+        OMacOSXCocoaApplicationDelegate * _appDelegate;
 	public:
 		CMacOSXApplication();
 		~CMacOSXApplication();
