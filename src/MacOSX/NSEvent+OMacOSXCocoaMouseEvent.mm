@@ -50,7 +50,9 @@ namespace
 	//	It also says to pass NULL to NSAllocateObject's third param for the default, so just do that.
 	//	NSAllocateObject isn't allowed in ARC. What about [NSEvent alloc]?
 	//	See what happens when compiling.
-	e = (NSEvent*)NSAllocateObject(self, 0, NULL);
+    //  Fails.
+	//e = (NSEvent*)NSAllocateObject(self, 0, NULL);
+    e = [NSEvent alloc];
 
 	//Builds on Mac, so seems to be okay.
 	e->_type = type;

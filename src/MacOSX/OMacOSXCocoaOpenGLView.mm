@@ -28,8 +28,8 @@
     //  (or, at least the ones the should be configurable), and check each,
     //  setting the first empty spot to an active Boolean.
 
-	NSOpenGLPixelFormat * fmt = [[[NSOpenGLPixelFormat alloc] initWithAttributes:pfa] autorelease];
-	NSOpenGLContext * ctx = [[[NSOpenGLContext alloc] initWithFormat:fmt shareContext:nil] autorelease];
+	NSOpenGLPixelFormat * fmt = [[NSOpenGLPixelFormat alloc] initWithAttributes:pfa];
+	NSOpenGLContext * ctx = [[NSOpenGLContext alloc] initWithFormat:fmt shareContext:nil];
 
     //TODO: replace nil (frame) with window's content rectangle.
     Insanity::TRectangle<Insanity::s16, Insanity::u16> const * winrect = win->GetRect();

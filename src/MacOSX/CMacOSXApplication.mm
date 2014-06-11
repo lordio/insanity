@@ -35,7 +35,7 @@ namespace Insanity
 		_taskList{}, _gc{IGarbageCollector::Create()}, _ref{}, _running{true}, _gcTicker{}
 	{
 		[[NSApplication sharedApplication] setActivationPolicy:NSApplicationActivationPolicyRegular];
-		[NSApp setDelegate:[[OMacOSXCocoaApplicationDelegate alloc] init]];
+		[NSApp setDelegate:(_appDelegate = [[OMacOSXCocoaApplicationDelegate alloc] init])];
 		[NSApp finishLaunching];
 	}
 	CMacOSXApplication::~CMacOSXApplication()
@@ -43,6 +43,7 @@ namespace Insanity
 		IMod::ClearCache();
 
 		s_app = nullptr;
+        _appDelegate = nil;
 	}
 
 	//=====================================================
@@ -53,7 +54,7 @@ namespace Insanity
 		if(!_running) return false;
 
 		//Run all waiting tasks.
-		for(auto iter = _taskList.begin(); iter < _taskList.end();)
+		for(auto iter = _taskList.begin(); iter != _taskList.end();)
 		{
 			(*iter)->Perform();
 

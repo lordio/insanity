@@ -6,7 +6,6 @@
 
 #include <IApplication.hpp>
 #include <IConfigObject.hpp>
-#include <IString.hpp>
 #include <TRectangle.hpp>
 
 #include "CMacOSXCocoaEventPumpTask.hpp"
@@ -25,23 +24,10 @@ A note regarding the keyboard API:
 	If NSEvents report all key events (including modifiers), this shouldn't be a problem if NSEvent's -(unsigned short)keyCode is used.
 */
 
-namespace
-{
-	Insanity::EKey ATTRIBUTE_DEPRECATED translate(unichar value)
-	{
-        Insanity::EKey ret = value;
-		if(ret >= 'A' && ret <= 'Z')
-		{
-			ret -= 'A';
-			ret += 'a';
-		}
-		return ret;
-	}
-}
-
 namespace Insanity
 {
     Ptr<CMacOSXCocoaEventPumpTask> CMacOSXCocoaWindow::s_pump{};
+    u64 CMacOSXCocoaWindow::s_winCount{};
     
 	IWindow * IWindow::Create(IWindow * ext, IConfigObject const * cfg)
 	{
@@ -190,6 +176,9 @@ namespace Insanity
 			case EMouseButtonState::Up:
 				type++; //up is always listed immediately after down, so increment
 				break;
+            case EMouseButtonState::DoubleClick:
+                //treat as Down event. May have to send custom event.
+                break;
 			}
 		}
 
@@ -235,7 +224,7 @@ namespace Insanity
 	void CMacOSXCocoaWindow::Show(bool show)
 	{
 		if(show) [_win deminiaturize:nil];
-		else [_win miniaturiaze:nil];
+		else [_win miniaturize:nil];
 	}
 	void CMacOSXCocoaWindow::Move(s16 x, s16 y)
 	{
