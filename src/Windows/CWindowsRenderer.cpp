@@ -38,6 +38,8 @@ namespace Insanity
 			switch (major)
 			{
 			case 3:
+				ret = new CWindowsWGLRenderer{ ext, win, cfg };
+				break;
 			case 4:
 				switch (minor)
 				{
