@@ -18,7 +18,7 @@ namespace Insanity
 		_whtype _width;
 		_whtype _height;
 
-		template<typename etype> bool isWithin(etype left, etype middle, etype right)
+		template<typename etype> bool isWithin(etype left, etype middle, etype right) const
 		{
 			return left <= middle &&
 				middle <= right;
