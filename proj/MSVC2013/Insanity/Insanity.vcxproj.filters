@@ -60,9 +60,6 @@
     <Filter Include="Implementations\Generic\ShaderProgram\GL4.1">
       <UniqueIdentifier>{7a990f5c-c2f6-4fda-926e-04ce9909a918}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Implementations\Generic\ShaderProgram\GL3.1">
-      <UniqueIdentifier>{0b5f50a0-70a8-4745-976c-7a37f1573613}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Implementations\Linux\Application">
       <UniqueIdentifier>{6e620ea9-7f1f-4ce3-992d-0beae797477f}</UniqueIdentifier>
     </Filter>
@@ -219,6 +216,9 @@
     <Filter Include="Implementations\MacOSX\Cocoa\Window\NSEvent">
       <UniqueIdentifier>{25e94b95-4ac3-4681-a1f9-db23b553a4d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Implementations\Generic\ShaderProgram\GL2.0">
+      <UniqueIdentifier>{0b5f50a0-70a8-4745-976c-7a37f1573613}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\IApplication.hpp">
@@ -303,7 +303,7 @@
       <Filter>Implementations\Generic\ShaderProgram\GL4.1</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Generic\CGenericGLShaderProgram.hpp">
-      <Filter>Implementations\Generic\ShaderProgram\GL3.1</Filter>
+      <Filter>Implementations\Generic\ShaderProgram\GL2.0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Linux\CLinuxApplication.hpp">
       <Filter>Implementations\Linux\Application</Filter>
@@ -476,7 +476,7 @@
       <Filter>Implementations\Generic\ShaderProgram\GL4.1</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Generic\CGenericGLShaderProgram.cpp">
-      <Filter>Implementations\Generic\ShaderProgram\GL3.1</Filter>
+      <Filter>Implementations\Generic\ShaderProgram\GL2.0</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Linux\CLinuxApplication.cpp">
       <Filter>Implementations\Linux\Application</Filter>
