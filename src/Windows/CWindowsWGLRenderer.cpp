@@ -115,6 +115,9 @@ namespace Insanity
 		glViewport(_rect->GetX(), _rect->GetY(), _rect->GetWidth(), _rect->GetHeight());
 
 		gel::init(_major, _minor);
+
+		auto wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC) wglGetProcAddress("wglSwapIntervalEXT");
+		if (wglSwapIntervalEXT) wglSwapIntervalEXT(1);
 	}
 	
 	//=====================================================
