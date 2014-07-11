@@ -12,8 +12,14 @@ namespace Insanity
 	class INSANITY_API EKeyMap final
 	{
 	private:
-		virtual void __enumclass() = 0;
 	public:
+		EKeyMap() = delete;
+		EKeyMap(EKeyMap const&) = delete;
+		EKeyMap(EKeyMap &&) = delete;
+		~EKeyMap() = delete;
+		EKeyMap & operator=(EKeyMap const&) = delete;
+		EKeyMap & operator=(EKeyMap &&) = delete;
+
 		static const EKey Backspace;
 		static const EKey Tab;
 		static const EKey Clear;
