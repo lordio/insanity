@@ -13,7 +13,7 @@ namespace Insanity
 	template<typename _elemType, u8 _elemCount>
 	class TVector;
 
-	enum class EShaderType
+	ATTRIBUTE_DEPRECATED enum class EShaderType
 	{
 		Vertex,
 		Fragment,
@@ -23,7 +23,7 @@ namespace Insanity
 		Compute
 	};
 
-	class INSANITY_API IShaderProgram : public virtual IObject
+	class ATTRIBUTE_DEPRECATED INSANITY_API IShaderProgram : public virtual IObject
 	{
 	public:
 		//=================================================
