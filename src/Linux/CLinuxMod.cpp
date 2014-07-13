@@ -20,7 +20,7 @@ namespace
 		Insanity::Ptr<Insanity::IMod> mod;
 	};
 	typedef std::map<std::string, std::unique_ptr<ModPair>> ModMap;
-	ModMap s_cache;
+	ModMap s_cache{};
 }
 
 namespace Insanity

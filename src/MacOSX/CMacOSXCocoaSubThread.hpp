@@ -30,12 +30,12 @@ namespace Insanity
 			Returning,
 			Returned
 		};
-		std::list<Ptr<ITask>> _tasks;
+		std::list<Ptr<ITask>> _tasks{};
 		std::unique_ptr<IGarbageCollector> _gc;
 		WeakPtr<ISubThread> _ext;
-		OMacOSXCocoaThread * _thrd; //ARC pointer.
-		ThreadState _condition;
-		u8 _gcTicker;
+		OMacOSXCocoaThread * _thrd{nil}; //ARC pointer.
+		ThreadState _condition{ThreadState::Waiting};
+		u8 _gcTicker{0};
 	public:
 		CMacOSXCocoaSubThread(ISubThread * ext, bool start);
 		~CMacOSXCocoaSubThread();
@@ -43,7 +43,7 @@ namespace Insanity
 		static IThread * _Current();
 
 		//=================================================
-		//Public because MacObjCThreadWrapper needs to call it.
+		//Public because OMacOSXCocoaThread needs to call it.
 		//=================================================
 		void _ThreadBoilerplate();
 

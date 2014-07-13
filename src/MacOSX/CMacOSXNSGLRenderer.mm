@@ -5,7 +5,6 @@
 #if defined(PLATFORM_MACOSX)
 
 #include "CMacOSXCocoaWindow.hpp"
-#include "CMacOSXOpenGLShaderProgram.hpp"
 #include "OMacOSXCocoaOpenGLView.hpp"
 #include <IWindow.hpp>
 #include <IConfigObject.hpp>
@@ -29,7 +28,7 @@ namespace Insanity
     }
     
     CMacOSXNSGLRenderer::CMacOSXNSGLRenderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-        _ext{ext}, _nsrend{nil}, _win{}, _program{}, _rect{new TRectangle<s16,u16>{0,0,0,0}}
+        _ext{ext}, _nsrend{nil}, _win{}, _rect{new TRectangle<s16,u16>{0,0,0,0}}
     {
         NSWindow * nswin = _Init(win);
         
@@ -93,23 +92,6 @@ namespace Insanity
 		_rect->SetWidth(width);
 		_rect->SetHeight(height);
     }
-	IShaderProgram * CMacOSXNSGLRenderer::CreateShaderProgram()
-	{
-		return new CMacOSXOpenGLShaderProgram{};
-	}
-	bool CMacOSXNSGLRenderer::UseShaderProgram(IShaderProgram * program)
-	{
-		if(program)
-			if(!program->Link())
-				return false;
-		
-		_program = program;
-
-		if(_program) glUseProgram(program->As<CMacOSXOpenGLShaderProgram>()->GetProgramName());
-		else glUseProgram(0);
-		
-		return true;
-	}
 	TRectangle<s16,u16> const * CMacOSXNSGLRenderer::GetRenderRect() const
 	{
 		return _rect;

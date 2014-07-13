@@ -40,7 +40,6 @@
     <ClInclude Include="..\..\..\include\IObject.hpp" />
     <ClInclude Include="..\..\..\include\IRenderer.hpp" />
     <ClInclude Include="..\..\..\include\IServerSocket.hpp" />
-    <ClInclude Include="..\..\..\include\IShaderProgram.hpp" />
     <ClInclude Include="..\..\..\include\IStreamSocket.hpp" />
     <ClInclude Include="..\..\..\include\ISubThread.hpp" />
     <ClInclude Include="..\..\..\include\ITask.hpp" />
@@ -55,8 +54,6 @@
     <ClInclude Include="..\..\..\src\Generic\CGenericConfigFile.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericConfigObject.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericGarbageCollector.hpp" />
-    <ClInclude Include="..\..\..\src\Generic\CGenericGLShaderProgram.hpp" />
-    <ClInclude Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxApplication.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxBSDServerSocket.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.hpp" />
@@ -74,9 +71,9 @@
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaSubThread.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.hpp" />
-    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\NSEvent+OMacOSXCocoaMouseEvent.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.hpp" />
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaOpenGLView.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaThread.hpp" />
     <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.hpp" />
     <ClInclude Include="..\..\..\src\Windows\CWindowsApplication.hpp" />
@@ -104,8 +101,6 @@
     <ClCompile Include="..\..\..\src\Generic\CGenericConfigFile.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericConfigObject.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericGarbageCollector.cpp" />
-    <ClCompile Include="..\..\..\src\Generic\CGenericGLShaderProgram.cpp" />
-    <ClCompile Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxApplication.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxBSDServerSocket.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.cpp" />
@@ -147,9 +142,9 @@
     <None Include="..\..\..\src\MacOSX\CMacOSXCocoaSubThread.mm" />
     <None Include="..\..\..\src\MacOSX\CMacOSXCocoaWindow.mm" />
     <None Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.mm" />
-    <None Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.mm" />
     <None Include="..\..\..\src\MacOSX\NSEvent+OMacOSXCocoaMouseEvent.mm" />
     <None Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.mm" />
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaOpenGLView.mm" />
     <None Include="..\..\..\src\MacOSX\OMacOSXCocoaThread.mm" />
     <None Include="..\..\..\src\MacOSX\OMacOSXCocoaWindowDelegate.mm" />
   </ItemGroup>

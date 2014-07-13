@@ -67,11 +67,8 @@ namespace Insanity
 	}
 
 	CWindowsWin32SubThread::CWindowsWin32SubThread(ISubThread * ext, bool start) :
-		_taskList{},
 		_gc{ IGarbageCollector::Create() },
-		_ext{ ext },
-		_condition{ ThreadState::Waiting},
-		_gcTicker{}
+		_ext{ ext }
 	{
 		_TLSInit();
 

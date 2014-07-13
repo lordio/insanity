@@ -35,11 +35,11 @@ namespace Insanity
 		static DWORD s_tls;
 		static bool s_tlsInitialized; //since initialization can only occur on main thread.
 
-		std::list<Ptr<ITask>> _taskList;
+		std::list<Ptr<ITask>> _taskList{ {} };
 		std::unique_ptr<IGarbageCollector> _gc;
 		WeakPtr<ISubThread> _ext;
-		ThreadState _condition;
-		u8 _gcTicker;
+		ThreadState _condition{ ThreadState::Waiting };
+		u8 _gcTicker{ 0 };
 
 		static void _TLSInit();
 		static DWORD CALLBACK _ThreadBoilerplate(void * params);

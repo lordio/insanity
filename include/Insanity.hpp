@@ -23,7 +23,6 @@
 #include "IMutex.hpp"
 #include "IRenderer.hpp"
 #include "IServerSocket.hpp"
-#include "IShaderProgram.hpp"
 #include "IStreamSocket.hpp"
 #include "ISubThread.hpp"
 #include "IWindow.hpp"

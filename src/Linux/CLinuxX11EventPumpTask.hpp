@@ -17,7 +17,7 @@ namespace Insanity
 	class CLinuxX11EventPumpTask final : public Default::Task
 	{
 		typedef std::function<void(XEvent*)> ProcType;
-		std::map<Window,ProcType> _procmap;
+		std::map<Window,ProcType> _procmap{};
 		Display * _dpy;
 	public:
 		CLinuxX11EventPumpTask(Display * dpy);

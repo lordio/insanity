@@ -54,12 +54,6 @@
     <Filter Include="Implementations\Generic\GarbageCollector">
       <UniqueIdentifier>{6378b6a0-0402-4633-87c3-8a9ca2d7b465}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Implementations\Generic\ShaderProgram">
-      <UniqueIdentifier>{4a8b16a0-aaf4-447f-9895-8a59de6eed36}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implementations\Generic\ShaderProgram\GL4.1">
-      <UniqueIdentifier>{7a990f5c-c2f6-4fda-926e-04ce9909a918}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Implementations\Linux\Application">
       <UniqueIdentifier>{6e620ea9-7f1f-4ce3-992d-0beae797477f}</UniqueIdentifier>
     </Filter>
@@ -138,12 +132,6 @@
     <Filter Include="Implementations\MacOSX\BSD">
       <UniqueIdentifier>{929bef99-ed23-40c1-9db8-32e555966dd0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Implementations\MacOSX\OpenGL">
-      <UniqueIdentifier>{41787682-807c-4ad5-9366-fd4688d3052e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implementations\MacOSX\OpenGL\ShaderProgram">
-      <UniqueIdentifier>{fe7ac426-7437-40f3-8855-885d593d39a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Implementations\MacOSX\BSD\ServerSocket">
       <UniqueIdentifier>{7b8371b7-a412-4d21-bddb-466fd0d852dc}</UniqueIdentifier>
     </Filter>
@@ -216,8 +204,8 @@
     <Filter Include="Implementations\MacOSX\Cocoa\Window\NSEvent">
       <UniqueIdentifier>{25e94b95-4ac3-4681-a1f9-db23b553a4d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Implementations\Generic\ShaderProgram\GL2.0">
-      <UniqueIdentifier>{0b5f50a0-70a8-4745-976c-7a37f1573613}</UniqueIdentifier>
+    <Filter Include="Implementations\MacOSX\Cocoa\Renderer\OpenGLView">
+      <UniqueIdentifier>{99790416-e278-42a4-83bf-0ae4db15e8dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +240,6 @@
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\IServerSocket.hpp">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\IShaderProgram.hpp">
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\IStreamSocket.hpp">
@@ -299,12 +284,6 @@
     <ClInclude Include="..\..\..\src\Generic\CGenericGarbageCollector.hpp">
       <Filter>Implementations\Generic\GarbageCollector</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.hpp">
-      <Filter>Implementations\Generic\ShaderProgram\GL4.1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Generic\CGenericGLShaderProgram.hpp">
-      <Filter>Implementations\Generic\ShaderProgram\GL2.0</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Linux\CLinuxApplication.hpp">
       <Filter>Implementations\Linux\Application</Filter>
     </ClInclude>
@@ -346,9 +325,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.hpp">
       <Filter>Implementations\MacOSX\Cocoa\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.hpp">
-      <Filter>Implementations\MacOSX\OpenGL\ShaderProgram</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\MacOSX\CMacOSXBSDServerSocket.hpp">
       <Filter>Implementations\MacOSX\BSD\ServerSocket</Filter>
@@ -440,6 +416,9 @@
     <ClInclude Include="..\..\..\src\MacOSX\NSEvent+OMacOSXCocoaMouseEvent.hpp">
       <Filter>Implementations\MacOSX\Cocoa\Window\NSEvent</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaOpenGLView.hpp">
+      <Filter>Implementations\MacOSX\Cocoa\Renderer\OpenGLView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Default\Object.cpp">
@@ -471,12 +450,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Generic\CGenericGarbageCollector.cpp">
       <Filter>Implementations\Generic\GarbageCollector</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Generic\CGenericOpenGL41ShaderProgram.cpp">
-      <Filter>Implementations\Generic\ShaderProgram\GL4.1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Generic\CGenericGLShaderProgram.cpp">
-      <Filter>Implementations\Generic\ShaderProgram\GL2.0</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Linux\CLinuxApplication.cpp">
       <Filter>Implementations\Linux\Application</Filter>
@@ -594,9 +567,6 @@
     <None Include="..\..\..\src\MacOSX\CMacOSXNSGLRenderer.mm">
       <Filter>Implementations\MacOSX\Cocoa\Renderer</Filter>
     </None>
-    <None Include="..\..\..\src\MacOSX\CMacOSXOpenGLShaderProgram.mm">
-      <Filter>Implementations\MacOSX\OpenGL\ShaderProgram</Filter>
-    </None>
     <None Include="..\..\..\Makefile" />
     <None Include="..\..\..\src\MacOSX\OMacOSXCocoaApplicationDelegate.mm">
       <Filter>Implementations\MacOSX\Cocoa\Application\AppDelegate</Filter>
@@ -609,6 +579,9 @@
     </None>
     <None Include="..\..\..\src\MacOSX\NSEvent+OMacOSXCocoaMouseEvent.mm">
       <Filter>Implementations\MacOSX\Cocoa\Window\NSEvent</Filter>
+    </None>
+    <None Include="..\..\..\src\MacOSX\OMacOSXCocoaOpenGLView.mm">
+      <Filter>Implementations\MacOSX\Cocoa\Renderer\OpenGLView</Filter>
     </None>
   </ItemGroup>
 </Project>

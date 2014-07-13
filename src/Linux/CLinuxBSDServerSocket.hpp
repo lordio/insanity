@@ -13,7 +13,7 @@ namespace Insanity
 	class CLinuxBSDServerSocket final : public IServerSocket, public Default::Object
 	{
 		//int used instead of s32 because it's the name Unix uses.
-		int _sock;
+		int _sock{};
 	public:
 		CLinuxBSDServerSocket(u16 port);
 		~CLinuxBSDServerSocket();

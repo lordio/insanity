@@ -6,11 +6,6 @@
 
 #include "CWindowsWin32Window.hpp"
 
-#include "../Generic/CGenericOpenGL41ShaderProgram.hpp"
-#include "../Generic/CGenericGLShaderProgram.hpp"
-
-#include "../Generic/IOpenGLShaderProgram.hpp"
-
 #include <IConfigObject.hpp>
 #include <TRectangle.hpp>
 
@@ -26,9 +21,6 @@ namespace Insanity
 	CWindowsWGLRenderer::CWindowsWGLRenderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
 		_ext{ ext },
 		_win{},
-		_dc{},
-		_rc{},
-		_program{},
 		_rect{ new TRectangle<s16, u16>(0, 0, 0, 0) },
 		_major{},
 		_minor{}
@@ -145,23 +137,6 @@ namespace Insanity
 		_rect->SetHeight(height);
 	}
 
-	IShaderProgram * CWindowsWGLRenderer::CreateShaderProgram()
-	{
-		if (_major > 4 || (_major == 4 && _minor > 1)) return new CGenericOpenGL41ShaderProgram();
-		else return new CGenericGLShaderProgram();
-	}
-	bool CWindowsWGLRenderer::UseShaderProgram(IShaderProgram * program)
-	{
-		if (program)
-			if (!program->Link())
-				return false;
-
-		_program = program;
-		if (_program) glUseProgram(program->As<IOpenGLShaderProgram>()->GetProgramName());
-		else glUseProgram(0);
-
-		return true;
-	}
 	TRectangle<s16, u16> const * CWindowsWGLRenderer::GetRenderRect() const
 	{
 		return _rect;

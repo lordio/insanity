@@ -5,7 +5,6 @@
 #if defined(PLATFORM_LINUX)
 
 #include "../src/Linux/CLinuxX11Window.hpp"
-#include "../src/Generic/CGenericGLShaderProgram.hpp"
 #include <Default/Window.hpp>
 #include <IConfigObject.hpp>
 #include <TRectangle.hpp>
@@ -18,7 +17,7 @@
 namespace Insanity
 {
 	CLinuxMesa9Renderer::CLinuxMesa9Renderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-		_ext{ext}, _win{}, _ctx{}, _fbc{}, _glxwin{}, _dpy{}, _program{}, _rect{new TRectangle<s16,u16>{0,0,0,0}}
+		_ext{ext}, _win{}, _rect{new TRectangle<s16,u16>{0,0,0,0}}
 	{
 		Window xwin{_Init(win)};
 
@@ -116,22 +115,6 @@ namespace Insanity
 		_rect->SetHeight(height);
 	}
 	
-	IShaderProgram * CLinuxMesa9Renderer::CreateShaderProgram()
-	{
-		return new CGenericGLShaderProgram();
-	}
-	bool CLinuxMesa9Renderer::UseShaderProgram(IShaderProgram * program)
-	{
-		if(program)
-			if(!program->Link())
-				return false;
-				
-		_program = program;
-		if(_program) glUseProgram(program->As<CGenericGLShaderProgram>()->GetProgramName());
-		else glUseProgram(0);
-		
-		return true;
-	}
 	TRectangle<s16,u16> const * CLinuxMesa9Renderer::GetRenderRect() const
 	{
 		return _rect;

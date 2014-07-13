@@ -56,9 +56,6 @@ namespace Insanity
 		void ClearColorBuffer(float color[4]) override;
 		void Resize(u16 width, u16 height) override;
 
-		IShaderProgram * CreateShaderProgram() override;
-		bool UseShaderProgram(IShaderProgram * program) override;
-
 		TRectangle<s16, u16> const * GetRenderRect() const override;
 	};
 }

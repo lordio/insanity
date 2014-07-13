@@ -11,7 +11,7 @@ namespace Insanity
 		return new CGenericGarbageCollector{};
 	}
 
-	CGenericGarbageCollector::CGenericGarbageCollector() : _pool{}
+	CGenericGarbageCollector::CGenericGarbageCollector()
 	{
 	}
 	CGenericGarbageCollector::~CGenericGarbageCollector()

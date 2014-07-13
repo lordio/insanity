@@ -14,7 +14,7 @@ namespace Insanity
 	class CGenericConfigFile final : public IConfigFile, public Default::Object
 	{
 	private:
-		std::map<std::string,Ptr<IConfigObject>> _objMap;
+		std::map<std::string, Ptr<IConfigObject>> _objMap{ {} };
 		bool _valid;
 		
 		static std::map<std::string,Ptr<IConfigFile>> s_cache;

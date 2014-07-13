@@ -18,11 +18,11 @@ namespace Insanity
 	class CLinuxApplication final : public IApplication
 	{
 	private:
-		std::vector<Ptr<ITask>> _taskList;
+		std::vector<Ptr<ITask>> _taskList{};
 		std::unique_ptr<IGarbageCollector> _gc;
-		mutable u64 _ref;
-		bool _running;
-		u8 _gcTicker;
+		mutable u64 _ref{0};
+		bool _running{true};
+		u8 _gcTicker{0};
 	public:
 		CLinuxApplication();
 		~CLinuxApplication();

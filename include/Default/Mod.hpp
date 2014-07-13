@@ -14,7 +14,7 @@ namespace Insanity
 	{
 		class INSANITY_API Mod : public virtual IMod
 		{
-			mutable u64 _ref;
+			mutable u64 _ref{ 0 };
 		public:
 			Mod();
 			virtual ~Mod();

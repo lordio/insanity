@@ -95,14 +95,6 @@ namespace Insanity
 		_rect->SetWidth(width);
 		_rect->SetHeight(height);
 	}
-	IShaderProgram * CWindowsDirect3D9Renderer::CreateShaderProgram()
-	{
-		return nullptr;
-	}
-	bool CWindowsDirect3D9Renderer::UseShaderProgram(IShaderProgram * program)
-	{
-		return false;
-	}
 	TRectangle<s16, u16> const * CWindowsDirect3D9Renderer::GetRenderRect() const
 	{
 		return _rect;

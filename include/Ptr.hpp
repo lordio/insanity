@@ -18,6 +18,7 @@ namespace Insanity
 		{
 			if(_strong && _ptr) _ptr->Retain();
 		}
+		//why isn't this templated?
 		Ptr(Ptr<_comtype,_strong> const & rval) : _ptr((_comtype*)rval)
 		{
 			if(_strong && _ptr) _ptr->Retain();
@@ -25,6 +26,12 @@ namespace Insanity
 		Ptr(Ptr<_comtype,!_strong> const & rval) : _ptr((_comtype*)rval)
 		{
 			if(_strong && _ptr) _ptr->Retain();
+		}
+		template<bool strong>
+		Ptr(Ptr<_comtype, strong> && rval) : _ptr((_comtype*)rval)
+		{
+			if (_strong && _ptr) _ptr->Retain();
+			rval = nullptr;
 		}
 		virtual ~Ptr()
 		{

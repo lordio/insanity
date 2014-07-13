@@ -12,7 +12,7 @@ namespace Insanity
 {
 	class CLinuxBSDStreamSocket final : public IStreamSocket, public Default::Object
 	{
-		int _sock;
+		int _sock; //no in-class initializer; ctors will set different values
 	public:
 		CLinuxBSDStreamSocket(char const * host, u16 port);
 		CLinuxBSDStreamSocket(int accepted);
@@ -29,14 +29,6 @@ namespace Insanity
 
 		bool HasPendingData() const override;
 		bool IsConnected() const override;
-
-		//=================================================
-		//Interface: IObject
-		//=================================================
-		/*void Retain() override;
-		void Release() override;
-		u64 GetReferenceCount() const override;
-		void Delete () override;*/
 	};
 }
 

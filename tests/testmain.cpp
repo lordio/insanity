@@ -78,7 +78,7 @@ Abstract:
 	Tests objects commonly used in client-side graphical applications.
 	
 Todo:
-	Add Renderer, ShaderProgram, Task tests.
+	Add Renderer, Task tests.
 	May be better able to test Task in the Communications Conformance Test.
 	ConfigObject used but not thoroughly tested. Can do a more rigorous test in the Module Interaction Conformance Test.
 

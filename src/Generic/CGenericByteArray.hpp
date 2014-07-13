@@ -10,12 +10,11 @@
 
 namespace Insanity
 {
-	template<typename _ctype> class IString;
-
 	class CGenericByteArray final : public IByteArray, public Default::Object
 	{
-		std::vector<u8> _vec;
-		u64 _offset;
+		//TODO: test this workaround on GCC and XCode
+		std::vector<u8> _vec{ {} };
+		u64 _offset{ 0 };
 	public:
 		CGenericByteArray();
 		~CGenericByteArray();

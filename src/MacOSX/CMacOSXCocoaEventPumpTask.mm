@@ -38,6 +38,9 @@ namespace Insanity
 	//=====================================================
 	void CMacOSXCocoaEventPumpTask::Perform()
 	{
+		//Apple notes right mouse-down events on a window of an inactive application send the event to NSApplication,
+		//	with a window number of 0.
+
 		NSEvent * evt{nil};
 
 		do
@@ -49,17 +52,8 @@ namespace Insanity
 					inMode:NSDefaultRunLoopMode
 					dequeue:YES];
 
-				try
-				{
-					//Apple notes right mouse-down events on a window of an inactive application send the event to NSApplication,
-					//	with a window number of 0.
-					_procmap.at([evt window])(evt);
-				}
-				catch(std::out_of_range oor)
-				{
-					//if we don't at least catch it, it'll get thrown further out.
-					//however, there's nothing to do here.
-				}
+				auto proc = _procmap.find([evt window]);
+				if(proc != _procmap.end()) proc->second(evt);
 
 				//perform default processing of the event.
 				[NSApp sendEvent: evt];

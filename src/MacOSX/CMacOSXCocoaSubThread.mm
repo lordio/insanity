@@ -53,7 +53,7 @@ namespace Insanity
 	}
 	
 	CMacOSXCocoaSubThread::CMacOSXCocoaSubThread(ISubThread * ext, bool start) :
-		_tasks{}, _gc{IGarbageCollector::Create()}, _ext{ext}, _thrd{nil}, _condition{ThreadState::Waiting}
+		_gc{IGarbageCollector::Create()}, _ext{ext}
 	{
 		//NOTE: The ctor is being called in the parent thread.
 		

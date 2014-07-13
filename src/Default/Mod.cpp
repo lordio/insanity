@@ -6,7 +6,7 @@ namespace Insanity
 {
 	namespace Default
 	{
-		Mod::Mod() : _ref{ 0 }
+		Mod::Mod()
 		{
 		}
 		Mod::~Mod()

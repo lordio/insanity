@@ -15,10 +15,11 @@ namespace Insanity
 		inline operator _ctype const *() { return this->c_str(); }
 
 		//If MSVC would keep up with C++11, could just inherit basic_string's ctors.
-		TString() : std::basic_string<_ctype>() {}
-		TString(_ctype const* rv) : std::basic_string<_ctype>( rv ) {}
-		TString(std::basic_string<_ctype> const& rv) : std::basic_string<_ctype>( rv ) {}
-		TString(std::basic_string<_ctype> && rv) : std::basic_string<_ctype>( rv ) {}
+		//MSVC also has problems with uniform initialization in the presence of initializer_list ctors.
+		TString() : std::basic_string < _ctype > () {}
+		TString(_ctype const* rv) : std::basic_string < _ctype > ( rv ) {}
+		TString(std::basic_string<_ctype> const& rv) : std::basic_string < _ctype > ( rv ) {}
+		TString(std::basic_string<_ctype> && rv) : std::basic_string < _ctype > ( rv ) {}
 	};
 
 	using String = TString<char>;

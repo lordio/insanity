@@ -11,7 +11,7 @@ namespace Insanity
 	class ATTRIBUTE_LOCAL CGenericGarbageCollector final : public IGarbageCollector
 	{
 		//use a std::unordered_set instead? To avoid duplication.
-		std::list<IObject*> _pool;
+		std::list<IObject*> _pool{ {} };
 	public:
 		CGenericGarbageCollector();
 		~CGenericGarbageCollector();

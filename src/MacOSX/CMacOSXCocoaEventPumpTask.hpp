@@ -18,7 +18,7 @@ namespace Insanity
 	class CMacOSXCocoaEventPumpTask final : public Default::Task
 	{
 		typedef std::function<void(NSEvent*)> ProcType;
-		std::map<NSWindow*,ProcType> _procmap;
+		std::map<NSWindow*,ProcType> _procmap{};
         //Apparently map attempts to delete an NSWindow using a C++ dtor.
         //Why?
 	public:

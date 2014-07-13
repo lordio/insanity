@@ -13,6 +13,7 @@
 
 //#import <AppKit/NSWindow.h>
 @class NSWindow;
+@class OMacOSXCocoaWindowDelegate;
 
 namespace Insanity
 {
@@ -30,6 +31,7 @@ namespace Insanity
 		NSWindow * _win; //ARC pointer.
 		WeakPtr<IWindow> _ext;
 		Ptr<TRectangle<s16,u16>> _rect;
+		OMacOSXCocoaWindowDelegate * _delegate;
 
 		static Ptr<CMacOSXCocoaEventPumpTask> s_pump;
 		static u64 s_winCount;

@@ -8,7 +8,7 @@ namespace Insanity
 {
 	namespace Default
 	{
-		Object::Object() : ref{ 0 }
+		Object::Object()
 		{
 			//Application does not inherit Default::Object.
 			//For all other objects, should be suitable GC.

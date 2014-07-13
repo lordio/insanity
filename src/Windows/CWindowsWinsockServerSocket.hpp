@@ -14,7 +14,7 @@ namespace Insanity
 {
 	class CWindowsWinsockServerSocket final : public IServerSocket, public Default::Object
 	{
-		SOCKET _sock;
+		SOCKET _sock{};
 	public:
 		CWindowsWinsockServerSocket(u16 port);
 		~CWindowsWinsockServerSocket();

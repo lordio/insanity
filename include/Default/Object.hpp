@@ -12,7 +12,7 @@ namespace Insanity
 		class INSANITY_API Object : public virtual IObject
 		{
 		protected:
-			mutable u64 ref;
+			mutable u64 ref{ 0 };
 		public:
 			Object();
 			virtual ~Object();

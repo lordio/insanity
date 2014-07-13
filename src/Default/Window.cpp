@@ -6,7 +6,7 @@ namespace Insanity
 {
 	namespace Default
 	{
-		Window::Window(IConfigObject const * cfg) : _base{ IWindow::Create(this, cfg) }, Object{}
+		Window::Window(IConfigObject const * cfg) : Object{}, _base{ IWindow::Create(this, cfg) }
 		{
 			_base->Retain();
 		}

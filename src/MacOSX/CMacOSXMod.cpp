@@ -19,7 +19,7 @@ namespace
         void * lib;
         Insanity::Ptr<Insanity::IMod> mod;
     };
-    std::map<std::string, std::unique_ptr<ModPair>> s_cache;
+	std::map<std::string, std::unique_ptr<ModPair>> s_cache{};
 }
 
 namespace Insanity

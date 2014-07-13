@@ -24,7 +24,7 @@ namespace Insanity
 	}
 
 	CGenericByteArray::CGenericByteArray() :
-		_vec{}, _offset{}
+		Default::Object{}
 	{
 	}
 	CGenericByteArray::~CGenericByteArray()

@@ -12,7 +12,7 @@ namespace Insanity
 {
     class CMacOSXBSDServerSocket final : public IServerSocket, public Default::Object
     {
-        int _sock;
+		int _sock{};
     public:
         CMacOSXBSDServerSocket(u16 port);
         ~CMacOSXBSDServerSocket();

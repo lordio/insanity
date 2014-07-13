@@ -9,7 +9,6 @@ namespace Insanity
 {
 	class IWindow;
 	class IConfigObject;
-	class IShaderProgram;
 
 	template<typename _xytype, typename _whtype>
 	class TRectangle;
@@ -94,20 +93,6 @@ namespace Insanity
 		//	coordinates.
 		//=================================================
 		virtual TRectangle<s16, u16> const * GetRenderRect() const = 0;
-		
-		//=================================================
-		//Creates a new ShaderProgram object.
-		//	Created by Renderer since various Renderers may
-		//	implement shaders differently.
-		//=================================================
-		virtual IShaderProgram * CreateShaderProgram() = 0;
-		
-		//=================================================
-		//Makes [program] the active ShaderProgram object.
-		//	Returns false if [program] is unlinked, and linking fails.
-		//	Otherwise, returns true.
-		//=================================================
-		virtual bool UseShaderProgram(IShaderProgram * program) = 0;
 	};
 }
 

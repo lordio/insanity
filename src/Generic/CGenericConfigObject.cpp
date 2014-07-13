@@ -7,7 +7,7 @@
 
 namespace Insanity
 {
-	CGenericConfigObject::CGenericConfigObject() : _propList{}
+	CGenericConfigObject::CGenericConfigObject()
 	{
 	}
 	CGenericConfigObject::~CGenericConfigObject()
@@ -19,53 +19,27 @@ namespace Insanity
 	//=====================================================
 	bool CGenericConfigObject::HasProperty(char const * propName) const
 	{
-		try
-		{
-			_propList.at(propName);
-		}
-		catch (std::out_of_range oor)
-		{
-			return false;
-		}
-		return true;
+		return _propList.count(propName) == 1;
 	}
 	char const * CGenericConfigObject::GetProperty(char const * propName, char const * def) const
 	{
-		char const * ret{};
-		try
-		{
-			ret = _propList.at(propName).c_str();
-		}
-		catch (std::out_of_range oor)
-		{
-			ret = def;
-		}
+		char const * ret{def};
+		auto prop = _propList.find(propName);
+		if (prop != _propList.end()) ret = prop->second.c_str();
 		return ret;
 	}
 	s64 CGenericConfigObject::GetProperty(char const * propName, s64 def) const
 	{
-		s64 ret{};
-		try
-		{
-			ret = std::stoll(_propList.at(propName));
-		}
-		catch(std::out_of_range oor)
-		{
-			ret = def;
-		}
+		s64 ret{def};
+		auto prop = _propList.find(propName);
+		if (prop != _propList.end()) ret = std::stoll(prop->second);
 		return ret;
 	}
 	double CGenericConfigObject::GetProperty(char const * propName, double def) const
 	{
-		double ret{};
-		try
-		{
-			ret = std::stod(_propList.at(propName));
-		}
-		catch(std::out_of_range oor)
-		{
-			ret = def;
-		}
+		double ret{def};
+		auto prop = _propList.find(propName);
+		if (prop != _propList.end()) ret = std::stod(prop->second);
 		return ret;
 	}
 	

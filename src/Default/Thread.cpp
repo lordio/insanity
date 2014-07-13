@@ -6,7 +6,7 @@ namespace Insanity
 {
 	namespace Default
 	{
-		Thread::Thread() : _base{ ISubThread::Create(this, false) }, Object{}
+		Thread::Thread() : Object{}, _base{ ISubThread::Create(this, false) }
 		{
 			//need a way to override IThread::Current to return this instead of _base.
 

@@ -68,11 +68,8 @@ namespace Insanity
 
 	//A thread should be managed by its parent thread's garbage collector.
 	CLinuxSubThread::CLinuxSubThread(ISubThread * ext, bool start) :
-		_taskList{},
 		_gc{IGarbageCollector::Create()},
-		_ext{ext},
-		_condition{ThreadState::Waiting},
-		_gcTicker{}
+		_ext{ext}
 	{
 		//NOTE: This ctor is being called in the parent thread.
 

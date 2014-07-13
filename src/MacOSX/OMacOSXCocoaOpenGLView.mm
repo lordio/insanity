@@ -27,11 +27,11 @@
     //what I could do is provide enough spaces for all the possible Boolean values
     //  (or, at least the ones the should be configurable), and check each,
     //  setting the first empty spot to an active Boolean.
+	//Or, of course, I could just use a std::vector.
 
 	NSOpenGLPixelFormat * fmt = [[NSOpenGLPixelFormat alloc] initWithAttributes:pfa];
 	NSOpenGLContext * ctx = [[NSOpenGLContext alloc] initWithFormat:fmt shareContext:nil];
 
-    //TODO: replace nil (frame) with window's content rectangle.
     Insanity::TRectangle<Insanity::s16, Insanity::u16> const * winrect = win->GetRect();
 	if(![super initWithFrame:NSMakeRect(winrect->GetX(), winrect->GetY(), winrect->GetWidth(), winrect->GetHeight()) pixelFormat:fmt]) return nil;
 

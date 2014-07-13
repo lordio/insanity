@@ -12,8 +12,8 @@ namespace Insanity
 {
 	class CGenericConfigObject final : public IConfigObject, public Default::Object
 	{
-		//		 property	 value
-		std::map<std::string,std::string> _propList;
+		//		 property	  value
+		std::map<std::string, std::string> _propList{ {} };
 	public:
 		CGenericConfigObject();
 		~CGenericConfigObject();

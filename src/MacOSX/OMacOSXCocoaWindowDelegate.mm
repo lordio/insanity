@@ -5,7 +5,7 @@
 #if defined(PLATFORM_MACOSX)
 
 @implementation OMacOSXCocoaWindowDelegate
--(id)initWithWindow:(Insanity::CMacOSXCocoaWindow*)window
+-(id)initWithWindow:(Insanity::IWindow*)window
 {
 	if(self = [super init])
 	{

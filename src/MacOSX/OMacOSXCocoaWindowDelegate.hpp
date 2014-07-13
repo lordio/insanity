@@ -5,15 +5,16 @@
 
 #if defined(PLATFORM_MACOSX)
 
-#include <AppKit/NSWindow.h>
-#include "CMacOSXCocoaWindow.hpp"
+#import <AppKit/NSWindow.h>
+#include <IWindow.hpp>
 #include <Ptr.hpp>
 
 @interface OMacOSXCocoaWindowDelegate : NSObject <NSWindowDelegate>
 {
-	Insanity::WeakPtr<Insanity::CMacOSXCocoaWindow> _window;
+	Insanity::WeakPtr<Insanity::IWindow> _window;
 }
--(id)initWithWindow:(Insanity::CMacOSXCocoaWindow*)window;
+//should pass the window that will respond to events (usually a Default::Window inheritor)
+-(id)initWithWindow:(Insanity::IWindow*)window;
 
 -(void)windowDidMove:(NSNotification*)notification;
 -(NSSize)windowWillResize:(NSWindow*)window toSize:(NSSize)size;

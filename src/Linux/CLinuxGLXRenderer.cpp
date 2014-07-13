@@ -8,7 +8,6 @@
 #include <IConfigObject.hpp>
 #include "CLinuxX11Window.hpp"
 #include <Default/Window.hpp>
-#include "../Generic/CGenericOpenGL41ShaderProgram.hpp"
 
 #include "../../gel/gel.hpp"
 #include <GL/glxext.h>
@@ -21,11 +20,6 @@ namespace Insanity
 	CLinuxGLXRenderer::CLinuxGLXRenderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
 		_ext{ext},
 		_win{},
-		_ctx{},
-		_fbc{},
-		_glxwin{},
-		_dpy{},
-		_program{},
 		_rect{new TRectangle<s16,u16>{0,0,0,0}}
 	{
 		Window xwin{_Init(win)};
@@ -131,22 +125,6 @@ namespace Insanity
 
 		_rect->SetWidth(width);
 		_rect->SetHeight(height);
-	}
-	IShaderProgram * CLinuxGLXRenderer::CreateShaderProgram()
-	{
-		return new CGenericOpenGL41ShaderProgram{};
-	}
-	bool CLinuxGLXRenderer::UseShaderProgram(IShaderProgram * program)
-	{
-		if(program)
-			if(!program->Link())
-				return false;
-		
-		_program = program;
-		if(_program) glUseProgram(program->As<CGenericOpenGL41ShaderProgram>()->GetProgramName());
-		else glUseProgram(0);
-		
-		return true;
 	}
 	TRectangle<s16,u16> const * CLinuxGLXRenderer::GetRenderRect() const
 	{

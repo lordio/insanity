@@ -23,11 +23,7 @@ namespace Insanity
 	}
 	
 	CLinuxApplication::CLinuxApplication() :
-		_taskList{}, 
-		_gc{IGarbageCollector::Create()}, 
-		_ref{}, 
-		_running{true},
-		_gcTicker{}
+		_gc{IGarbageCollector::Create()}
 	{
 	}
 	CLinuxApplication::~CLinuxApplication()

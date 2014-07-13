@@ -9,7 +9,7 @@
 namespace Insanity
 {
 	CLinuxX11EventPumpTask::CLinuxX11EventPumpTask(Display * dpy) : 
-		_dpy(dpy)
+		_dpy{dpy}
 	{
 	}
 	CLinuxX11EventPumpTask::~CLinuxX11EventPumpTask()
@@ -37,13 +37,8 @@ namespace Insanity
 		while(XPending(_dpy))
 		{
 			XNextEvent(_dpy, &xe);
-			try
-			{
-				_procmap.at(xe.xany.window)(&xe);
-			}
-			catch(std::out_of_range oor)
-			{
-			}
+			auto proc = _procmap.find(xe.xany.window);
+			if(proc != _procmap.end()) proc->second(&xe);
 		}
 	}
 	bool CLinuxX11EventPumpTask::ShouldRequeue()

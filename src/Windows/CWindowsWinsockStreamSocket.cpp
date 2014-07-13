@@ -7,6 +7,7 @@
 #include <WS2tcpip.h>
 #include <IByteArray.hpp>
 #include "CWindowsWinsockTracker.hpp"
+#include "WindowsStringConversion.hpp"
 
 #include <IThread.hpp>
 #include <IGarbageCollector.hpp>
@@ -24,13 +25,13 @@ namespace Insanity
 	}
 
 	CWindowsWinsockStreamSocket::CWindowsWinsockStreamSocket(char const * host, u16 port) :
-		_sock{}
+		Default::Object{}, _sock{}
 	{
 		CWindowsWinsockTracker::Retain();
 		Connect(host,port);
 	}
 	CWindowsWinsockStreamSocket::CWindowsWinsockStreamSocket(SOCKET accepted) :
-		_sock{ accepted }
+		Default::Object{}, _sock{ accepted }
 	{
 		CWindowsWinsockTracker::Retain();
 	}
@@ -65,17 +66,19 @@ namespace Insanity
 	{
 		if(_sock) Close();
 
-		ADDRINFO hints;
+		ADDRINFOW hints;
 		ZeroMemory(&hints, sizeof(hints));
 		hints.ai_family = AF_UNSPEC;
 		hints.ai_socktype = SOCK_STREAM;
 
-		ADDRINFO * ret{};
-		ADDRINFO * ptr{};
+		ADDRINFOW * ret{};
+		ADDRINFOW * ptr{};
 
-		std::string cport{ std::to_string(port) };
+		std::wstring whost{};
+		atow(host, whost);
+		std::wstring wport{ std::to_wstring(port) };
 
-		GetAddrInfo(host,cport.c_str(),&hints,&ret);
+		GetAddrInfoW(whost.c_str(),wport.c_str(),&hints,&ret);
 
 		ptr = ret;
 
@@ -94,7 +97,7 @@ namespace Insanity
 			}
 		}
 
-		FreeAddrInfo(ret);
+		FreeAddrInfoW(ret);
 
 		if(_sock == 0) return false;
 

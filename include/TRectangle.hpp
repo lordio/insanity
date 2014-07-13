@@ -47,6 +47,7 @@ namespace Insanity
 			//is it too restrictive to only allow Rectangles of the same types to be checked for intersections?
 			//	could be templated if so.
 
+			//HOLY HELL reduce this.
 			if(Contains(other)) return true;
 			if(other->Contains(this)) return true;
 

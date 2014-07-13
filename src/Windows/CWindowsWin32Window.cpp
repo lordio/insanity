@@ -107,8 +107,7 @@ namespace Insanity
 		//Need to adjust for non-client area of window for CreateWindow.
 		RECT&& adj = _GetAdjustedRect(_rect);
 		
-		//convert the title to a wchar_t string. Let the garbage collector take care of it.
-		//IString<wchar_t> * wtitle = IString<wchar_t>::Create(cfg->GetProperty("title", ""));
+		//convert the title to a wchar_t string
 		std::wstring wtitle{};
 		atow(cfg->GetProperty("title", ""), wtitle);
 

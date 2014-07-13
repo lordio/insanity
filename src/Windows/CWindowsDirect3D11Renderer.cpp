@@ -191,14 +191,6 @@ namespace Insanity
 
 		_swap->ResizeTarget(&dmd);
 	}
-	IShaderProgram * CWindowsDirect3D11Renderer::CreateShaderProgram()
-	{
-		return nullptr;
-	}
-	bool CWindowsDirect3D11Renderer::UseShaderProgram(IShaderProgram * program)
-	{
-		return false;
-	}
 	TRectangle<s16, u16> const * CWindowsDirect3D11Renderer::GetRenderRect() const
 	{
 		return _rect;

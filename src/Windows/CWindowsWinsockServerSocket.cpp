@@ -24,7 +24,7 @@ namespace Insanity
 	}
 
 	CWindowsWinsockServerSocket::CWindowsWinsockServerSocket(u16 port) :
-		_sock{}
+		Default::Object{}
 	{
 		CWindowsWinsockTracker::Retain();
 		Listen(port);
@@ -43,21 +43,21 @@ namespace Insanity
 	{
 		if (_sock) Close();
 
-		std::string sport{ std::to_string(port) };
+		std::wstring wport{ std::to_wstring(port) };
 
-		ADDRINFO hints;
+		ADDRINFOW hints;
 		ZeroMemory(&hints,sizeof(hints));
 		hints.ai_flags = AI_PASSIVE;
 		hints.ai_socktype = SOCK_STREAM;
 		hints.ai_family = AF_UNSPEC;
 
 		//hold onto the list head for the freeaddrinfo call
-		ADDRINFO * list{};
+		ADDRINFOW * list{};
 
 		//pointer for iterating over the list
-		ADDRINFO * ptr{};
+		ADDRINFOW * ptr{};
 
-		GetAddrInfo(nullptr,sport.c_str(),&hints,&list);
+		GetAddrInfoW(nullptr,wport.c_str(),&hints,&list);
 
 		ptr = list;
 
@@ -81,7 +81,7 @@ namespace Insanity
 				ptr = ptr->ai_next;
 			}
 		}
-		FreeAddrInfo(list);
+		FreeAddrInfoW(list);
 
 		if(_sock == 0) return false;
 

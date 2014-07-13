@@ -8,7 +8,6 @@
 #include "CLinuxX11Window.hpp"
 
 #include <IRenderer.hpp>
-#include <IShaderProgram.hpp>
 #include <Default/Object.hpp>
 #include <Ptr.hpp>
 
@@ -19,7 +18,6 @@ namespace Insanity
 {
 	class CLinuxX11Window;
 	class IConfigObject;
-	class IShaderProgram;
 	class IWindow;
 	
 	//Non-Mesa GLX; should be used for versions higher than 3.1 (Mesa 9) or 3.3 (Mesa 10), for systems with manufacturer drivers.
@@ -27,12 +25,11 @@ namespace Insanity
 	{
 		WeakPtr<IRenderer> _ext;
 		WeakPtr<CLinuxX11Window> _win;
-		GLXContext _ctx;
-		GLXFBConfig _fbc;
-		GLXWindow _glxwin;
-		Display * _dpy;
+		GLXContext _ctx{};
+		GLXFBConfig _fbc{};
+		GLXWindow _glxwin{};
+		Display * _dpy{};
 		
-		Ptr<IShaderProgram> _program;
 		Ptr<TRectangle<s16,u16>> _rect;
 		
 		//=================================================
@@ -61,9 +58,6 @@ namespace Insanity
 		
 		void ClearColorBuffer(float color[4]) override;
 		void Resize(u16 width, u16 height) override;
-		
-		IShaderProgram * CreateShaderProgram() override;
-		bool UseShaderProgram(IShaderProgram * program) override;
 
 		TRectangle<s16,u16> const * GetRenderRect() const override;
 	};

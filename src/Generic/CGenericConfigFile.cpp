@@ -17,7 +17,7 @@ namespace Insanity
 	}
 	
 	CGenericConfigFile::CGenericConfigFile(char const * filename) :
-		_objMap{}, _valid{ false }
+		_valid{ false } //could do an in-class initializer, but it's more relevant here.
 	{
 		//should load and parse specified file
 		std::ifstream file{ filename };
@@ -184,11 +184,9 @@ namespace Insanity
 	IConfigFile * CGenericConfigFile::GetInstance(char const * filename)
 	{
 		WeakPtr<IConfigFile> ret{};
-		try
-		{
-			ret = s_cache.at(filename);
-		}
-		catch(std::out_of_range oor)
+		auto file = s_cache.find(filename);
+		if (file != s_cache.end()) ret = file->second;
+		else
 		{
 			ret = new CGenericConfigFile{ filename };
 			s_cache[filename] = ret;
@@ -206,15 +204,8 @@ namespace Insanity
 	IConfigObject const * CGenericConfigFile::GetObject(char const * objName) const
 	{
 		WeakPtr<IConfigObject> ret{};
-		try
-		{
-			ret = _objMap.at(objName);
-		}
-		catch(std::out_of_range oor)
-		{
-			//reassert ret as nullptr, just to be on the safe side.
-			ret = nullptr;
-		}
+		auto obj = _objMap.find(objName);
+		if (obj != _objMap.end()) ret = obj->second;
 		return ret;
 	}
 }

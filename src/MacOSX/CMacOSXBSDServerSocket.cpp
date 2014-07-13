@@ -24,7 +24,7 @@ namespace Insanity
 		return new CMacOSXBSDServerSocket{port};
     }
     
-	CMacOSXBSDServerSocket::CMacOSXBSDServerSocket(u16 port) : _sock{}
+	CMacOSXBSDServerSocket::CMacOSXBSDServerSocket(u16 port)
     {
         Listen(port);
     }

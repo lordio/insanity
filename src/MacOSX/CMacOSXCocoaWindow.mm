@@ -13,6 +13,7 @@
 #include <cmath>
 #import <AppKit/NSWindow.h>
 #import <Foundation/NSProcessInfo.h>
+#include "OMacOSXCocoaWindowDelegate.hpp"
 #include "NSEvent+OMacOSXCocoaMouseEvent.hpp"
 
 /*
@@ -50,12 +51,15 @@ namespace Insanity
 			backing:NSBackingStoreBuffered
 			defer:YES];
 
+		[_win setDelegate:(_delegate = [[OMacOSXCocoaWindowDelegate alloc] initWithWindow: (_ext ? _ext : this)])];
+
 		_SetPumpProc();
 
 		++s_winCount;
 	}
 	CMacOSXCocoaWindow::~CMacOSXCocoaWindow()
 	{
+		_delegate = nil;
 		if(--s_winCount) s_pump = nullptr;
 	}
 

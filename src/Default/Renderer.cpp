@@ -36,14 +36,6 @@ namespace Insanity
 			_base->Resize(width, height);
 		}
 		
-		IShaderProgram * Renderer::CreateShaderProgram()
-		{
-			return _base->CreateShaderProgram();
-		}
-		bool Renderer::UseShaderProgram(IShaderProgram * program)
-		{
-			return _base->UseShaderProgram(program);
-		}
 		TRectangle<s16, u16> const * Renderer::GetRenderRect() const
 		{
 			return _base->GetRenderRect();

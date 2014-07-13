@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Insanity", "Insanity\Insanity.vcxproj", "{F50EDED5-2E6C-48EB-BEDA-0563565D3E9C}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -17,6 +17,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxpro
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConformanceTestModule", "ConformanceTestModule\ConformanceTestModule.vcxproj", "{AD5DE308-56AB-4FBA-A097-E8C227FCECDC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F50EDED5-2E6C-48EB-BEDA-0563565D3E9C} = {F50EDED5-2E6C-48EB-BEDA-0563565D3E9C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

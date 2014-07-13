@@ -10,7 +10,6 @@
 #include <IRenderer.hpp>
 #include <default/Object.hpp>
 #include <TRectangle.hpp>
-#include <IShaderProgram.hpp>
 #include <Ptr.hpp>
 
 #include <Windows.h>
@@ -24,10 +23,9 @@ namespace Insanity
 	private:
 		WeakPtr<IRenderer> _ext;
 		WeakPtr<CWindowsWin32Window> _win;
-		HDC _dc;
-		HGLRC _rc;
+		HDC _dc{};
+		HGLRC _rc{};
 
-		Ptr<IShaderProgram> _program;
 		Ptr<TRectangle<s16,u16>> _rect;
 
 		u8 _major;
@@ -47,9 +45,6 @@ namespace Insanity
 
 		void ClearColorBuffer(float color[4]) override;
 		void Resize(u16 width, u16 height) override;
-
-		IShaderProgram * CreateShaderProgram() override;
-		bool UseShaderProgram(IShaderProgram * program) override;
 
 		TRectangle<s16, u16> const * GetRenderRect() const override;
 	};
