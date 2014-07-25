@@ -14,6 +14,8 @@
 #include <Default/Object.hpp>
 #include <Ptr.hpp>
 
+#include <string>
+
 namespace Insanity
 {
 	template<typename _xytype, typename _whtype>
@@ -27,6 +29,7 @@ namespace Insanity
 		Ptr<TRectangle<s16,u16>> _rect;
 		WeakPtr<IWindow> _ext;
 		HWND _win;
+		std::string _title;
 
 		static bool s_windowClassRegistered;
 		static Ptr<CWindowsWin32EventPumpTask> s_pumpTask;
@@ -50,6 +53,8 @@ namespace Insanity
 		//Interface: IWindow
 		//=================================================
 		TRectangle<s16,u16> const * GetRect() const override;
+		char const * GetTitle() const override;
+		void SetTitle(char const * title) override;
 		void Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y) override;
 		void Key(EKey key, EKeyState state) override;
 		void Scroll(EMouseScrollDirection dir, u16 delta) override;

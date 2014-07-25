@@ -10,6 +10,7 @@
 #include <IWindow.hpp>
 #include <default/Object.hpp>
 #include <Ptr.hpp>
+#include <string>
 
 //#import <AppKit/NSWindow.h>
 @class NSWindow;
@@ -32,6 +33,7 @@ namespace Insanity
 		WeakPtr<IWindow> _ext;
 		Ptr<TRectangle<s16,u16>> _rect;
 		OMacOSXCocoaWindowDelegate * _delegate;
+		std::string _title{};
 
 		static Ptr<CMacOSXCocoaEventPumpTask> s_pump;
 		static u64 s_winCount;
@@ -47,6 +49,8 @@ namespace Insanity
 		//Interface: IWindow
 		//=================================================
 		TRectangle<s16,u16> const * GetRect() const override;
+		char const * GetTitle() const override;
+		void SetTitle(char const * title) override;
 		void Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y) override;
 		void Key(EKey key, EKeyState state) override;
 		void Scroll(EMouseScrollDirection dir, u16 delta) override;

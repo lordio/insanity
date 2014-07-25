@@ -8,7 +8,7 @@ using namespace Insanity;
 
 #if defined(PLATFORM_MSWINDOWS)
 #define PREFIX "../../../tests/"
-#define MODPREFIX "../../../bin/Win32/"
+#define MODPREFIX "../../../bin/Win32/Debug/"
 #elif defined(PLATFORM_LINUX)
 #define PREFIX "../../tests/"
 #define MODPREFIX ""

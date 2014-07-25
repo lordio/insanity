@@ -109,7 +109,8 @@ namespace Insanity
 		
 		//convert the title to a wchar_t string
 		std::wstring wtitle{};
-		atow(cfg->GetProperty("title", ""), wtitle);
+		_title = cfg->GetProperty("title", "");
+		atow(_title, wtitle);
 
 		_win = CreateWindowExW(WS_EX_OVERLAPPEDWINDOW,	//will either want this or options for fullscreen
 			L"InsanityWindowClass",						//Constant
@@ -242,6 +243,17 @@ namespace Insanity
 	TRectangle<s16,u16> const * CWindowsWin32Window::GetRect() const
 	{
 		return _rect;
+	}
+	char const * CWindowsWin32Window::GetTitle() const
+	{
+		return _title.c_str();
+	}
+	void CWindowsWin32Window::SetTitle(char const * title)
+	{
+		_title = title;
+		std::wstring wtitle{};
+		atow(_title, wtitle);
+		SetWindowTextW(_win, wtitle.c_str());
 	}
 	void CWindowsWin32Window::MouseHandler(EMouseButton button, EMouseButtonState state, u16 x, u16 y)
 	{

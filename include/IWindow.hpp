@@ -77,6 +77,12 @@ namespace Insanity
 		virtual TRectangle<s16,u16> const * GetRect() const = 0;
 
 		//=================================================
+		//Set/get the string shown in the window's title bar.
+		//=================================================
+		virtual void SetTitle(char const * title) = 0;
+		virtual char const * GetTitle() const = 0;
+
+		//=================================================
 		//Input simulation methods
 		//=================================================
 		

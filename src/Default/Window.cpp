@@ -30,6 +30,14 @@ namespace Insanity
 		{
 			return _base->GetRect();
 		}
+		char const * Window::GetTitle() const
+		{
+			return _base->GetTitle();
+		}
+		void Window::SetTitle(char const * title)
+		{
+			_base->SetTitle(title);
+		}
 
 		//simulation and change commands should not usually be overridden; they cause events that trigger handlers.
 		void Window::Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y)

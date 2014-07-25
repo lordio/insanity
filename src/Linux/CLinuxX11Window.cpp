@@ -241,7 +241,7 @@ namespace Insanity
 			CWBackPixel | CWBorderPixel | CWEventMask | (xvi ? CWColormap : 0),	//attribute mask
 			xswa);	//XSetWindowAttributes*
 			
-		XStoreName(s_dpy, _win, title);
+		SetTitle(title);
 		
 		if(s_del == None) s_del = XInternAtom(s_dpy,"WM_DELETE_WINDOW",False);
 		
@@ -330,6 +330,15 @@ namespace Insanity
 	TRectangle<s16,u16> const * CLinuxX11Window::GetRect() const
 	{
 		return _rect;
+	}
+	char const * CLinuxX11Window::GetTitle() const
+	{
+		return _title.c_str();
+	}
+	void CLinuxX11Window::SetTitle(char const * title)
+	{
+		_title = title;
+		XStoreName(s_dpy, _win, _title.c_str());
 	}
 	void CLinuxX11Window::Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y)
 	{

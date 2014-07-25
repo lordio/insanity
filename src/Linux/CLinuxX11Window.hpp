@@ -13,6 +13,8 @@
 #include <X11/Xlib.h>
 #include <GL/glx.h>
 
+#include <string>
+
 namespace Insanity
 {
 	class CLinuxX11EventPumpTask;
@@ -32,6 +34,7 @@ namespace Insanity
 		Ptr<TRectangle<s16,u16>> _rect;
 		WeakPtr<IWindow> _ext;
 		Window _win;
+		std::string _title{};
 		
 		static void _InitXDisplay();
 		static void _InitGLX();
@@ -52,6 +55,8 @@ namespace Insanity
 		//Interface: IWindow
 		//=================================================
 		TRectangle<s16,u16> const * GetRect() const override;
+		char const * GetTitle() const override;
+		void SetTitle(char const * title) override;
 		void Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y) override;
 		void Key(EKey key, EKeyState state) override;
 		void Scroll(EMouseScrollDirection dir, u16 delta) override;

@@ -52,6 +52,8 @@ namespace Insanity
 			defer:YES];
 
 		[_win setDelegate:(_delegate = [[OMacOSXCocoaWindowDelegate alloc] initWithWindow: (_ext ? _ext : this)])];
+		
+		SetTitle(cfg->GetProperty("title", ""));
 
 		_SetPumpProc();
 
@@ -134,6 +136,15 @@ namespace Insanity
 	TRectangle<s16,u16> const * CMacOSXCocoaWindow::GetRect() const
 	{
 		return _rect;
+	}
+	char const * CMacOSXCocoaWindow::GetTitle() const
+	{
+		return _title.c_str();
+	}
+	void CMacOSXCocoaWindow::SetTitle(char const * title)
+	{
+		_title = title;
+		[_win setTitle:[NSString stringWithCString:_title.c_str() encoding:NSUTF8StringEncoding]]; //is this the default for OSX?
 	}
 	void CMacOSXCocoaWindow::Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y)
 	{
