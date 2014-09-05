@@ -37,8 +37,22 @@ namespace Insanity
 		libName += ".dylib";
 
 		void * mod{dlopen(libName.c_str(), RTLD_LAZY | RTLD_GLOBAL)};
+		if(!mod) return nullptr;
+
+		dlerror(); //clear errors
 		ModCtor ctor{(ModCtor)dlsym(mod,"InitMod")};
+		if(dlerror())
+		{
+			dlclose(mod);
+			return nullptr;
+		}
+
 		WeakPtr<IMod> modObject{ctor()};
+		if(!modObject)
+		{
+			dlclose(mod);
+			return nullptr;
+		}
         
         s_cache[modName].reset(new ModPair{mod,modObject});
         

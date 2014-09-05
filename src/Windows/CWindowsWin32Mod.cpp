@@ -47,9 +47,21 @@ namespace Insanity
 		libName += L".dll";
 
 		HMODULE mod{ LoadLibraryW(libName.c_str()) };
+		if (!mod) return nullptr;
 
 		ModCtor ctor{ (ModCtor) GetProcAddress(mod, "InitMod") };
+		if (!ctor)
+		{
+			FreeLibrary(mod);
+			return nullptr;
+		}
+
 		WeakPtr<IMod> modObject{ ctor() };
+		if (!modObject)
+		{
+			FreeLibrary(mod);
+			return nullptr;
+		}
 
 		s_cache[modName].reset(new ModPair{mod,modObject});
 
