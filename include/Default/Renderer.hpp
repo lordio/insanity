@@ -1,9 +1,9 @@
 #ifndef INSANITY_DEFAULT_RENDERER
 #define INSANITY_DEFAULT_RENDERER
 
-#include <Constants.hpp>
+#include "../Constants.hpp"
 
-#include <IRenderer.hpp>
+#include "../IRenderer.hpp"
 #include "Object.hpp"
 
 namespace Insanity

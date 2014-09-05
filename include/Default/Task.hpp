@@ -1,9 +1,9 @@
 #ifndef INSANITY_IMPLEMENTATION_DEFAULT_TASK
 #define INSANITY_IMPLEMENTATION_DEFAULT_TASK
 
-#include <Constants.hpp>
+#include "../Constants.hpp"
 
-#include <ITask.hpp>
+#include "../ITask.hpp"
 #include "Object.hpp"
 
 namespace Insanity
