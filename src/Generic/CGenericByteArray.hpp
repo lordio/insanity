@@ -13,7 +13,7 @@ namespace Insanity
 	class CGenericByteArray final : public IByteArray, public Default::Object
 	{
 		//TODO: test this workaround on GCC and XCode
-		std::vector<u8> _vec{ {} };
+		std::vector<u8> _vec{};
 		u64 _offset{ 0 };
 	public:
 		CGenericByteArray();
