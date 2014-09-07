@@ -44,6 +44,7 @@
 #include "Ptr.hpp"
 #include "TMatrix.hpp"
 #include "TRectangle.hpp"
+#include "TString.hpp"
 #include "TVector.hpp"
 
 //Default classes
