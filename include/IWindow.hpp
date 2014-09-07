@@ -9,9 +9,6 @@ namespace Insanity
 {
 	template<typename _xytype, typename _whtype>
 	class TRectangle;
-
-	template<typename _ctype>
-	class IString;
 	
 	class IConfigObject;
 

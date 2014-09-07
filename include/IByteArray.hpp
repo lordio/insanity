@@ -6,8 +6,6 @@
 
 namespace Insanity
 {
-	template<typename _ctype> class IString;
-
 	class INSANITY_API IByteArray : public virtual IObject
 	{
 	public:

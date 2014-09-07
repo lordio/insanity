@@ -6,9 +6,6 @@
 
 namespace Insanity
 {
-	template<typename _ctype>
-	class IString;
-	
 	//=====================================================
 	//A single collection of configuration options.
 	//=====================================================
