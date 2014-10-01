@@ -6,7 +6,6 @@
 
 #include <IApplication.hpp>
 #include <IConfigObject.hpp>
-#include <TRectangle.hpp>
 
 #include "CMacOSXCocoaEventPumpTask.hpp"
 
@@ -38,12 +37,12 @@ namespace Insanity
 	CMacOSXCocoaWindow::CMacOSXCocoaWindow(IWindow * ext, IConfigObject const * cfg) :
 		_win{nil}, _ext{ext}, _rect{}
 	{
-		_rect = new TRectangle<s16, u16>(static_cast<s16>(cfg->GetProperty("dims.x", (s64)0)),
-			static_cast<s16>(cfg->GetProperty("dims.y", (s64)0)),
-			static_cast<u16>(cfg->GetProperty("dims.width", (s64)640)),
-			static_cast<u16>(cfg->GetProperty("dims.height", (s64)480)));
+		_rect.SetX(static_cast<s16>(cfg->GetProperty("dims.x", (s64)0)));
+		_rect.SetY(static_cast<s16>(cfg->GetProperty("dims.y", (s64)0)));
+		_rect.SetWidth(static_cast<u16>(cfg->GetProperty("dims.width", (s64)640)));
+		_rect.SetHeight(static_cast<u16>(cfg->GetProperty("dims.height", (s64)480)));
 
-		NSRect windowRect = NSMakeRect(_rect->GetX(), _rect->GetY(), _rect->GetWidth(), _rect->GetHeight());
+		NSRect windowRect = NSMakeRect(_rect.GetX(), _rect.GetY(), _rect.GetWidth(), _rect.GetHeight());
 
 		_win = [[NSWindow alloc]
 			initWithContentRect:windowRect
@@ -133,7 +132,7 @@ namespace Insanity
 	//=====================================================
 	//Interface: IWindow
 	//=====================================================
-	TRectangle<s16,u16> const * CMacOSXCocoaWindow::GetRect() const
+	TRectangle<s16,u16> const & CMacOSXCocoaWindow::GetRect() const
 	{
 		return _rect;
 	}
@@ -273,13 +272,13 @@ namespace Insanity
 	}
 	void CMacOSXCocoaWindow::MoveHandler(s16 x, s16 y)
 	{
-		_rect->SetX(x);
-		_rect->SetY(y);
+		_rect.SetX(x);
+		_rect.SetY(y);
 	}
 	void CMacOSXCocoaWindow::ResizeHandler(u16 width, u16 height)
 	{
-		_rect->SetWidth(width);
-		_rect->SetHeight(height);
+		_rect.SetWidth(width);
+		_rect.SetHeight(height);
 	}
 }
 

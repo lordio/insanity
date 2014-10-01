@@ -30,7 +30,7 @@ namespace Insanity
 		GLXWindow _glxwin{};
 		Display * _dpy{};
 		
-		Ptr<TRectangle<s16,u16>> _rect;
+		TRectangle<s16,u16> _rect;
 		
 		//Initializes _win, _fbc, and _dpy
 		//	Returns None if [win] is neither a CLinuxX11Window, nor a Default::Window extending a CLinuxX11Window.
@@ -52,7 +52,7 @@ namespace Insanity
 		void ClearColorBuffer(float color[4]) override;
 		void Resize(u16 width, u16 height) override;
 		
-		TRectangle<s16,u16> const * GetRenderRect() const override;
+		TRectangle<s16,u16> const & GetRenderRect() const override;
 	};
 }
 

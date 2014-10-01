@@ -88,21 +88,20 @@ namespace Insanity
 	CLinuxX11Window::CLinuxX11Window(IWindow * ext, IConfigObject const * cfg) :
 		_rect{}, _ext{ext}, _win{}
 	{
-		_rect = new TRectangle<s16,u16>{
-			static_cast<s16>(cfg->GetProperty("dims.x", s64{})),
-			static_cast<s16>(cfg->GetProperty("dims.y", s64{})),
-			static_cast<u16>(cfg->GetProperty("dims.width", s64{640})),
-			static_cast<u16>(cfg->GetProperty("dims.height", s64{480}))};
+		_rect.SetX(static_cast<s16>(cfg->GetProperty("dims.x", s64{})));
+		_rect.SetY(static_cast<s16>(cfg->GetProperty("dims.y", s64{})));
+		_rect.SetWidth(static_cast<u16>(cfg->GetProperty("dims.width", s64{640})));
+		_rect.SetHeight(static_cast<u16>(cfg->GetProperty("dims.height", s64{480})));
 		
 		_InitXDisplay();
 		_InitGLX();
 
 		XVisualInfo * xvi{_GetXVisual(
-			static_cast<int>(cfg->GetProperty("Linux.GLX.red", (s64)8)),	//GLX since it has more to do with OpenGL than X...
-			static_cast<int>(cfg->GetProperty("Linux.GLX.green", (s64)8)),
-			static_cast<int>(cfg->GetProperty("Linux.GLX.blue", (s64)8)),
-			static_cast<int>(cfg->GetProperty("Linux.GLX.depth", (s64)24)),	//...especially here.
-			cfg->GetProperty("Linux.GLX.doubleBuffer", (s64)1) > 0)};		//Sort of a cast to bool
+			static_cast<int>(cfg->GetProperty("Linux.GLX.red", s64{8})),	//GLX since it has more to do with OpenGL than X...
+			static_cast<int>(cfg->GetProperty("Linux.GLX.green", s64{8})),
+			static_cast<int>(cfg->GetProperty("Linux.GLX.blue", s64{8})),
+			static_cast<int>(cfg->GetProperty("Linux.GLX.depth", s64{24})),	//...especially here.
+			cfg->GetProperty("Linux.GLX.doubleBuffer", s64{1}) > 0)};		//Sort of a cast to bool
 		
 		XSetWindowAttributes xswa;
 		_InitWindowAttributes(&xswa,xvi);
@@ -112,8 +111,8 @@ namespace Insanity
 		if(xvi) XFree(xvi);
 		
 		_SetPumpProc();
-		Move(_rect->GetX(), _rect->GetY());
-		Resize(_rect->GetWidth(), _rect->GetHeight());
+		Move(_rect.GetX(), _rect.GetY());
+		Resize(_rect.GetWidth(), _rect.GetHeight());
 	}
 	CLinuxX11Window::~CLinuxX11Window()
 	{
@@ -232,8 +231,8 @@ namespace Insanity
 		//_rect should already be defined
 		_win = XCreateWindow(s_dpy,
 			DefaultRootWindow(s_dpy),
-			_rect->GetX(), _rect->GetY(),
-			_rect->GetWidth(), _rect->GetHeight(), //is there some way to account for window decoration?
+			_rect.GetX(), _rect.GetY(),
+			_rect.GetWidth(), _rect.GetHeight(), //is there some way to account for window decoration?
 			1,	//border width
 			(xvi ? xvi->depth : CopyFromParent),	//depth
 			InputOutput, //class (InputOutput, InputOnly, or CopyFromParent)
@@ -303,13 +302,13 @@ namespace Insanity
 				if((Atom)xe->xclient.data.l[0] == s_del) call->CloseHandler();
 				break;
 			case ConfigureNotify:
-				if(xe->xconfigure.width != _rect->GetWidth() ||
-					xe->xconfigure.height != _rect->GetHeight())
+				if(xe->xconfigure.width != _rect.GetWidth() ||
+					xe->xconfigure.height != _rect.GetHeight())
 				{
 					call->ResizeHandler(xe->xconfigure.width, xe->xconfigure.height);
 				}
-				if(xe->xconfigure.x != _rect->GetX() || 
-					xe->xconfigure.y != _rect->GetY())
+				if(xe->xconfigure.x != _rect.GetX() || 
+					xe->xconfigure.y != _rect.GetY())
 				{
 					call->MoveHandler(xe->xconfigure.x, xe->xconfigure.y);
 				}
@@ -327,7 +326,7 @@ namespace Insanity
 	//=====================================================
 	//Interface: IWindow
 	//=====================================================
-	TRectangle<s16,u16> const * CLinuxX11Window::GetRect() const
+	TRectangle<s16,u16> const & CLinuxX11Window::GetRect() const
 	{
 		return _rect;
 	}
@@ -355,8 +354,8 @@ namespace Insanity
 		xe.xbutton.subwindow = _win;
 		xe.xbutton.x = x;
 		xe.xbutton.y = y;
-		xe.xbutton.x_root = x + _rect->GetX();
-		xe.xbutton.y_root = y + _rect->GetY();
+		xe.xbutton.x_root = x + _rect.GetX();
+		xe.xbutton.y_root = y + _rect.GetY();
 		xe.xbutton.button = translate(button);
 		xe.xbutton.same_screen = True;
 		xe.xbutton.time = CurrentTime; //will this... work?
@@ -391,8 +390,8 @@ namespace Insanity
 		xe.xbutton.subwindow = _win;
 		xe.xbutton.x = 0;
 		xe.xbutton.y = 0;
-		xe.xbutton.x_root = _rect->GetX();
-		xe.xbutton.y_root = _rect->GetY();
+		xe.xbutton.x_root = _rect.GetX();
+		xe.xbutton.y_root = _rect.GetY();
 		xe.xbutton.button = scroll;
 		xe.xbutton.same_screen = True;
 		xe.xbutton.time = CurrentTime; //will this... work?
@@ -442,13 +441,13 @@ namespace Insanity
 	}
 	void CLinuxX11Window::MoveHandler(s16 x, s16 y)
 	{
-		_rect->SetX(x);
-		_rect->SetY(y);
+		_rect.SetX(x);
+		_rect.SetY(y);
 	}
 	void CLinuxX11Window::ResizeHandler(u16 width, u16 height)
 	{
-		_rect->SetWidth(width);
-		_rect->SetHeight(height);
+		_rect.SetWidth(width);
+		_rect.SetHeight(height);
 	}
 	void CLinuxX11Window::CloseHandler()
 	{

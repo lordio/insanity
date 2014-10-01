@@ -26,7 +26,7 @@ namespace Insanity
 	class CWindowsWin32Window final : public IWindow, public Default::Object
 	{
 	private:
-		Ptr<TRectangle<s16,u16>> _rect;
+		TRectangle<s16,u16> _rect;
 		WeakPtr<IWindow> _ext;
 		HWND _win;
 		std::string _title;
@@ -52,7 +52,7 @@ namespace Insanity
 		//=================================================
 		//Interface: IWindow
 		//=================================================
-		TRectangle<s16,u16> const * GetRect() const override;
+		TRectangle<s16,u16> const & GetRect() const override;
 		char const * GetTitle() const override;
 		void SetTitle(char const * title) override;
 		void Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y) override;

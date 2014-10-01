@@ -26,7 +26,7 @@ namespace Insanity
         OMacOSXCocoaOpenGLView * _nsrend; //ObjC object pointer; managed by ARC
         WeakPtr<CMacOSXCocoaWindow> _win;
         
-		Ptr<TRectangle<s16,u16>> _rect;
+		TRectangle<s16,u16> _rect;
         
         NSWindow * _Init(IWindow * win);
         void _MakeContext(NSWindow * win, IConfigObject const * cfg);
@@ -40,7 +40,7 @@ namespace Insanity
         void ClearColorBuffer(float color[4]) override;
         void Resize(u16 width, u16 height) override;
 
-		TRectangle<s16,u16> const * GetRenderRect() const override;
+		TRectangle<s16,u16> const & GetRenderRect() const override;
     };
 }
 

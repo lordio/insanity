@@ -23,7 +23,7 @@ namespace Insanity
 		Default::Object{},
 		_ext{ ext },
 		_win{},
-		_rect{ new TRectangle<s16, u16>(0, 0, 0, 0) },
+		_rect{0, 0, 0, 0},
 		_d3d9{},
 		_dev{}
 	{
@@ -48,9 +48,9 @@ namespace Insanity
 			assert(_win);
 		}
 
-		TRectangle<s16, u16> const * winrect = _win->GetRect();
-		_rect->SetWidth(winrect->GetWidth());
-		_rect->SetHeight(winrect->GetHeight());
+		TRectangle<s16, u16> const & winrect = _win->GetRect();
+		_rect.SetWidth(winrect.GetWidth());
+		_rect.SetHeight(winrect.GetHeight());
 
 		return _win->GetWindow();
 	}
@@ -92,10 +92,10 @@ namespace Insanity
 		vp.Height = height;
 		_dev->SetViewport(&vp);
 
-		_rect->SetWidth(width);
-		_rect->SetHeight(height);
+		_rect.SetWidth(width);
+		_rect.SetHeight(height);
 	}
-	TRectangle<s16, u16> const * CWindowsDirect3D9Renderer::GetRenderRect() const
+	TRectangle<s16, u16> const & CWindowsDirect3D9Renderer::GetRenderRect() const
 	{
 		return _rect;
 	}

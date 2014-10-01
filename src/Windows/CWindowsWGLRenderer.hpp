@@ -26,7 +26,7 @@ namespace Insanity
 		HDC _dc{};
 		HGLRC _rc{};
 
-		Ptr<TRectangle<s16,u16>> _rect;
+		TRectangle<s16,u16> _rect;
 
 		u8 _major;
 		u8 _minor;
@@ -46,7 +46,7 @@ namespace Insanity
 		void ClearColorBuffer(float color[4]) override;
 		void Resize(u16 width, u16 height) override;
 
-		TRectangle<s16, u16> const * GetRenderRect() const override;
+		TRectangle<s16, u16> const & GetRenderRect() const override;
 	};
 }
 

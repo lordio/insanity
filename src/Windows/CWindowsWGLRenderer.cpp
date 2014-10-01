@@ -21,7 +21,7 @@ namespace Insanity
 	CWindowsWGLRenderer::CWindowsWGLRenderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
 		_ext{ ext },
 		_win{},
-		_rect{ new TRectangle<s16, u16>(0, 0, 0, 0) },
+		_rect{ 0, 0, 0, 0 },
 		_major{},
 		_minor{}
 	{
@@ -54,9 +54,9 @@ namespace Insanity
 		HWND ret{ _win->GetWindow() };
 		_dc = GetDC(ret);
 
-		WeakPtr<const TRectangle<s16, u16>> winrect = _win->GetRect();
-		_rect->SetWidth(winrect->GetWidth());
-		_rect->SetHeight(winrect->GetHeight());
+		TRectangle<s16, u16> const& winrect = _win->GetRect();
+		_rect.SetWidth(winrect.GetWidth());
+		_rect.SetHeight(winrect.GetHeight());
 
 		return ret;
 	}
@@ -104,7 +104,7 @@ namespace Insanity
 		wglMakeCurrent(_dc, _rc);
 		wglDeleteContext(tmp);
 
-		glViewport(_rect->GetX(), _rect->GetY(), _rect->GetWidth(), _rect->GetHeight());
+		glViewport(_rect.GetX(), _rect.GetY(), _rect.GetWidth(), _rect.GetHeight());
 
 		gel::init(_major, _minor);
 
@@ -133,11 +133,11 @@ namespace Insanity
 	{
 		glViewport(0, 0, width, height);
 
-		_rect->SetWidth(width);
-		_rect->SetHeight(height);
+		_rect.SetWidth(width);
+		_rect.SetHeight(height);
 	}
 
-	TRectangle<s16, u16> const * CWindowsWGLRenderer::GetRenderRect() const
+	TRectangle<s16, u16> const & CWindowsWGLRenderer::GetRenderRect() const
 	{
 		return _rect;
 	}

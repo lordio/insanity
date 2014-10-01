@@ -19,13 +19,13 @@
 
 namespace
 {
-	RECT _GetAdjustedRect(Insanity::TRectangle<Insanity::s16, Insanity::u16> const * rect)
+	RECT _GetAdjustedRect(Insanity::TRectangle<Insanity::s16, Insanity::u16> const & rect)
 	{
 		RECT ret;
-		ret.left = rect->GetLeft();
-		ret.right = rect->GetRight();
-		ret.top = rect->GetTop();
-		ret.bottom = rect->GetBottom();
+		ret.left = rect.GetLeft();
+		ret.right = rect.GetRight();
+		ret.top = rect.GetTop();
+		ret.bottom = rect.GetBottom();
 		AdjustWindowRectEx(&ret, WS_OVERLAPPEDWINDOW, FALSE, WS_EX_OVERLAPPEDWINDOW);
 		return ret;
 	}
@@ -48,7 +48,7 @@ namespace Insanity
 	}
 
 	CWindowsWin32Window::CWindowsWin32Window(IWindow * ext, IConfigObject const * cfg) :
-		_rect(nullptr), _ext(ext), _win(NULL)
+		_rect{}, _ext{ ext }, _win{ NULL }
 	{
 		HMODULE hInst{ GetModuleHandle(nullptr) };
 
@@ -99,10 +99,10 @@ namespace Insanity
 	void CWindowsWin32Window::_InitWindow(HINSTANCE hInst, IConfigObject const * cfg)
 	{
 		//_rect stores the dimensions of the client area of the window.
-		_rect = new TRectangle<s16, u16>(static_cast<s16>(cfg->GetProperty("dims.x", s64{})),
-			static_cast<s16>(cfg->GetProperty("dims.y", s64{})),
-			static_cast<u16>(cfg->GetProperty("dims.width", s64{ 640 })),
-			static_cast<u16>(cfg->GetProperty("dims.height", s64{ 480 })));
+		_rect.SetX(static_cast<s16>(cfg->GetProperty("dims.x", s64{})));
+		_rect.SetY(static_cast<s16>(cfg->GetProperty("dims.y", s64{})));
+		_rect.SetWidth(static_cast<u16>(cfg->GetProperty("dims.width", s64{ 640 })));
+		_rect.SetHeight(static_cast<u16>(cfg->GetProperty("dims.height", s64{ 480 })));
 		
 		//Need to adjust for non-client area of window for CreateWindow.
 		RECT&& adj = _GetAdjustedRect(_rect);
@@ -240,7 +240,7 @@ namespace Insanity
 	//=====================================================
 	//Interface: IWindow
 	//=====================================================
-	TRectangle<s16,u16> const * CWindowsWin32Window::GetRect() const
+	TRectangle<s16,u16> const & CWindowsWin32Window::GetRect() const
 	{
 		return _rect;
 	}
@@ -269,13 +269,13 @@ namespace Insanity
 	}
 	void CWindowsWin32Window::MoveHandler(s16 x, s16 y)
 	{
-		_rect->SetX(x);
-		_rect->SetY(y);
+		_rect.SetX(x);
+		_rect.SetY(y);
 	}
 	void CWindowsWin32Window::ResizeHandler(u16 width, u16 height)
 	{
-		_rect->SetWidth(width);
-		_rect->SetHeight(height);
+		_rect.SetWidth(width);
+		_rect.SetHeight(height);
 	}
 	void CWindowsWin32Window::CloseHandler()
 	{

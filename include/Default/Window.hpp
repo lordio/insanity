@@ -26,7 +26,7 @@ namespace Insanity
 			//=============================================
 			//Interface: IWindow
 			//=============================================
-			virtual TRectangle<s16, u16> const * GetRect() const override;
+			virtual TRectangle<s16, u16> const & GetRect() const override;
 			virtual char const * GetTitle() const override;
 			virtual void SetTitle(char const * title) override;
 			virtual void Mouse(EMouseButton button, EMouseButtonState state, u16 x, u16 y) override;

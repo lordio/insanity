@@ -36,7 +36,7 @@ namespace Insanity
 			_base->Resize(width, height);
 		}
 		
-		TRectangle<s16, u16> const * Renderer::GetRenderRect() const
+		TRectangle<s16, u16> const & Renderer::GetRenderRect() const
 		{
 			return _base->GetRenderRect();
 		}

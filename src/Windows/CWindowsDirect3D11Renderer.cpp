@@ -19,7 +19,7 @@ namespace Insanity
 	//IRenderer Create methods should be moved to their own .cpp, that uses a configobject property to determine whether to use
 	//	OpenGL, or D3D (and in the latter case, which version)
 	CWindowsDirect3D11Renderer::CWindowsDirect3D11Renderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-		_rect{ new TRectangle<s16, u16>(0, 0, 0, 0) }, _ext{ ext }, _win{}
+		_rect{ 0, 0, 0, 0 }, _ext{ ext }, _win{}
 	{
 		HWND wnd{ _Init(win) };
 
@@ -47,9 +47,9 @@ namespace Insanity
 			assert(_win); //that didn't work, either. Too bad.
 		}
 
-		TRectangle<s16, u16> const * winrect = _win->GetRect();
-		_rect->SetHeight(winrect->GetHeight());
-		_rect->SetWidth(winrect->GetWidth());
+		TRectangle<s16, u16> const & winrect = _win->GetRect();
+		_rect.SetHeight(winrect.GetHeight());
+		_rect.SetWidth(winrect.GetWidth());
 
 		return _win->GetWindow();
 	}
@@ -57,8 +57,8 @@ namespace Insanity
 	{
 		D3D_FEATURE_LEVEL features = D3D_FEATURE_LEVEL_11_0;
 		DXGI_SWAP_CHAIN_DESC dscd;
-		dscd.BufferDesc.Width = _rect->GetWidth();
-		dscd.BufferDesc.Height = _rect->GetHeight();
+		dscd.BufferDesc.Width = _rect.GetWidth();
+		dscd.BufferDesc.Height = _rect.GetHeight();
 		dscd.BufferDesc.RefreshRate.Numerator = 60; //configurable?
 		dscd.BufferDesc.RefreshRate.Denominator = 1;
 		dscd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; //configurable?
@@ -96,8 +96,8 @@ namespace Insanity
 		backBuffer->Release();
 
 		D3D11_TEXTURE2D_DESC dtd;
-		dtd.Width = _rect->GetWidth();
-		dtd.Height = _rect->GetHeight();
+		dtd.Width = _rect.GetWidth();
+		dtd.Height = _rect.GetHeight();
 		dtd.MipLevels = 1;
 		dtd.ArraySize = 1;
 		dtd.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -154,8 +154,8 @@ namespace Insanity
 		_ctx->RSSetState(_raster);
 
 		D3D11_VIEWPORT viewport;
-		viewport.Width = (float) _rect->GetWidth();
-		viewport.Height = (float) _rect->GetHeight();
+		viewport.Width = (float) _rect.GetWidth();
+		viewport.Height = (float) _rect.GetHeight();
 		viewport.MinDepth = 0.0f;
 		viewport.MaxDepth = 1.0f;
 		viewport.TopLeftX = 0.0f;
@@ -191,7 +191,7 @@ namespace Insanity
 
 		_swap->ResizeTarget(&dmd);
 	}
-	TRectangle<s16, u16> const * CWindowsDirect3D11Renderer::GetRenderRect() const
+	TRectangle<s16, u16> const & CWindowsDirect3D11Renderer::GetRenderRect() const
 	{
 		return _rect;
 	}

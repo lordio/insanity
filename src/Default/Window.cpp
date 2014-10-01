@@ -26,7 +26,7 @@ namespace Insanity
 		//=================================================
 		//Interface: IWindow
 		//=================================================
-		TRectangle<s16,u16> const * Window::GetRect() const
+		TRectangle<s16,u16> const & Window::GetRect() const
 		{
 			return _base->GetRect();
 		}

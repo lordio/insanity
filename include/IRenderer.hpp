@@ -92,7 +92,7 @@ namespace Insanity
 		//	Dimensions should be specified in window
 		//	coordinates.
 		//=================================================
-		virtual TRectangle<s16, u16> const * GetRenderRect() const = 0;
+		virtual TRectangle<s16, u16> const & GetRenderRect() const = 0;
 	};
 }
 

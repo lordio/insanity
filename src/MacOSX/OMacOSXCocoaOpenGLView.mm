@@ -32,8 +32,8 @@
 	NSOpenGLPixelFormat * fmt = [[NSOpenGLPixelFormat alloc] initWithAttributes:pfa];
 	NSOpenGLContext * ctx = [[NSOpenGLContext alloc] initWithFormat:fmt shareContext:nil];
 
-    Insanity::TRectangle<Insanity::s16, Insanity::u16> const * winrect = win->GetRect();
-	if(![super initWithFrame:NSMakeRect(winrect->GetX(), winrect->GetY(), winrect->GetWidth(), winrect->GetHeight()) pixelFormat:fmt]) return nil;
+    Insanity::TRectangle<Insanity::s16, Insanity::u16> const& winrect{win->GetRect()};
+	if(![super initWithFrame:NSMakeRect(winrect.GetX(), winrect.GetY(), winrect.GetWidth(), winrect.GetHeight()) pixelFormat:fmt]) return nil;
 
 	[self setOpenGLContext:ctx];
 	[ctx makeCurrentContext];

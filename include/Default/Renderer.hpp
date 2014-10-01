@@ -30,7 +30,7 @@ namespace Insanity
 			virtual void ClearColorBuffer(float color[4]) override;
 			virtual void Resize(u16 width, u16 height) override;
 
-			TRectangle<s16, u16> const * GetRenderRect() const override;
+			TRectangle<s16, u16> const & GetRenderRect() const override;
 		};
 	}
 }
