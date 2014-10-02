@@ -23,6 +23,9 @@ namespace Insanity
 			virtual void Release() const override;
 			virtual u64 GetReferenceCount() const override;
 			virtual void Delete() override;
+			virtual bool ShouldBeTracked() const override;
+			virtual bool IsBeingTracked() const override;
+			virtual void SetIsTracked(bool) override;
 		};
 	}
 }

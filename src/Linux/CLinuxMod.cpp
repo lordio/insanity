@@ -26,6 +26,7 @@ namespace
 namespace Insanity
 {
 	typedef IMod*(*ModCtor)();
+	typedef void(*ModDtor)(IMod*);
 
 	IMod * IMod::GetInstance(char const * modName)
 	{
@@ -67,7 +68,18 @@ namespace Insanity
 			//if the only reference to it is ours...
 			if(pr->second->mod->GetReferenceCount() == 1)
 			{
-				pr->second->mod = nullptr;
+				dlerror(); //clear errors.
+				ModDtor dtor{(ModDtor)dlsym(pr->second->lib, "DeleteMod")};
+				if(!dlerror())
+				{
+					IMod * mod{pr->second->mod};
+					mod->Retain(); //cheat so we can let go of the Ptr
+					pr->second->mod = nullptr;
+
+					dtor(mod);
+				}
+				else pr->second->mod = nullptr; //try the messy way
+
 				dlclose(pr->second->lib);
 				
 				pr = s_cache.erase(pr);
@@ -81,7 +93,19 @@ namespace Insanity
 		//Would it make more sense to start at the end, since least-dependent mods should be at the beginning?
 		for(auto pr = s_cache.begin(); s_cache.size() > 0;)
 		{
-			pr->second->mod = nullptr;
+			dlerror(); //clear errors.
+			ModDtor dtor{(ModDtor)dlsym(pr->second->lib, "DeleteMod")};
+			if(!dlerror())
+			{
+				IMod * mod{pr->second->mod};
+				mod->Retain(); //cheat so we can let go of the Ptr
+				pr->second->mod = nullptr;
+
+				dtor(mod);
+			}
+			else pr->second->mod = nullptr;
+			//if mod dtor doesn't exist, mod API is bad. We can try the messy way, but it will generally work better to conform.
+
 			dlclose(pr->second->lib);
 			
 			pr = s_cache.erase(pr);

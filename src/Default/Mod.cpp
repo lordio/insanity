@@ -30,5 +30,17 @@ namespace Insanity
 		{
 			delete this;
 		}
+		bool Mod::ShouldBeTracked() const
+		{
+			return false;
+		}
+		bool Mod::IsBeingTracked() const
+		{
+			return false;
+		}
+		void Mod::SetIsTracked(bool)
+		{
+			//no-op
+		}
 	}
 }
