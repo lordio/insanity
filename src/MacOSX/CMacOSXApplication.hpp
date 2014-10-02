@@ -51,6 +51,8 @@ namespace Insanity
 		u64 GetReferenceCount() const override;
 		void Delete() override;
 		bool ShouldBeTracked() const override;
+		bool IsBeingTracked() const override;
+		void SetIsTracked(bool) override;
 	};
 }
 

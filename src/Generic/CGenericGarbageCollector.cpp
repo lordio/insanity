@@ -27,17 +27,27 @@ namespace Insanity
 		//if we're not supposed to track it, don't.
 		if (!obj->ShouldBeTracked()) return;
 
+		//if it's already being tracked, don't.
+		if (obj->IsBeingTracked()) return;
+
 		_pool.push_back(obj);
+
+		obj->SetIsTracked(true);
 	}
 	void CGenericGarbageCollector::Untrack(IObject * obj)
 	{
 		//if it's not supposed to be tracked, it shouldn't be in here.
 		if (!obj->ShouldBeTracked()) return;
 
+		//if it's not being tracked, it definitely won't be in here.
+		if (!obj->IsBeingTracked()) return;
+
 		auto iter = std::find(_pool.begin(),_pool.end(),obj);
 		if(iter == _pool.end()) return;
 
 		_pool.erase(iter);
+
+		obj->SetIsTracked(false);
 	}
 	void CGenericGarbageCollector::Collect()
 	{

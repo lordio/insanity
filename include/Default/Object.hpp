@@ -11,6 +11,8 @@ namespace Insanity
 	{
 		class INSANITY_API Object : public virtual IObject
 		{
+		private:
+			bool _tracked{ false };
 		protected:
 			mutable u64 ref{ 0 };
 		public:
@@ -22,7 +24,9 @@ namespace Insanity
 			virtual void Release() const override;
 			virtual u64 GetReferenceCount() const override;
 			virtual void Delete() override;
-			bool ShouldBeTracked() const override;
+			virtual bool ShouldBeTracked() const override;
+			virtual bool IsBeingTracked() const override;
+			virtual void SetIsTracked(bool track) override;
 		};
 	}
 }

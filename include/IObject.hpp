@@ -41,6 +41,21 @@ namespace Insanity
 		//	while application-side creations should return false.
 		//=================================================
 		virtual bool ShouldBeTracked() const = 0;
+
+		//=================================================
+		//Is the object currently being tracked by an Insanity
+		//	Garbage Collector?
+		//If ShouldBeTracked() returns false, this should always
+		//	also be false.
+		//=================================================
+		virtual bool IsBeingTracked() const = 0;
+
+		//=================================================
+		//Tell the object its new tracking state.
+		//Should only be called by GarbageCollector's Track
+		//	and Untrack methods.
+		//=================================================
+		virtual void SetIsTracked(bool track) = 0;
 		
 		//=================================================
 		//Casts the object to the specified interface,

@@ -125,6 +125,14 @@ namespace Insanity
 	{
 		return false;
 	}
+	bool CMacOSXApplication::IsBeingTracked() const
+	{
+		return false;
+	}
+	void CMacOSXApplication::SetIsTracked(bool)
+	{
+		//no-op
+	}
 }
 
 #endif

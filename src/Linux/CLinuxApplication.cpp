@@ -122,6 +122,14 @@ namespace Insanity
 	{
 		return false;
 	}
+	bool CLinuxApplication::IsBeingTracked() const
+	{
+		return false;
+	}
+	void CLinuxApplication::SetIsTracked(bool)
+	{
+		//no-op.
+	}
 }
 
 #endif

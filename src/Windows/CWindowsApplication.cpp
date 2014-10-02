@@ -122,6 +122,14 @@ namespace Insanity
 	{
 		return false;
 	}
+	bool CWindowsApplication::IsBeingTracked() const
+	{
+		return false;
+	}
+	void CWindowsApplication::SetIsTracked(bool)
+	{
+		//no-op
+	}
 }
 
 #endif
