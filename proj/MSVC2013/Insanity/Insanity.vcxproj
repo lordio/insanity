@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\Common.hpp" />
     <ClInclude Include="..\..\..\include\Constants.hpp" />
     <ClInclude Include="..\..\..\include\Default.hpp" />
     <ClInclude Include="..\..\..\include\Default\Mod.hpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\..\..\src\Generic\CGenericConfigObject.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericGarbageCollector.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericObject.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\Common.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxApplication.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxBSDServerSocket.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.cpp" />

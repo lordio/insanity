@@ -210,6 +210,9 @@
     <Filter Include="Implementations\Generic\Object">
       <UniqueIdentifier>{49b0b17e-5b6e-432c-bae2-5f7ee26c6e55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Implementations\Generic\Common">
+      <UniqueIdentifier>{28974122-9718-4dbd-b444-880562f928c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\IApplication.hpp">
@@ -425,6 +428,9 @@
     <ClInclude Include="..\..\..\src\Generic\CGenericObject.hpp">
       <Filter>Implementations\Generic\Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\Common.hpp">
+      <Filter>Non-Interface Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Default\Object.cpp">
@@ -555,6 +561,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Generic\CGenericObject.cpp">
       <Filter>Implementations\Generic\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\Common.cpp">
+      <Filter>Implementations\Generic\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
