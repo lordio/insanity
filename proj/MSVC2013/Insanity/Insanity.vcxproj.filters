@@ -207,6 +207,9 @@
     <Filter Include="Implementations\MacOSX\Cocoa\Renderer\OpenGLView">
       <UniqueIdentifier>{99790416-e278-42a4-83bf-0ae4db15e8dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Implementations\Generic\Object">
+      <UniqueIdentifier>{49b0b17e-5b6e-432c-bae2-5f7ee26c6e55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\IApplication.hpp">
@@ -419,6 +422,9 @@
     <ClInclude Include="..\..\..\src\MacOSX\OMacOSXCocoaOpenGLView.hpp">
       <Filter>Implementations\MacOSX\Cocoa\Renderer\OpenGLView</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Generic\CGenericObject.hpp">
+      <Filter>Implementations\Generic\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Default\Object.cpp">
@@ -546,6 +552,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Windows\WindowsStringConversion.cpp">
       <Filter>Implementations\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Generic\CGenericObject.cpp">
+      <Filter>Implementations\Generic\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

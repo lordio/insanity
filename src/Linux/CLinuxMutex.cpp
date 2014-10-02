@@ -12,7 +12,7 @@ namespace Insanity
 	}
 
 	CLinuxMutex::CLinuxMutex() :
-		Default::Object{}
+		CGenericObject{}
 	{
 		pthread_mutex_init(&_mtx,nullptr);
 	}

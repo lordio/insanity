@@ -8,7 +8,7 @@
 #include "CMacOSXCocoaEventPumpTask.hpp"
 #include <TRectangle.hpp>
 #include <IWindow.hpp>
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <Ptr.hpp>
 #include <string>
 
@@ -23,7 +23,7 @@ namespace Insanity
 
 	class CMacOSXCocoaEventPumpTask;
 
-	class CMacOSXCocoaWindow final : public IWindow, public Default::Object
+	class CMacOSXCocoaWindow final : public IWindow, public CGenericObject
 	{
 	private:
 		NSWindow * _win; //ARC pointer.

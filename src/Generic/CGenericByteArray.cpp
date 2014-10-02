@@ -24,7 +24,7 @@ namespace Insanity
 	}
 
 	CGenericByteArray::CGenericByteArray() :
-		Default::Object{}
+		CGenericObject{}
 	{
 	}
 	CGenericByteArray::~CGenericByteArray()

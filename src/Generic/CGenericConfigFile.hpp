@@ -3,7 +3,7 @@
 
 #include <Constants.hpp>
 #include <IConfigFile.hpp>
-#include <Default/Object.hpp>
+#include "CGenericObject.hpp"
 #include <Ptr.hpp>
 
 #include <string>
@@ -11,7 +11,7 @@
 
 namespace Insanity
 {
-	class CGenericConfigFile final : public IConfigFile, public Default::Object
+	class CGenericConfigFile final : public IConfigFile, public CGenericObject
 	{
 	private:
 		std::map<std::string, Ptr<IConfigObject>> _objMap{};

@@ -6,7 +6,7 @@
 #if defined(PLATFORM_MACOSX)
 
 #include <ISubThread.hpp>
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <ITask.hpp>
 #include <Ptr.hpp>
 
@@ -20,7 +20,7 @@ namespace Insanity
 	class IGarbageCollector;
 	class ITask;
 	
-	class CMacOSXCocoaSubThread final : public ISubThread, public Default::Object
+	class CMacOSXCocoaSubThread final : public ISubThread, public CGenericObject
 	{
 	private:
 		enum class ThreadState : u8

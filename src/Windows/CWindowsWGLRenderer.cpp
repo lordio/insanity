@@ -8,6 +8,7 @@
 
 #include <IConfigObject.hpp>
 #include <TRectangle.hpp>
+#include <Default/Window.hpp>
 
 #include "../../gel/gel.hpp"
 #include <gl/wglext.h>

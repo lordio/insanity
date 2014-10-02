@@ -34,6 +34,11 @@ namespace Insanity
 		//=================================================
 		void Perform() override;
 		bool ShouldRequeue() override;
+
+		//=================================================
+		//Interface: IObject
+		//=================================================
+		bool ShouldBeTracked() const override;
 	};
 }
 

@@ -8,7 +8,7 @@
 #include "CWindowsWin32Window.hpp"
 
 #include <IRenderer.hpp>
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <TRectangle.hpp>
 #include <Ptr.hpp>
 
@@ -18,7 +18,7 @@ namespace Insanity
 {
 	class IConfigObject;
 	
-	class CWindowsWGLRenderer final : public IRenderer, public Default::Object
+	class CWindowsWGLRenderer final : public IRenderer, public CGenericObject
 	{
 	private:
 		WeakPtr<IRenderer> _ext;

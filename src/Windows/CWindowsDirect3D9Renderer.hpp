@@ -7,7 +7,7 @@
 
 #include <IRenderer.hpp>
 #include "CWindowsWin32Window.hpp"
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <TRectangle.hpp>
 #include <Ptr.hpp>
 
@@ -20,7 +20,7 @@ namespace Insanity
 {
 	class IWindow;
 
-	class CWindowsDirect3D9Renderer final : public IRenderer, public Default::Object
+	class CWindowsDirect3D9Renderer final : public IRenderer, public CGenericObject
 	{
 		WeakPtr<IRenderer> _ext;
 		WeakPtr<CWindowsWin32Window> _win;

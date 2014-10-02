@@ -33,6 +33,14 @@ namespace Insanity
 		//Not intended for use outside the library.
 		//=================================================
 		virtual void Delete() = 0;
+
+		//=================================================
+		//Reports whether the object should be tracked internally,
+		//	by a GarbageCollector.
+		//Objects created by Insanity should return true,
+		//	while application-side creations should return false.
+		//=================================================
+		virtual bool ShouldBeTracked() const = 0;
 		
 		//=================================================
 		//Casts the object to the specified interface,

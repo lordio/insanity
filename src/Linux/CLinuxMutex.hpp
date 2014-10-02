@@ -8,11 +8,11 @@
 #include <IMutex.hpp>
 #include <pthread.h>
 
-#include <Default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
-	class CLinuxMutex final : public IMutex, public Default::Object
+	class CLinuxMutex final : public IMutex, public CGenericObject
 	{
 		pthread_mutex_t _mtx;
 	public:

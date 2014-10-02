@@ -3,14 +3,14 @@
 
 #include <Constants.hpp>
 #include <IConfigObject.hpp>
-#include <Default/Object.hpp>
+#include "CGenericObject.hpp"
 
 #include <string>
 #include <map>
 
 namespace Insanity
 {
-	class CGenericConfigObject final : public IConfigObject, public Default::Object
+	class CGenericConfigObject final : public IConfigObject, public CGenericObject
 	{
 		//		 property	  value
 		std::map<std::string, std::string> _propList{};

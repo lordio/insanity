@@ -6,11 +6,11 @@
 #if defined(PLATFORM_LINUX)
 
 #include <IServerSocket.hpp>
-#include <Default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
-	class CLinuxBSDServerSocket final : public IServerSocket, public Default::Object
+	class CLinuxBSDServerSocket final : public IServerSocket, public CGenericObject
 	{
 		//int used instead of s32 because it's the name Unix uses.
 		int _sock{};

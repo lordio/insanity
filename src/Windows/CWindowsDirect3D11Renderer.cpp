@@ -9,6 +9,7 @@
 #include <IWindow.hpp>
 #include <TRectangle.hpp>
 #include <d3d11.h>
+#include <Default/Window.hpp>
 
 #include <cassert>
 

@@ -8,11 +8,11 @@
 #include <IServerSocket.hpp>
 #include <WinSock2.h>
 
-#include <Default.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
-	class CWindowsWinsockServerSocket final : public IServerSocket, public Default::Object
+	class CWindowsWinsockServerSocket final : public IServerSocket, public CGenericObject
 	{
 		SOCKET _sock{};
 	public:

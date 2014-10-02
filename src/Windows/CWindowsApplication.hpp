@@ -18,7 +18,7 @@ namespace Insanity
 	class CWindowsApplication final : public IApplication
 	{
 	private:
-		std::list<Ptr<ITask>> _taskList{ {} };
+		std::list<Ptr<ITask>> _taskList{};
 		std::unique_ptr<IGarbageCollector> _gc; //is not reference counted, so manage with unique_ptr
 		mutable u64 _ref{ 0 };
 		bool _running{ true };
@@ -45,6 +45,7 @@ namespace Insanity
 		void Release() const override;
 		u64 GetReferenceCount() const override;
 		void Delete() override;
+		bool ShouldBeTracked() const override;
 	};
 }
 

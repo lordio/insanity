@@ -25,7 +25,7 @@ namespace Insanity
 	}
 
 	CMacOSXBSDStreamSocket::CMacOSXBSDStreamSocket(char const * host, u16 port) : 
-		Default::Object{}, _sock{}
+		CGenericObject{}, _sock{}
 	{
 		Connect(host, port);
 	}

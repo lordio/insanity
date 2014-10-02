@@ -54,6 +54,7 @@
     <ClInclude Include="..\..\..\src\Generic\CGenericConfigFile.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericConfigObject.hpp" />
     <ClInclude Include="..\..\..\src\Generic\CGenericGarbageCollector.hpp" />
+    <ClInclude Include="..\..\..\src\Generic\CGenericObject.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxApplication.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxBSDServerSocket.hpp" />
     <ClInclude Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.hpp" />
@@ -101,6 +102,7 @@
     <ClCompile Include="..\..\..\src\Generic\CGenericConfigFile.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericConfigObject.cpp" />
     <ClCompile Include="..\..\..\src\Generic\CGenericGarbageCollector.cpp" />
+    <ClCompile Include="..\..\..\src\Generic\CGenericObject.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxApplication.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxBSDServerSocket.cpp" />
     <ClCompile Include="..\..\..\src\Linux\CLinuxBSDStreamSocket.cpp" />

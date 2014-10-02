@@ -25,13 +25,13 @@ namespace Insanity
 	}
 
 	CWindowsWinsockStreamSocket::CWindowsWinsockStreamSocket(char const * host, u16 port) :
-		Default::Object{}, _sock{}
+		CGenericObject{}, _sock{}
 	{
 		CWindowsWinsockTracker::Retain();
 		Connect(host,port);
 	}
 	CWindowsWinsockStreamSocket::CWindowsWinsockStreamSocket(SOCKET accepted) :
-		Default::Object{}, _sock{ accepted }
+		CGenericObject{}, _sock{ accepted }
 	{
 		CWindowsWinsockTracker::Retain();
 	}

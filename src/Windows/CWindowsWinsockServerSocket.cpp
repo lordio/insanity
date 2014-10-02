@@ -24,7 +24,7 @@ namespace Insanity
 	}
 
 	CWindowsWinsockServerSocket::CWindowsWinsockServerSocket(u16 port) :
-		Default::Object{}
+		CGenericObject{}
 	{
 		CWindowsWinsockTracker::Retain();
 		Listen(port);

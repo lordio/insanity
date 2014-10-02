@@ -6,11 +6,11 @@
 #if defined(PLATFORM_LINUX)
 
 #include <IStreamSocket.hpp>
-#include <Default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
-	class CLinuxBSDStreamSocket final : public IStreamSocket, public Default::Object
+	class CLinuxBSDStreamSocket final : public IStreamSocket, public CGenericObject
 	{
 		int _sock; //no in-class initializer; ctors will set different values
 	public:

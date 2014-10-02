@@ -24,7 +24,7 @@ namespace Insanity
 	}
 
 	CLinuxBSDServerSocket::CLinuxBSDServerSocket(u16 port) :
-		Default::Object{}
+		CGenericObject{}
 	{
 		Listen(port);
 	}

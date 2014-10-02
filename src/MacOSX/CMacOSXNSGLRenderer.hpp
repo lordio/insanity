@@ -8,7 +8,7 @@
 #include "CMacOSXCocoaWindow.hpp"
 #include <TRectangle.hpp>
 #include <IRenderer.hpp>
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <Ptr.hpp>
 
 @class NSWindow;
@@ -20,7 +20,7 @@ namespace Insanity
     class IWindow;
     class IConfigObject;
     
-    class CMacOSXNSGLRenderer final : public IRenderer, public Default::Object
+	class CMacOSXNSGLRenderer final : public IRenderer, public CGenericObject
     {
         WeakPtr<IRenderer> _ext;
         OMacOSXCocoaOpenGLView * _nsrend; //ObjC object pointer; managed by ARC

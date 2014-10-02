@@ -12,7 +12,7 @@ namespace Insanity
 	}
 
 	CMacOSXCocoaMutex::CMacOSXCocoaMutex() :
-		Default::Object{}, _lock{[[NSRecursiveLock alloc] init]}
+		CGenericObject{}, _lock{[[NSRecursiveLock alloc] init]}
 	{
 	}
 	CMacOSXCocoaMutex::~CMacOSXCocoaMutex()

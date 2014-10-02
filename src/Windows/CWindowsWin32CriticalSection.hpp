@@ -8,13 +8,13 @@
 #include <Windows.h>
 #include <IMutex.hpp>
 
-#include <Default.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
 	//implementation using the faster critical section, which only provides cross-thread mutual exclusion
 	//	Win32 Mutex does cross-process, but is much slower.
-	class CWindowsWin32CriticalSection final : public IMutex, public Default::Object
+	class CWindowsWin32CriticalSection final : public IMutex, public CGenericObject
 	{
 		CRITICAL_SECTION _mtx;
 	public:

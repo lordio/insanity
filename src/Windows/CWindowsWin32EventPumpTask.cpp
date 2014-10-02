@@ -46,6 +46,14 @@ namespace Insanity
 	{
 		return CWindowsWin32Window::GetWindowCount() != 0;
 	}
+
+	//=====================================================
+	//Interface: IObject
+	//=====================================================
+	bool CWindowsWin32EventPumpTask::ShouldBeTracked() const
+	{
+		return true;
+	}
 }
 
 #endif

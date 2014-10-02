@@ -7,7 +7,7 @@
 
 #include <IWindow.hpp>
 #include <TRectangle.hpp>
-#include <Default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <Ptr.hpp>
 
 #include <X11/Xlib.h>
@@ -20,7 +20,7 @@ namespace Insanity
 	class CLinuxX11EventPumpTask;
 	class IConfigObject;
 
-	class CLinuxX11Window final : public IWindow, public Default::Object
+	class CLinuxX11Window final : public IWindow, public CGenericObject
 	{
 		static Display * s_dpy;
 		static Ptr<CLinuxX11EventPumpTask> s_pump;

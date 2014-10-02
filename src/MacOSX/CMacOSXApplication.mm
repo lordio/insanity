@@ -121,6 +121,10 @@ namespace Insanity
 	{
 		delete this;
 	}
+	bool CMacOSXApplication::ShouldBeTracked() const
+	{
+		return false;
+	}
 }
 
 #endif

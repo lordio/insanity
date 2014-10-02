@@ -23,12 +23,12 @@ namespace Insanity
 	}
 
 	CLinuxBSDStreamSocket::CLinuxBSDStreamSocket(char const * host, u16 port) :
-		Default::Object{}, _sock{}
+		CGenericObject{}, _sock{}
 	{
 		Connect(host,port);
 	}
 	CLinuxBSDStreamSocket::CLinuxBSDStreamSocket(int sock) :
-		Default::Object{}, _sock{sock}
+		CGenericObject{}, _sock{sock}
 	{
 	}
 	CLinuxBSDStreamSocket::~CLinuxBSDStreamSocket()

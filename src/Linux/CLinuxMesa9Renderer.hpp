@@ -7,7 +7,7 @@
 
 #include "CLinuxX11Window.hpp"
 #include <IRenderer.hpp>
-#include <Default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <Ptr.hpp>
 
 #include <X11/Xlib.h>
@@ -20,7 +20,7 @@ namespace Insanity
 	
 	//Mesa 9.2.1 (default on Ubuntu 13.10) implements OpenGL 3.1, but with quirks.
 	//	By design, Mesa uses GLX
-	class CLinuxMesa9Renderer final : public IRenderer, public Default::Object
+	class CLinuxMesa9Renderer final : public IRenderer, public CGenericObject
 	{
 		WeakPtr<IRenderer> _ext;
 		WeakPtr<CLinuxX11Window> _win;

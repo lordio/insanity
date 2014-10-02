@@ -10,7 +10,7 @@
 #include <Windows.h>
 #include <list>
 
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <memory>
 
 //wtf Windows?
@@ -23,7 +23,7 @@ namespace Insanity
 	class IGarbageCollector;
 	class ITask;
 
-	class CWindowsWin32SubThread final : public ISubThread, public Default::Object
+	class CWindowsWin32SubThread final : public ISubThread, public CGenericObject
 	{
 		enum class ThreadState : u8
 		{
@@ -35,7 +35,7 @@ namespace Insanity
 		static DWORD s_tls;
 		static bool s_tlsInitialized; //since initialization can only occur on main thread.
 
-		std::list<Ptr<ITask>> _taskList{ {} };
+		std::list<Ptr<ITask>> _taskList{};
 		std::unique_ptr<IGarbageCollector> _gc;
 		WeakPtr<ISubThread> _ext;
 		ThreadState _condition{ ThreadState::Waiting };

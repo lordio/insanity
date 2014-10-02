@@ -20,7 +20,7 @@
 namespace Insanity
 {
 	CWindowsDirect3D9Renderer::CWindowsDirect3D9Renderer(IRenderer * ext, IWindow * win, IConfigObject const * cfg) :
-		Default::Object{},
+		CGenericObject{},
 		_ext{ ext },
 		_win{},
 		_rect{0, 0, 0, 0},

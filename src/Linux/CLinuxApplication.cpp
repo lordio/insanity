@@ -118,6 +118,10 @@ namespace Insanity
 	{
 		delete this;
 	}
+	bool CLinuxApplication::ShouldBeTracked() const
+	{
+		return false;
+	}
 }
 
 #endif

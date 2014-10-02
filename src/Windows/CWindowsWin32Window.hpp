@@ -11,7 +11,7 @@
 
 #include "CWindowsWin32EventPumpTask.hpp"
 
-#include <Default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <Ptr.hpp>
 
 #include <string>
@@ -23,7 +23,7 @@ namespace Insanity
 
 	class IConfigObject;
 
-	class CWindowsWin32Window final : public IWindow, public Default::Object
+	class CWindowsWin32Window final : public IWindow, public CGenericObject
 	{
 	private:
 		TRectangle<s16,u16> _rect;

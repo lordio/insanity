@@ -6,11 +6,11 @@
 #if defined(PLATFORM_MACOSX)
 
 #include <IServerSocket.hpp>
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
-    class CMacOSXBSDServerSocket final : public IServerSocket, public Default::Object
+	class CMacOSXBSDServerSocket final : public IServerSocket, public CGenericObject
     {
 		int _sock{};
     public:

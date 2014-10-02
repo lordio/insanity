@@ -8,11 +8,11 @@
 #include <IStreamSocket.hpp>
 #include <WinSock2.h>
 
-#include <Default.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
-	class CWindowsWinsockStreamSocket final : public IStreamSocket, public Default::Object
+	class CWindowsWinsockStreamSocket final : public IStreamSocket, public CGenericObject
 	{
 		SOCKET _sock;
 	public:

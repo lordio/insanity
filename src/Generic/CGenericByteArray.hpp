@@ -6,11 +6,11 @@
 #include <IByteArray.hpp>
 #include <vector>
 
-#include <Default.hpp>
+#include "CGenericObject.hpp"
 
 namespace Insanity
 {
-	class CGenericByteArray final : public IByteArray, public Default::Object
+	class CGenericByteArray final : public IByteArray, public CGenericObject
 	{
 		std::vector<u8> _vec{};
 		u64 _offset{ 0 };

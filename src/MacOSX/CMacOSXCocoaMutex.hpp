@@ -6,13 +6,13 @@
 #if defined(PLATFORM_MACOSX)
 
 #include <IMutex.hpp>
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 #include <Foundation/NSLock.h>
 
 namespace Insanity
 {
-	class INSANITY_API CMacOSXCocoaMutex : public IMutex, public Default::Object
+	class INSANITY_API CMacOSXCocoaMutex : public IMutex, public CGenericObject
 	{
 		NSRecursiveLock * _lock;
 	public:

@@ -45,6 +45,14 @@ namespace Insanity
 	{
 		return _procmap.size() != 0;
 	}
+
+	//=====================================================
+	//Interface: IObject
+	//=====================================================
+	bool CLinuxX11EventPumpTask::ShouldBeTracked() const
+	{
+		return true;
+	}
 }
 
 #endif

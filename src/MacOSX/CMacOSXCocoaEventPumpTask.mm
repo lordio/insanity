@@ -66,6 +66,14 @@ namespace Insanity
 	{
 		return _procmap.size() != 0;
 	}
+
+	//=====================================================
+	//Interface: IObject
+	//=====================================================
+	bool CMacOSXCocoaEventPumpTask::ShouldBeTracked() const
+	{
+		return true;
+	}
 }
 
 #endif

@@ -11,14 +11,14 @@
 #include <list>
 #include <memory>
 
-#include <Default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
 	class IGarbageCollector;
 	class ITask;
 	
-	class CLinuxSubThread final : public ISubThread, public Default::Object
+	class CLinuxSubThread final : public ISubThread, public CGenericObject
 	{
 		enum class ThreadState : u8
 		{

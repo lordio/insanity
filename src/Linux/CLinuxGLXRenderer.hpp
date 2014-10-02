@@ -8,7 +8,7 @@
 #include "CLinuxX11Window.hpp"
 
 #include <IRenderer.hpp>
-#include <Default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 #include <Ptr.hpp>
 
 #include <X11/Xlib.h>
@@ -21,7 +21,7 @@ namespace Insanity
 	class IWindow;
 	
 	//Non-Mesa GLX; should be used for versions higher than 3.1 (Mesa 9) or 3.3 (Mesa 10), for systems with manufacturer drivers.
-	class CLinuxGLXRenderer final : public IRenderer, public Default::Object
+	class CLinuxGLXRenderer final : public IRenderer, public CGenericObject
 	{
 		WeakPtr<IRenderer> _ext;
 		WeakPtr<CLinuxX11Window> _win;

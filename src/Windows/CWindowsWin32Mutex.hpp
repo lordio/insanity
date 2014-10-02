@@ -8,11 +8,11 @@
 #include <IMutex.hpp>
 #include <Windows.h>
 
-#include <Default.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
-	class CWindowsWin32Mutex final : public IMutex, public Default::Object
+	class CWindowsWin32Mutex final : public IMutex, public CGenericObject
 	{
 		HANDLE _mtx;
 	public:

@@ -6,11 +6,11 @@
 #if defined(PLATFORM_MACOSX)
 
 #include <IStreamSocket.hpp>
-#include <default/Object.hpp>
+#include "../Generic/CGenericObject.hpp"
 
 namespace Insanity
 {
-    class CMacOSXBSDStreamSocket final : public IStreamSocket, public Default::Object
+	class CMacOSXBSDStreamSocket final : public IStreamSocket, public CGenericObject
     {
         int _sock;
     public:

@@ -6,7 +6,7 @@
 
 namespace Insanity
 {
-	CWindowsWin32CriticalSection::CWindowsWin32CriticalSection() : Default::Object{}
+	CWindowsWin32CriticalSection::CWindowsWin32CriticalSection() : CGenericObject{}
 	{
 		InitializeCriticalSection(&_mtx);
 	}
