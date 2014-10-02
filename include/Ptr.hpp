@@ -1,9 +1,9 @@
 #ifndef INSANITY_COM_POINTER
 #define INSANITY_COM_POINTER
 
-//"Kiss Me" Klingon
-
 #include "Constants.hpp"
+#include "Common.hpp"
+#include "IGarbageCollector.hpp"
 
 namespace Insanity
 {
@@ -11,31 +11,50 @@ namespace Insanity
 	template<typename _comtype, bool _strong = true>
 	class Ptr
 	{
+	private:
+		inline void _retain()
+		{
+			if (_ptr)
+			{
+				if (_ptr->ShouldBeTracked() && !_ptr->IsBeingTracked()) GetCurrentGC()->Track(_ptr);
+				if (_strong) _ptr->Retain();
+			}
+		}
+		inline void _release()
+		{
+			if (_strong && _ptr)
+			{
+				_ptr->Release();
+
+				//if _ptr should not be tracked, delete it if its reference count goes to 0.
+				if (!_ptr->ShouldBeTracked() && _ptr->GetReferenceCount() == 0) delete _ptr;
+			}
+		}
 	protected:
 		_comtype * _ptr;
 	public:
 		Ptr(_comtype * ptr = nullptr) : _ptr(ptr)
 		{
-			if(_strong && _ptr) _ptr->Retain();
+			_retain();
 		}
 		//why isn't this templated?
 		Ptr(Ptr<_comtype,_strong> const & rval) : _ptr((_comtype*)rval)
 		{
-			if(_strong && _ptr) _ptr->Retain();
+			_retain();
 		}
 		Ptr(Ptr<_comtype,!_strong> const & rval) : _ptr((_comtype*)rval)
 		{
-			if(_strong && _ptr) _ptr->Retain();
+			_retain();
 		}
 		template<bool strong>
 		Ptr(Ptr<_comtype, strong> && rval) : _ptr((_comtype*)rval)
 		{
-			if (_strong && _ptr) _ptr->Retain();
+			_retain();
 			rval = nullptr;
 		}
 		virtual ~Ptr()
 		{
-			if(_strong && _ptr) _ptr->Release();
+			_release();
 		}
 
 		inline operator _comtype*()
@@ -56,18 +75,18 @@ namespace Insanity
 		}
 		inline _comtype * operator=(_comtype * ptr)
 		{
-			if(_strong && _ptr) _ptr->Release();
+			_release();
 			_ptr = ptr;
-			if(_strong && _ptr) _ptr->Retain();
+			_retain();
 
 			return _ptr;
 		}
 		template<bool strong>
 		inline _comtype * operator=(Ptr<_comtype,strong> const & ptr)
 		{
-			if(_strong && _ptr) _ptr->Release();
+			_release();
 			_ptr = (_comtype*)ptr;
-			if(_strong && _ptr) _ptr->Retain();
+			_retain();
 
 			return _ptr;
 		}
